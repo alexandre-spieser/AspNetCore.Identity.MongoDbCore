@@ -56,7 +56,6 @@ The MongoDb connection is managed using the [mongodb-generic-repository](https:/
 			
             // add a global config object
             services.AddSingleton(Configuration);
-            var mongoSettings = Configuration.GetSection(nameof(MongoDbSettings));
             var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
             var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
             {
