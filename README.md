@@ -1,25 +1,15 @@
 # AspNetCore.Identity.MongoDbCore
 A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.
 Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0.
+
 Covered by 737 integration tests and unit tests from the modified [Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test](https://github.com/aspnet/Identity/tree/b865d5878623077eeb715e600d75fa9c24dbb5a1/test/Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test) test suite.
 
 # Usage examples
 
-Your user and role entities must inherit from MongoIdentityUser<Guid> and MongoIdentityRole<TKey> in a way similar to the IdentityUser<TKey> and the IdentityRole<TKey> in Microsoft.AspNetCore.Identity. 
+Your user and role entities must inherit from MongoIdentityUser<Guid> and MongoIdentityRole<TKey> in a way similar to the IdentityUser<TKey> and the IdentityRole<TKey> in Microsoft.AspNetCore.Identity.
 Here is an example:
 
 ```csharp
-
-	public class ApplicationRole : MongoIdentityRole<Guid>
-	{
-		public ApplicationRole() : base()
-		{
-		}
-
-		public ApplicationRole(string roleName) : base(roleName)
-		{
-		}
-	}
 
 	public class ApplicationUser : MongoIdentityUser<Guid>
 	{
@@ -31,7 +21,20 @@ Here is an example:
 		{
 		}
 	}
+	
+	public class ApplicationRole : MongoIdentityRole<Guid>
+	{
+		public ApplicationRole() : base()
+		{
+		}
+
+		public ApplicationRole(string roleName) : base(roleName)
+		{
+		}
+	}	
 ```
+The Id field is automatically set at instanciation, this also applies to users inheriting from MongoIdentityUser<int>, where a random integer is assigned to the Id. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole<Guid>` is recommended.
+
 The configuration is done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
 The `MongoDbSettings` object is used to set MongoDb Settings using the `ConnectionString` and the `DatabaseName` properties.
 
