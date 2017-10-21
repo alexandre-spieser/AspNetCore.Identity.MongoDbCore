@@ -36,6 +36,7 @@ Here is an example:
 The Id field is automatically set at instanciation, this also applies to users inheriting from MongoIdentityUser<int>, where a random integer is assigned to the Id. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole<Guid>` is recommended.
 
 The configuration is done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
+
 The `MongoDbSettings` object is used to set MongoDb Settings using the `ConnectionString` and the `DatabaseName` properties.
 
 The MongoDb connection is managed using the [mongodb-generic-repository](https://github.com/alexandre-spieser/mongodb-generic-repository), where a repository inheriting `IBaseMongoRepository` is registered as a singleton. Look at the [ServiceCollectionExtension.cs](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore/blob/master/src/Extensions/ServiceCollectionExtension.cs) file for more details.
