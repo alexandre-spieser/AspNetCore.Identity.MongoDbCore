@@ -13,7 +13,8 @@ Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identit
 
 # Usage examples
 
-Your user and role entities must inherit from MongoIdentityUser<Guid> and MongoIdentityRole<TKey> in a way similar to the IdentityUser<TKey> and the IdentityRole<TKey> in Microsoft.AspNetCore.Identity.
+Your user and role entities must inherit from `MongoIdentityUser<TKey>` and `MongoIdentityRole<TKey>` in a way similar to the `IdentityUser<TKey>` and the `IdentityRole<TKey>` in `Microsoft.AspNetCore.Identity`, where `TKey` is the type of the primary key of your document.
+
 Here is an example:
 
 ```csharp
