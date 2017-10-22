@@ -38,7 +38,7 @@ namespace AspNetCore.Identity.MongoDbCore
                 new CamelCaseElementNameConvention(),
             };
 
-            ConventionRegistry.Register("AspNetCore.Identity.MongoDB", pack, IsConventionApplicable);
+            ConventionRegistry.Register("AspNetCore.Identity.MongoDbCore", pack, IsConventionApplicable);
         }
 
         private static bool IsConventionApplicable(Type type)
