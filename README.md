@@ -97,7 +97,7 @@ BTC Donations: 1Qc5ZpNA7g66KEEMcz7MXxwNyyoRyKJJZ
 *Thank you for your support and generosity!*
 
 ## License
-mongodb-generic-repository is under MIT license - http://www.opensource.org/licenses/mit-license.php
+AspNetCore.Identity.MongoDbCore is under MIT license - http://www.opensource.org/licenses/mit-license.php
 
 The MIT License (MIT)
 
