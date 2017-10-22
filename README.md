@@ -1,8 +1,15 @@
 # AspNetCore.Identity.MongoDbCore
+
 A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.
 Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0.
 
 Covered by 737 integration tests and unit tests from the modified [Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test](https://github.com/aspnet/Identity/tree/b865d5878623077eeb715e600d75fa9c24dbb5a1/test/Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test) test suite.
+
+Supports both `netstandard2.0` and `netcoreapp2.0`.
+
+Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identity.MongoDbCore/
+
+	`Install-Package AspNetCore.Identity.MongoDbCore -Version 1.0.4`
 
 # Usage examples
 
