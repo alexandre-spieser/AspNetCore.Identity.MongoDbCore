@@ -1,12 +1,20 @@
 # AspNetCore.Identity.MongoDbCore
+
 A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.
 Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0.
 
 Covered by 737 integration tests and unit tests from the modified [Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test](https://github.com/aspnet/Identity/tree/b865d5878623077eeb715e600d75fa9c24dbb5a1/test/Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test) test suite.
 
+Supports both `netstandard2.0` and `netcoreapp2.0`.
+
+Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identity.MongoDbCore/
+
+	Install-Package AspNetCore.Identity.MongoDbCore
+
 # Usage examples
 
-Your user and role entities must inherit from MongoIdentityUser<Guid> and MongoIdentityRole<TKey> in a way similar to the IdentityUser<TKey> and the IdentityRole<TKey> in Microsoft.AspNetCore.Identity.
+Your user and role entities must inherit from `MongoIdentityUser<TKey>` and `MongoIdentityRole<TKey>` in a way similar to the `IdentityUser<TKey>` and the `IdentityRole<TKey>` in `Microsoft.AspNetCore.Identity`, where `TKey` is the type of the primary key of your document.
+
 Here is an example:
 
 ```csharp
@@ -33,7 +41,7 @@ Here is an example:
 		}
 	}	
 ```
-The `Id` field is automatically set at instanciation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole<Guid>` is recommended.
+The `Id` field is automatically set at instanciation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
 
 The configuration is done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
 
@@ -85,6 +93,10 @@ The MongoDb connection is managed using the [mongodb-generic-repository](https:/
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
         }
 ```
+# Running the tests
+
+To run the tests, you need a local MongoDb server in default configuration (listening to `localhost:27017`).
+Create a database named MongoDbTests for the tests to run.
 
 ## Author
 **Alexandre Spieser**
