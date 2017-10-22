@@ -9,7 +9,7 @@ Supports both `netstandard2.0` and `netcoreapp2.0`.
 
 Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identity.MongoDbCore/
 
-	`Install-Package AspNetCore.Identity.MongoDbCore -Version 1.0.4`
+	`Install-Package AspNetCore.Identity.MongoDbCore`
 
 # Usage examples
 
