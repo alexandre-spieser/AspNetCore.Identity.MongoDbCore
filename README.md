@@ -9,7 +9,7 @@ Supports both `netstandard2.0` and `netcoreapp2.0`.
 
 Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identity.MongoDbCore/
 
-	`Install-Package AspNetCore.Identity.MongoDbCore`
+	Install-Package AspNetCore.Identity.MongoDbCore
 
 # Usage examples
 
@@ -93,6 +93,10 @@ The MongoDb connection is managed using the [mongodb-generic-repository](https:/
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
         }
 ```
+# Running the tests
+
+To run the tests, you need a local MongoDb server in default configuration (listening to `localhost:27017`).
+Create a database named MongoDbTests for the tests to run.
 
 ## Author
 **Alexandre Spieser**
