@@ -8,58 +8,62 @@ using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCore.Identity.MongoDbCore.Models
 {
-    public class Token
-    {
-        /// <summary>
-        /// Gets or sets the LoginProvider this token is from.
-        /// </summary>
-        public string LoginProvider { get; set; }
-        /// <summary>
-        /// Gets or sets the name of the token. 
-        public string Name { get; set; }
-        /// <summary>
-        /// Gets or sets the token value.
-        /// </summary>
-        public string Value { get; set; }
-    }
 
-    public class MongoClaim {
-        public string Type { get; set; }
-        public string Value { get; set; }
-        public string Issuer { get; set; }
-    }
-
-    public class UserRole
-    {
-        public object UserId { get; set; }
-        public object RoleId { get; set; }
-    }
-
+    /// <summary>
+    /// A <see cref="MongoIdentityUser{TKey}"/> where TKey is a <see cref="string"/>
+    /// </summary>
     public class MongoDbIdentityUser : MongoIdentityUser<string>
     {
+        /// <summary>
+        /// The constructor for a <see cref="MongoDbIdentityUser"/>
+        /// </summary>
         public MongoDbIdentityUser() : base()
         {
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoDbIdentityUser"/>, taking a username.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
         public MongoDbIdentityUser(string userName) : base(userName)
         {
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoDbIdentityUser"/>, taking a username and an email address.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
+        /// <param name="email">The email address of the user.</param>
         public MongoDbIdentityUser(string userName, string email) : base(userName, email)
         {
         }
     }
 
+    /// <summary>
+    /// A <see cref="MongoIdentityUser{TKey}"/> where TKey is a <see cref="Guid"/>
+    /// </summary>
     public class MongoIdentityUser : MongoIdentityUser<Guid>
     {
+        /// <summary>
+        /// The constructor for a <see cref="MongoIdentityUser"/>
+        /// </summary>
         public MongoIdentityUser() : base()
         {
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoDbIdentityUser"/>, taking a username.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
         public MongoIdentityUser(string userName) : base(userName)
         {
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoDbIdentityUser"/>, taking a username and an email address.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
+        /// <param name="email">The email address of the user.</param>
         public MongoIdentityUser(string userName, string email) : base(userName, email)
         {
         }

@@ -222,7 +222,6 @@ namespace AspNetCore.Identity.MongoDbCore.Test
     {
         public IdentityUserWithGenerics() : base()
         {
-
         }
     }
 

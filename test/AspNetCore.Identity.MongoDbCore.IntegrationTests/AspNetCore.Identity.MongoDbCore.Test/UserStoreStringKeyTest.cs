@@ -22,7 +22,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         }
     }
 
-    public class UserStoreStringKeyTest : SqlStoreTestBase<StringUser, StringRole, string>
+    public class UserStoreStringKeyTest : MongoDbStoreTestBase<StringUser, StringRole, string>
     {
         public UserStoreStringKeyTest(MongoDatabaseFixture<StringUser, StringRole, string> fixture)
             : base(fixture)

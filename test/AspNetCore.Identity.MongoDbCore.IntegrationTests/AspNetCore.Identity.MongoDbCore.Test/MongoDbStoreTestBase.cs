@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
@@ -14,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Xunit;
 using AspNetCore.Identity.MongoDbCore.Models;
 using AspNetCore.Identity.MongoDbCore.Extensions;
-using AspNetCore.Identity.MongoDbCore;
 using MongoDB.Driver;
 using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
 using MongoDbGenericRepository;
@@ -24,7 +22,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
 {
     // TODO: Add test variation with non IdentityDbContext
 
-    public abstract class SqlStoreTestBase<TUser, TRole, TKey> : IdentitySpecificationTestBase<TUser, TRole, TKey>, 
+    public abstract class MongoDbStoreTestBase<TUser, TRole, TKey> : IdentitySpecificationTestBase<TUser, TRole, TKey>, 
         IClassFixture<MongoDatabaseFixture<TUser, TRole, TKey>>
         where TUser : MongoIdentityUser<TKey>, new()
         where TRole : MongoIdentityRole<TKey>, new()
@@ -32,7 +30,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
     {
         private readonly MongoDatabaseFixture<TUser, TRole, TKey> _fixture;
 
-        protected SqlStoreTestBase(MongoDatabaseFixture<TUser, TRole, TKey> fixture)
+        protected MongoDbStoreTestBase(MongoDatabaseFixture<TUser, TRole, TKey> fixture)
         {
             _fixture = fixture;
         }

@@ -8,6 +8,9 @@ namespace AspNetCore.Identity.MongoDbCore.Interfaces
     /// </summary>
     public interface IClaimHolder
     {
+        /// <summary>
+        /// The claims the <see cref="IClaimHolder"/> has.
+        /// </summary>
         List<MongoClaim> Claims { get; set; }
     }
 }

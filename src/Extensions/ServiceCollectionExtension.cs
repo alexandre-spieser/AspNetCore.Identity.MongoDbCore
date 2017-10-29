@@ -7,88 +7,118 @@ using System;
 
 namespace AspNetCore.Identity.MongoDbCore.Extensions
 {
-    public class MongoDbSettings
-    {
-        public string ConnectionString { get; set; }
-        public string DatabaseName { get; set; }
-    }
-
-    public class MongoDbIdentityConfiguration
-    {
-        public MongoDbSettings MongoDbSettings { get; set; }
-        public Action<IdentityOptions> IdentityOptionsAction { get; set; }
-    }
-
+    /// <summary>
+    /// Contains extension methods to <see cref="IServiceCollection"/> for adding mongoDb Identity.
+    /// </summary>
     public static class ServiceCollectionExtension
     {
-        public static void ConfigureMongoDbIdentity<TUser, TKey>(
-            this IServiceCollection services, 
-            MongoDbIdentityConfiguration mongoDbIdentityConfiguration, 
-            IMongoRepository mongoRepository = null)
+        /// <summary>
+        /// Configures the MongoDb Identity store adapters for the types of TUser only from <see cref="MongoIdentityUser{TKey}"/>.
+        /// </summary>
+        /// <typeparam name="TUser">The type representing a user.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+        /// <param name="services">The collection of service descriptors.</param>
+        /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
+        public static void ConfigureMongoDbIdentityUserOnly<TUser, TKey>(
+            this IServiceCollection services,
+            MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                 where TUser : MongoIdentityUser<TKey>, new()
                 where TKey : IEquatable<TKey>
         {
-            services.AddSingleton<MongoDbSettings>(mongoDbIdentityConfiguration.MongoDbSettings);
-            services.AddSingleton<IMongoRepository>(provider =>
-            {
-                var options = provider.GetService<MongoDbSettings>();
-                return mongoRepository ?? new MongoRepository(options.ConnectionString, options.DatabaseName);
-            });
-
+            ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
             CommonMongoDbSetup<TUser, MongoIdentityRole<TKey>, TKey>(services, mongoDbIdentityConfiguration);
         }
 
+
+        /// <summary>
+        /// Configures the MongoDb Identity store adapters for the types of TUser only inheriting from <see cref="MongoIdentityUser"/>.
+        /// </summary>
+        /// <typeparam name="TUser">The type representing a user.</typeparam>
+        /// <param name="services">The collection of service descriptors.</param>
+        /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
         public static void ConfigureMongoDbIdentity<TUser>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                     where TUser : MongoIdentityUser, new()
         {
-            services.AddSingleton<MongoDbSettings>(mongoDbIdentityConfiguration.MongoDbSettings);
-            services.AddSingleton<IMongoRepository>(provider =>
-            {
-                var options = provider.GetService<MongoDbSettings>();
-                return new MongoRepository(options.ConnectionString, options.DatabaseName);
-            });
-
+            ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
             CommonMongoDbSetup<TUser, MongoIdentityRole, Guid>(services, mongoDbIdentityConfiguration);
         }
 
+        /// <summary>
+        /// Validates the MongoDbSettings
+        /// </summary>
+        /// <param name="mongoDbSettings"></param>
+        private static void ValidateMongoDbSettings(MongoDbSettings mongoDbSettings)
+        {
+            if (mongoDbSettings == null)
+            {
+                throw new ArgumentNullException(nameof(mongoDbSettings));
+            }
 
+            if (string.IsNullOrEmpty(mongoDbSettings.ConnectionString))
+            {
+                throw new ArgumentNullException(nameof(mongoDbSettings.ConnectionString));
+            }
+
+            if (string.IsNullOrEmpty(mongoDbSettings.DatabaseName))
+            {
+                throw new ArgumentNullException(nameof(mongoDbSettings.DatabaseName));
+            }
+        }
+
+        /// <summary>
+        /// Configures the MongoDb Identity store adapters for the types of TUser and TRole.
+        /// </summary>
+        /// <typeparam name="TUser">The type representing a user.</typeparam>
+        /// <typeparam name="TRole">The type representing a role.</typeparam>
+        /// <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+        /// <param name="services">The collection of service descriptors.</param>
+        /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
+        /// <param name="mongoDbContext">An object representing a MongoDb connection.</param>
         public static void ConfigureMongoDbIdentity<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration,
             IMongoDbContext mongoDbContext = null)
                     where TUser : MongoIdentityUser<TKey>, new()
                     where TRole : MongoIdentityRole<TKey>, new()
                     where TKey : IEquatable<TKey>
         {
-            services.AddSingleton<MongoDbSettings>(mongoDbIdentityConfiguration.MongoDbSettings);
-            services.AddSingleton<IMongoRepository>(provider =>
-            {
-                var options = provider.GetService<MongoDbSettings>();
-                return mongoDbContext == null ? new MongoRepository(options.ConnectionString, options.DatabaseName) : new MongoRepository(mongoDbContext);
-            });
+            ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
 
-            CommonMongoDbSetup<TUser, TRole, TKey>(services, mongoDbIdentityConfiguration);
+            if(mongoDbContext == null)
+            {
+                services.AddIdentity<TUser, TRole>()
+                        .AddMongoDbStores<TUser, TRole, TKey>(
+                            mongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
+                            mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName)
+                        .AddDefaultTokenProviders();
+            }
+            else
+            {
+                services.AddIdentity<TUser, TRole>()
+                        .AddMongoDbStores<IMongoDbContext>(mongoDbContext)
+                        .AddDefaultTokenProviders();
+            }
+
+            if (mongoDbIdentityConfiguration.IdentityOptionsAction != null)
+            {
+                services.Configure(mongoDbIdentityConfiguration.IdentityOptionsAction);
+            }
         }
+
 
         private static void CommonMongoDbSetup<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                     where TUser : MongoIdentityUser<TKey>, new()
                     where TRole : MongoIdentityRole<TKey>, new()
                     where TKey : IEquatable<TKey>
         {
-            services.AddScoped<IUserStore<TUser>>(provider =>
-            {
-                var userStore = new MongoUserStore<TUser, TRole, IMongoDbContext, TKey>(provider.GetService<IMongoRepository>().Context);
-                return userStore;
-            });
-
-            services.AddScoped<IRoleStore<TRole>>(provider =>
-            {
-                return new MongoRoleStore<TRole, IMongoDbContext, TKey>(provider.GetService<IMongoRepository>().Context);
-            });
-
             services.AddIdentity<TUser, TRole>()
+                    .AddMongoDbStores<TUser, TRole, TKey>(
+                        mongoDbIdentityConfiguration.MongoDbSettings.ConnectionString, 
+                        mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName)
                     .AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(mongoDbIdentityConfiguration.IdentityOptionsAction);
+            if (mongoDbIdentityConfiguration.IdentityOptionsAction != null)
+            {
+                services.Configure(mongoDbIdentityConfiguration.IdentityOptionsAction);
+            }
         }
-
     }
 }

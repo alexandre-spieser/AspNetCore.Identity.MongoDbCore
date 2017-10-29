@@ -12,6 +12,11 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
     /// </summary>
     public static class ClaimHolderExtensions
     {
+        /// <summary>
+        /// Creates a <see cref="MongoClaim"/> object from a <see cref="Claim"/>
+        /// </summary>
+        /// <param name="claim">The <see cref="Claim"/>.</param>
+        /// <returns>A <see cref="MongoClaim"/>.</returns>
         public static MongoClaim ToMongoClaim(this Claim claim)
         {
             return new MongoClaim
@@ -22,9 +27,14 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
             };
         }
 
-        public static Claim ToClaim(this MongoClaim claim)
+        /// <summary>
+        /// Creates a <see cref="Claim"/> object from a <see cref="MongoClaim"/>
+        /// </summary>
+        /// <param name="mongoClaim">A <see cref="MongoClaim"/>.</param>
+        /// <returns> A <see cref="Claim"/>.</returns>
+        public static Claim ToClaim(this MongoClaim mongoClaim)
         {
-            return new Claim(claim.Type, claim.Value, null, claim.Issuer);
+            return new Claim(mongoClaim.Type, mongoClaim.Value, null, mongoClaim.Issuer);
         }
 
         /// <summary>
@@ -85,6 +95,12 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
             return claimHolder.Claims.Any(e => e.Value == claim.Value && e.Type == claim.Type);
         }
 
+        /// <summary>
+        /// Removes a <see cref="Claim"/> from the <see cref="IClaimHolder"/>.
+        /// </summary>
+        /// <param name="claimHolder">The holder of the claim.</param>
+        /// <param name="claim">The <see cref="Claim"/> to remove.</param>
+        /// <returns>True is the claim was successfully removed.</returns>
         public static bool RemoveClaim(this IClaimHolder claimHolder, Claim claim)
         {
             if (claim == null)
@@ -102,6 +118,12 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
             return false;
         }
 
+        /// <summary>
+        /// Removes an IEnumerable of <see cref="Claim"/>s from the <see cref="IClaimHolder"/>.
+        /// </summary>
+        /// <param name="claimHolder">The holder of the claims.</param>
+        /// <param name="claims">The <see cref="Claim"/>s to remove.</param>
+        /// <returns>True is the claims were successfully removed.</returns>
         public static bool RemoveClaims(this IClaimHolder claimHolder, IEnumerable<Claim> claims)
         {
             var someClaimsRemoved = false;

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AspNetCore.Identity.MongoDbCore</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <title>AspNetCore.Identity.MongoDbCore</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.</description>
-    <releaseNotes>Target both netstandard2.0 and netcoreapp2</releaseNotes>
+    <releaseNotes>Added .AddMongoDbStores IdentityBuilder extensions.</releaseNotes>
     <copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>aspnetcore mongo mongodb identity membership</tags>
   </metadata>

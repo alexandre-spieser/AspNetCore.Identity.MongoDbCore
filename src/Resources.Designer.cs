@@ -61,7 +61,7 @@ namespace AspNetCore.Identity.MongoDbCore {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à AddEntityFrameworkStores can only be called with a role that derives from IdentityRole&lt;TKey, TUserRole, TRoleClaim&gt;..
+        ///   Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a role that derives from MongoIdentityRole&lt;TKey, TUserRole, TRoleClaim&gt;..
         /// </summary>
         internal static string NotIdentityRole {
             get {
@@ -70,7 +70,7 @@ namespace AspNetCore.Identity.MongoDbCore {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à AddEntityFrameworkStores can only be called with a user that derives from IdentityUser&lt;TKey, TUserClaim, TUserRole, TUserLogin, TUserToken&gt;..
+        ///   Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a user that derives from MongoIdentityUser&lt;TKey, TUserClaim, TUserRole, TUserLogin, TUserToken&gt;..
         /// </summary>
         internal static string NotIdentityUser {
             get {

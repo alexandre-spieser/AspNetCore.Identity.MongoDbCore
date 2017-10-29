@@ -3,9 +3,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 using AspNetCore.Identity.MongoDbCore.Models;
-using AspNetCore.Identity.MongoDbCore;
 using MongoDbGenericRepository;
 using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
 using Microsoft.AspNetCore.Identity;
@@ -26,7 +24,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         }
     }
 
-    public class UserStoreGuidTest : SqlStoreTestBase<GuidUser, GuidRole, Guid>
+    public class UserStoreGuidTest : MongoDbStoreTestBase<GuidUser, GuidRole, Guid>
     {
         public UserStoreGuidTest(MongoDatabaseFixture<GuidUser, GuidRole, Guid> fixture)
             : base(fixture)

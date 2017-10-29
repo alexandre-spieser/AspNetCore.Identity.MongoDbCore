@@ -2,8 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 using AspNetCore.Identity.MongoDbCore.Models;
 
 namespace AspNetCore.Identity.MongoDbCore.Test
@@ -23,7 +21,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         }
     }
 
-    public class UserStoreIntTest : SqlStoreTestBase<IntUser, IntRole, int>
+    public class UserStoreIntTest : MongoDbStoreTestBase<IntUser, IntRole, int>
     {
         public UserStoreIntTest(MongoDatabaseFixture<IntUser, IntRole, int> fixture)
             : base(fixture)

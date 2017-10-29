@@ -24,9 +24,9 @@ namespace AspNetCore.Identity.MongoDbCore
         where TUser : MongoIdentityUser<string>, new()
     {
         /// <summary>
-        /// Constructs a new instance of <see cref="UserOnlyStore{TUser}"/>.
+        /// Constructs a new instance of <see cref="MongoUserOnlyStore{TUser}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="DbContext"/>.</param>
+        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
         public MongoUserOnlyStore(IMongoDbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
     }
@@ -41,9 +41,9 @@ namespace AspNetCore.Identity.MongoDbCore
         where TContext : IMongoDbContext
     {
         /// <summary>
-        /// Constructs a new instance of <see cref="UserStore{TUser, TRole, TContext}"/>.
+        /// Constructs a new instance of <see cref="MongoUserOnlyStore{TUser, TContext}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="DbContext"/>.</param>
+        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
         public MongoUserOnlyStore(TContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
     }
@@ -60,9 +60,9 @@ namespace AspNetCore.Identity.MongoDbCore
         where TKey : IEquatable<TKey>
     {
         /// <summary>
-        /// Constructs a new instance of <see cref="UserStore{TUser, TRole, TContext, TKey}"/>.
+        /// Constructs a new instance of <see cref="MongoUserOnlyStore{TUser, TContext, TKey}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="DbContext"/>.</param>
+        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
         public MongoUserOnlyStore(TContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
     }
@@ -74,10 +74,8 @@ namespace AspNetCore.Identity.MongoDbCore
     /// <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
     /// <typeparam name="TKey">The type of the primary key for a role.</typeparam>
     /// <typeparam name="TUserClaim">The type representing a claim.</typeparam>
-    /// <typeparam name="TUserRole">The type representing a user role.</typeparam>
     /// <typeparam name="TUserLogin">The type representing a user external login.</typeparam>
     /// <typeparam name="TUserToken">The type representing a user token.</typeparam>
-    /// <typeparam name="TRoleClaim">The type representing a role claim.</typeparam>
     public class MongoUserOnlyStore<TUser, TContext, TKey, TUserClaim, TUserLogin, TUserToken> :
         UserStoreBase<TUser, TKey, TUserClaim, TUserLogin, TUserToken>,
         IUserAuthenticationTokenStore<TUser>
@@ -543,10 +541,6 @@ namespace AspNetCore.Identity.MongoDbCore
 
         #region Token Management
 
-        public class TokenProjection
-        {
-            public List<Token> Tokens { get; set; }
-        }
         /// <summary>
         /// Find a user token if it exists.
         /// </summary>

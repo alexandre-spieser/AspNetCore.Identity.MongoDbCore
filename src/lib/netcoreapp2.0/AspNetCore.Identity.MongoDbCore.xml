@@ -34,6 +34,53 @@
             <param name="claim">The claim you want to replace.</param>
             <returns>Returns true if the claim is present, false otherwise.</returns>
         </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ValidateMongoDbSettings(AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings)">
+            <summary>
+            Validates the MongoDbSettings
+            </summary>
+            <param name="mongoDbSettings"></param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ConfigureMongoDbIdentity``3(Microsoft.Extensions.DependencyInjection.IServiceCollection,AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Configures the MongoDb Identity store adapters for 
+            </summary>
+            <typeparam name="TUser"></typeparam>
+            <typeparam name="TRole"></typeparam>
+            <typeparam name="TKey"></typeparam>
+            <param name="services"></param>
+            <param name="mongoDbIdentityConfiguration"></param>
+            <param name="mongoDbContext"></param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration">
+            <summary>
+            A class used to perform a full configuration of the AspNetCore.Identity.MongoDbCore package.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration.MongoDbSettings">
+            <summary>
+            The settings for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration.IdentityOptionsAction">
+            <summary>
+            An action against an <see cref="T:Microsoft.AspNetCore.Identity.IdentityOptions"/> to change the default identity settings.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings">
+            <summary>
+            A class representing the settings for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings.ConnectionString">
+            <summary>
+            The connection string for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings.DatabaseName">
+            <summary>
+            The name of the MongoDb database where the identity data will be stored.
+            </summary>
+        </member>
         <member name="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder">
             <summary>
             The interface for an object that holds claims.
@@ -68,17 +115,6 @@
             <param name="claim">The claim you want to replace.</param>
             <param name="newClaim">The new claim you want to set.</param>
             <returns>Returns true if the claim was replaced.</returns>
-        </member>
-        <member name="T:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor">
-            <summary>
-            Represents the password hashing options
-            </summary>
-        </member>
-        <member name="P:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor.Value">
-            <summary>
-            Gets options which use the IdentityV3 compat mode, and set the iteration count to 200000 PBKDF2-SHA256 iterations 
-            (roughly 200ms of work)
-            </summary>
         </member>
         <member name="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`1">
             <summary>
@@ -1335,6 +1371,17 @@
             <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
             <returns>True if the recovery code was found for the user.</returns>
         </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor">
+            <summary>
+            Represents the password hashing options
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor.Value">
+            <summary>
+            Gets options which use the IdentityV3 compat mode, and set the iteration count to 200000 PBKDF2-SHA256 iterations 
+            (roughly 200ms of work)
+            </summary>
+        </member>
         <member name="T:AspNetCore.Identity.MongoDbCore.Resources">
             <summary>
               Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
@@ -1353,12 +1400,12 @@
         </member>
         <member name="P:AspNetCore.Identity.MongoDbCore.Resources.NotIdentityRole">
             <summary>
-              Recherche une chaîne localisée semblable à AddEntityFrameworkStores can only be called with a role that derives from IdentityRole&lt;TKey, TUserRole, TRoleClaim&gt;..
+              Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a role that derives from MongoIdentityRole&lt;TKey, TUserRole, TRoleClaim&gt;..
             </summary>
         </member>
         <member name="P:AspNetCore.Identity.MongoDbCore.Resources.NotIdentityUser">
             <summary>
-              Recherche une chaîne localisée semblable à AddEntityFrameworkStores can only be called with a user that derives from IdentityUser&lt;TKey, TUserClaim, TUserRole, TUserLogin, TUserToken&gt;..
+              Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a user that derives from MongoIdentityUser&lt;TKey, TUserClaim, TUserRole, TUserLogin, TUserToken&gt;..
             </summary>
         </member>
         <member name="P:AspNetCore.Identity.MongoDbCore.Resources.RoleNotFound">
@@ -1370,6 +1417,41 @@
             <summary>
               Recherche une chaîne localisée semblable à Value cannot be null or empty..
             </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions">
+            <summary>
+            Contains extension methods to <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> for adding MongoDb stores.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``1(Microsoft.AspNetCore.Identity.IdentityBuilder,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TContext">The MongoDb database context to use.</typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="mongoDbContext">A mongoDbContext</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``3(Microsoft.AspNetCore.Identity.IdentityBuilder,System.String,System.String)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TUser"></typeparam>
+            <typeparam name="TRole"></typeparam>
+            <typeparam name="TKey"></typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="connectionString"></param>
+            <param name="databaseName"></param>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``3(Microsoft.AspNetCore.Identity.IdentityBuilder,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TUser"></typeparam>
+            <typeparam name="TRole"></typeparam>
+            <typeparam name="TKey"></typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="mongoDbContext"></param>
         </member>
     </members>
 </doc>
