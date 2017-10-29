@@ -47,12 +47,12 @@ To add the stores, you can use the `IdentityBuilder` extension like so:
 
 ```csharp
 services.AddIdentity<ApplicationUser, ApplicationRole>()
-		.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
-		(
-			"mongodb://localhost:27017",
-			"MongoDbTests"
-		)
-		.AddDefaultTokenProviders();
+	.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
+	(
+		"mongodb://localhost:27017",
+		"MongoDbTests"
+	)
+	.AddDefaultTokenProviders();
 ```
 
 It is also possible to share a common `IMongoDbContext` across your services:
@@ -60,8 +60,8 @@ It is also possible to share a common `IMongoDbContext` across your services:
 ```csharp
 var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
 services.AddIdentity<ApplicationUser, ApplicationRole>()
-		.AddMongoDbStores<IMongoDbContext>(mongoDbContext)
-		.AddDefaultTokenProviders();
+	.AddMongoDbStores<IMongoDbContext>(mongoDbContext)
+	.AddDefaultTokenProviders();
 // Use the mongoDbContext for other things.
 ```
 
@@ -70,8 +70,8 @@ You can also use the more explicit type declaration:
 ```csharp
 var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
 services.AddIdentity<ApplicationUser, ApplicationRole>()
-		.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
-		.AddDefaultTokenProviders();
+	.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
+	.AddDefaultTokenProviders();
 // Use the mongoDbContext for other things.
 ```
 
