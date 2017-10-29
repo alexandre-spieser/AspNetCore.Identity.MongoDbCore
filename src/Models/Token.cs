@@ -11,6 +11,7 @@
         public string LoginProvider { get; set; }
         /// <summary>
         /// Gets or sets the name of the token. 
+        /// </summary>
         public string Name { get; set; }
         /// <summary>
         /// Gets or sets the token value.

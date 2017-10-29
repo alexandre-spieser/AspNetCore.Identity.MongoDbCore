@@ -381,13 +381,15 @@ namespace AspNetCore.Identity.MongoDbCore
         /// </summary>
         public void Dispose() => _disposed = true;
 
-        /// <summary>
-        /// Get the claims associated with the specified <paramref name="role"/> as an asynchronous operation.
-        /// </summary>
-        /// <param name="role">The role whose claims should be retrieved.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a role.</returns>
+#pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
+                              /// <summary>
+                              /// Get the claims associated with the specified <paramref name="role"/> as an asynchronous operation.
+                              /// </summary>
+                              /// <param name="role">The role whose claims should be retrieved.</param>
+                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+                              /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a role.</returns>
         public async virtual Task<IList<Claim>> GetClaimsAsync(TRole role, CancellationToken cancellationToken = default(CancellationToken))
+#pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
             ThrowIfDisposed();
             if (role == null)

@@ -69,51 +69,53 @@ namespace AspNetCore.Identity.MongoDbCore.Models
         }
     }
 
-    public class MongoIdentityUser<TKey> : IdentityUser<TKey>, IDocument<TKey>, IClaimHolder
+    /// <summary>
+    /// A document representing an <see cref="IdentityUser{TKey}"/> document.
+    /// </summary>
+    /// <typeparam name="TKey">The type of the primary key.</typeparam>
+     public class MongoIdentityUser<TKey> : IdentityUser<TKey>, IDocument<TKey>, IClaimHolder
         where TKey : IEquatable<TKey>
     {
 
+        /// <summary>
+        /// The version of the schema do the <see cref="MongoIdentityUser{TKey}"/> document.
+        /// </summary>
         public int Version { get; set; }
-
+        /// <summary>
+        /// The date and time at which this user was created, in UTC.
+        /// </summary>
         public DateTime CreatedOn { get; private set; }
-        public DateTime? LockoutEndDate { get; private set; }
-        public DateTime? DeletedOn { get; private set; }
+        /// <summary>
+        /// The claims this user has.
+        /// </summary>
         public List<MongoClaim> Claims { get; set; }
+        /// <summary>
+        /// The role Ids of the roles that this user has.
+        /// </summary>
         public List<TKey> Roles { get; set; }
+        /// <summary>
+        /// The list of <see cref="UserLoginInfo"/>s that this user has.
+        /// </summary>
         public List<UserLoginInfo> Logins { get; set; }
+        /// <summary>
+        /// The list of <see cref="Token"/>s that this user has.
+        /// </summary>
         public List<Token> Tokens { get; set; }
 
-        private void InitializeFields()
-        {
-            Claims = new List<MongoClaim>();
-            Logins = new List<UserLoginInfo>();
-            Roles = new List<TKey>();
-            Tokens = new List<Token>();
-            Guid guidValue = Guid.NewGuid();
-
-            var idTypeName = typeof(TKey).Name;
-            switch (idTypeName)
-            {
-                case "Guid":
-                    Id = (TKey)(object)guidValue;
-                    break;
-                case "Int32":
-                    Id = (TKey)(object)GlobalVariables.Random.Next(1, int.MaxValue);
-                    break;
-                case "String":
-                    Id = (TKey)(object)guidValue.ToString();
-                    break;
-            }
-
-        }
-
+        /// <summary>
+        /// The constructor for a <see cref="MongoIdentityUser{TKey}"/>, taking a username and an email address.
+        /// </summary>
         public MongoIdentityUser()
         {
-            CreatedOn = DateTime.UtcNow;
             SetVersion(1);
             InitializeFields();
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoIdentityUser{TKey}"/>, taking a username and an email address.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
+        /// <param name="email">The email address of the user.</param>
         public MongoIdentityUser(string userName, string email) : this(userName)
         {
             if (email != null)
@@ -122,118 +124,40 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             }
         }
 
+        /// <summary>
+        /// The constructor for a <see cref="MongoIdentityUser{TKey}"/>, taking a username.
+        /// </summary>
+        /// <param name="userName">The name of the user.</param>
         public MongoIdentityUser(string userName)
         {
             UserName = userName ?? throw new ArgumentNullException(nameof(userName));
-            CreatedOn = DateTime.UtcNow;
-
             SetVersion(1);
             InitializeFields();
             Roles = new List<TKey>();
         }
 
-        public virtual MongoIdentityUser<TKey> SetId(TKey key)
-        {
-            Id = key;
-            return this;
-        }
-
+        /// <summary>
+        /// Sets the version of the schema for the <see cref="MongoIdentityUser{TKey}"/> document.
+        /// </summary>
+        /// <param name="version"></param>
+        /// <returns></returns>
         public virtual MongoIdentityUser<TKey> SetVersion(int version)
         {
             Version = 1;
             return this;
         }
 
-        public virtual void EnableTwoFactorAuthentication()
-        {
-            TwoFactorEnabled = true;
-        }
-
-        public virtual void DisableTwoFactorAuthentication()
-        {
-            TwoFactorEnabled = false;
-        }
-
-        public virtual void EnableLockout()
-        {
-            LockoutEnabled = true;
-        }
-
-        public virtual void DisableLockout()
-        {
-            LockoutEnabled = false;
-        }
-
-        public virtual void SetEmail(string email)
-        {
-            Email = email ?? throw new ArgumentNullException(nameof(email));
-        }
-
-        public virtual void SetNormalizedUserName(string normalizedUserName)
-        {
-            NormalizedUserName = normalizedUserName ?? throw new ArgumentNullException(nameof(normalizedUserName));
-        }
-
-        public virtual void SetPhoneNumber(string phoneNumber)
-        {
-            PhoneNumber = phoneNumber;
-        }
-
-        public virtual void SetPasswordHash(string passwordHash)
-        {
-            PasswordHash = passwordHash;
-        }
-
-        public virtual void SetSecurityStamp(string securityStamp)
-        {
-            SecurityStamp = securityStamp;
-        }
-
-        public virtual void SetAccessFailedCount(int accessFailedCount)
-        {
-            AccessFailedCount = accessFailedCount;
-        }
-
-        public virtual void ResetAccessFailedCount()
-        {
-            AccessFailedCount = 0;
-        }
-
-        public virtual void LockUntil(DateTime lockoutEndDate)
-        {
-            LockoutEndDate = lockoutEndDate;
-        }
-
-        public void Delete()
-        {
-            if (DeletedOn != null)
-            {
-                throw new InvalidOperationException($"User '{Id}' has already been deleted.");
-            }
-
-            DeletedOn = DateTime.UtcNow;
-        }
-
         #region Role Management
 
-        public virtual IdentityUserRole<TKey> GetUserRole(TKey roleId)
-        {
-            var foundRoleId = Roles.FirstOrDefault(e => e.Equals(roleId));
-            if (!foundRoleId.Equals(default(TKey)))
-            {
-                return new IdentityUserRole<TKey>
-                {
-                    UserId = Id,
-                    RoleId = foundRoleId
-                };
-            }
-            return default(IdentityUserRole<TKey>);
-        }
-
+        /// <summary>
+        /// Removes a role.
+        /// </summary>
+        /// <param name="roleId">The Id of the role you want to remove.</param>
+        /// <returns>True if the removal was successful.</returns>
         public virtual bool RemoveRole(TKey roleId)
         {
             var roleClaim = Roles.FirstOrDefault(e => e.Equals(roleId));
-            if (!roleClaim.Equals(default(TKey)))
+            if (roleClaim != null && !roleClaim.Equals(default(TKey)))
             {
                 Roles.Remove(roleId);
                 return true;
@@ -241,8 +165,18 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             return false;
         }
 
+
+        /// <summary>
+        /// Add a role to the user.
+        /// </summary>
+        /// <param name="roleId">The Id of the role you want to add.</param>
+        /// <returns>True if the addition was successful.</returns>
         public virtual bool AddRole(TKey roleId)
         {
+            if(roleId == null || roleId.Equals(default(TKey)))
+            {
+                throw new ArgumentNullException(nameof(roleId));
+            }
             if (!Roles.Contains(roleId))
             {
                 Roles.Add(roleId);
@@ -255,35 +189,60 @@ namespace AspNetCore.Identity.MongoDbCore.Models
 
         #region Login Management
 
-        public virtual bool AddLogin(UserLoginInfo mongoUserLogin)
+        /// <summary>
+        /// Adds a user login to the user.
+        /// </summary>
+        /// <param name="userLoginInfo">The <see cref="UserLoginInfo"/> you want to add.</param>
+        /// <returns>True if the addition was successful.</returns>
+        public virtual bool AddLogin(UserLoginInfo userLoginInfo)
         {
-            if (mongoUserLogin == null)
+            if (userLoginInfo == null)
             {
-                throw new ArgumentNullException(nameof(mongoUserLogin));
+                throw new ArgumentNullException(nameof(userLoginInfo));
             }
-            if (HasLogin(mongoUserLogin))
+            if (HasLogin(userLoginInfo))
             {
                 return false;
             }
-            Logins.Add(mongoUserLogin);
+            Logins.Add(userLoginInfo);
             return true;
         }
 
-        public virtual bool HasLogin(UserLoginInfo login)
+        /// <summary>
+        /// Checks if the user has the given <see cref="UserLoginInfo"/>.
+        /// </summary>
+        /// <param name="userLoginInfo">The <see cref="UserLoginInfo"/> we are looking for.</param>
+        /// <returns>True if the user has the given <see cref="UserLoginInfo"/>.</returns>
+        public virtual bool HasLogin(UserLoginInfo userLoginInfo)
         {
-            return Logins.Any(e => e.LoginProvider == login.LoginProvider && e.ProviderKey == e.ProviderKey);
+            return Logins.Any(e => e.LoginProvider == userLoginInfo.LoginProvider && e.ProviderKey == e.ProviderKey);
         }
 
-        public virtual void RemoveLogin(UserLoginInfo mongoUserLogin)
+        /// <summary>
+        /// Removes a <see cref="UserLoginInfo"/> from the user.
+        /// </summary>
+        /// <param name="userLoginInfo"></param>
+        public virtual bool RemoveLogin(UserLoginInfo userLoginInfo)
         {
-            if (mongoUserLogin == null)
+            if (userLoginInfo == null)
             {
-                throw new ArgumentNullException(nameof(mongoUserLogin));
+                throw new ArgumentNullException(nameof(userLoginInfo));
             }
-
-            Logins.Remove(mongoUserLogin);
+            var loginToremove = Logins.FirstOrDefault(e => e.LoginProvider == userLoginInfo.LoginProvider && e.ProviderKey == e.ProviderKey);
+            if (loginToremove != null)
+            {
+                Logins.Remove(loginToremove);
+                return true;
+            }
+            return false;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="loginProvider"></param>
+        /// <param name="providerKey"></param>
+        /// <returns></returns>
         public virtual IdentityUserLogin<TKey> GetUserLogin(string loginProvider, string providerKey)
         {
 
@@ -307,12 +266,11 @@ namespace AspNetCore.Identity.MongoDbCore.Models
 
 
         /// <summary>
-        /// Replaces a claim on a claim holder, implementing <see cref="IClaimHolder"/>.
+        /// Sets the token to a new value.
         /// </summary>
-        /// <param name="claimHolder">The object holding claims.</param>
-        /// <param name="claim">The claim you want to replace.</param>
-        /// <param name="newClaim">The new claim you want to set.</param>
-        /// <returns>Returns true if the claim was replaced.</returns>
+        /// <param name="tokenToset">The token you want to set you want to set.</param>
+        /// <param name="value">The value you want to set the token to.</param>
+        /// <returns>Returns true if the token was successfully set.</returns>
         public bool SetToken(IdentityUserToken<TKey> tokenToset, string value)
         {
             var token = Tokens.FirstOrDefault(e => e.LoginProvider == tokenToset.LoginProvider && e.Name == tokenToset.Name);
@@ -324,6 +282,12 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             return false;
         }
 
+        /// <summary>
+        /// Gets a token given the login provider and the name.
+        /// </summary>
+        /// <param name="loginProvider">The value for the login provider.</param>
+        /// <param name="name">The name of the token.</param>
+        /// <returns>An <see cref="IdentityUser{TKey}"/> if found, or null.</returns>
         public IdentityUserToken<TKey> GetToken(string loginProvider, string name)
         {
             var token = Tokens.FirstOrDefault(e => e.LoginProvider == loginProvider && e.Name == name);
@@ -340,6 +304,11 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             return default(IdentityUserToken<TKey>);
         }
 
+        /// <summary>
+        /// Checks if a user has the given token.
+        /// </summary>
+        /// <param name="token">The token you are looking for.</param>
+        /// <returns>True if the user has the given token</returns>
         public bool HasToken(IdentityUserToken<TKey> token)
         {
             return Tokens.Any(e => e.LoginProvider == token.LoginProvider
@@ -347,26 +316,12 @@ namespace AspNetCore.Identity.MongoDbCore.Models
                                 && e.Value == token.Value);
         }
 
-        public bool AddOrSet(IdentityUserToken<TKey> token)
-        {
-            var exists = GetToken(token.LoginProvider, token.Name);
-            if (exists != null && exists.Value != token.Value)
-            {
-                return SetToken(exists, token.Value);
-            }
-            if (exists == null)
-            {
-                Tokens.Add(new Token
-                {
-                    LoginProvider = token.LoginProvider,
-                    Name = token.Name,
-                    Value = token.Value
-                });
-                return true;
-            }
-            return false;
-        }
-
+        /// <summary>
+        /// Adds a token to the user.
+        /// </summary>
+        /// <typeparam name="TUserToken">The type of the token.</typeparam>
+        /// <param name="token">The token you want to add.</param>
+        /// <returns>True if the addition was successful.</returns>
         public bool AddUserToken<TUserToken>(TUserToken token) where TUserToken : IdentityUserToken<TKey>
         {
             if (HasToken(token))
@@ -383,9 +338,16 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             return true;
         }
 
+        /// <summary>
+        /// Removes a token from the user.
+        /// </summary>
+        /// <typeparam name="TUserToken">The type of the token.</typeparam>
+        /// <param name="token">The token you want to remove.</param>
+        /// <returns>True if the removal was successful.</returns>
         public bool RemoveUserToken<TUserToken>(TUserToken token) where TUserToken : IdentityUserToken<TKey>
         {
-            var exists = Tokens.FirstOrDefault(e => e.LoginProvider == token.LoginProvider && e.Name == token.Name);
+            var exists = Tokens.FirstOrDefault(e => e.LoginProvider == token.LoginProvider 
+                                                 && e.Name == token.Name);
             if (exists == null)
             {
                 return false;
@@ -396,7 +358,30 @@ namespace AspNetCore.Identity.MongoDbCore.Models
 
         #endregion Token Management
 
+        private void InitializeFields()
+        {
+            CreatedOn = DateTime.UtcNow;
+            Claims = new List<MongoClaim>();
+            Logins = new List<UserLoginInfo>();
+            Roles = new List<TKey>();
+            Tokens = new List<Token>();
+            Guid guidValue = Guid.NewGuid();
 
+            var idTypeName = typeof(TKey).Name;
+            switch (idTypeName)
+            {
+                case "Guid":
+                    Id = (TKey)(object)guidValue;
+                    break;
+                case "Int32":
+                    Id = (TKey)(object)GlobalVariables.Random.Next(1, int.MaxValue);
+                    break;
+                case "String":
+                    Id = (TKey)(object)guidValue.ToString();
+                    break;
+            }
+
+        }
 
     }
 }

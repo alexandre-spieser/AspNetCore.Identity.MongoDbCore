@@ -297,13 +297,15 @@ namespace AspNetCore.Identity.MongoDbCore
             return Task.FromResult(default(TUserLogin));
         }
 
-        /// <summary>
-        /// Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
-        /// </summary>
-        /// <param name="user">The user whose claims should be retrieved.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a user.</returns>
+#pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
+                              /// <summary>
+                              /// Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
+                              /// </summary>
+                              /// <param name="user">The user whose claims should be retrieved.</param>
+                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+                              /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a user.</returns>
         public async override Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+#pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
             ThrowIfDisposed();
             if (user == null)
@@ -435,15 +437,17 @@ namespace AspNetCore.Identity.MongoDbCore
             return Task.FromResult(false);
         }
 
-        /// <summary>
-        /// Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
-        /// </summary>
-        /// <param name="user">The user to remove the login from.</param>
-        /// <param name="loginProvider">The login to remove from the user.</param>
-        /// <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
+#pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
+                              /// <summary>
+                              /// Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
+                              /// </summary>
+                              /// <param name="user">The user to remove the login from.</param>
+                              /// <param name="loginProvider">The login to remove from the user.</param>
+                              /// <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+                              /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
         public override async Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey,
+#pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -459,15 +463,17 @@ namespace AspNetCore.Identity.MongoDbCore
             }
         }
 
-        /// <summary>
-        /// Retrieves the associated logins for the specified <param ref="user"/>.
-        /// </summary>
-        /// <param name="user">The user whose associated logins to retrieve.</param>
-        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-        /// <returns>
-        /// The <see cref="Task"/> for the asynchronous operation, containing a list of <see cref="UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
-        /// </returns>
+#pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
+                              /// <summary>
+                              /// Retrieves the associated logins for the specified <param ref="user"/>.
+                              /// </summary>
+                              /// <param name="user">The user whose associated logins to retrieve.</param>
+                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+                              /// <returns>
+                              /// The <see cref="Task"/> for the asynchronous operation, containing a list of <see cref="UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
+                              /// </returns>
         public async override Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
+#pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
             cancellationToken.ThrowIfCancellationRequested();
             ThrowIfDisposed();
