@@ -19,27 +19,27 @@ Here is an example:
 
 ```csharp
 
-	public class ApplicationUser : MongoIdentityUser<Guid>
+public class ApplicationUser : MongoIdentityUser<Guid>
+{
+	public ApplicationUser() : base()
 	{
-		public ApplicationUser() : base()
-		{
-		}
-
-		public ApplicationUser(string userName, string email) : base(userName, email)
-		{
-		}
 	}
-	
-	public class ApplicationRole : MongoIdentityRole<Guid>
-	{
-		public ApplicationRole() : base()
-		{
-		}
 
-		public ApplicationRole(string roleName) : base(roleName)
-		{
-		}
-	}	
+	public ApplicationUser(string userName, string email) : base(userName, email)
+	{
+	}
+}
+
+public class ApplicationRole : MongoIdentityRole<Guid>
+{
+	public ApplicationRole() : base()
+	{
+	}
+
+	public ApplicationRole(string roleName) : base(roleName)
+	{
+	}
+}	
 ```
 The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
 
