@@ -2,37 +2,18 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.Test;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 using AspNetCore.Identity.MongoDbCore.Models;
-using AspNetCore.Identity.MongoDbCore;
-using MongoDB.Driver;
 using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
-using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using MongoDbGenericRepository;
 using Microsoft.AspNetCore.Identity;
 
 namespace AspNetCore.Identity.MongoDbCore.Test
 {
-
-    public class ApplicationDbContext : MongoIdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext(string connectionString, string databaseName) : base(connectionString, databaseName)
-        {
-        }
-    }
-
-    public sealed class Applicationcontext
-    {
-        public static ApplicationDbContext Instance = new ApplicationDbContext(
-            Container.MongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
-            Container.MongoDbIdentityConfiguration.MongoDbSettings.DatabaseName);
-    }
-
     public class UserStoreTest : IdentitySpecificationTestBase<MongoDbIdentityUser, MongoDbIdentityRole>, IClassFixture<MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole, string>>
     {
         private readonly MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole,string> _fixture;
