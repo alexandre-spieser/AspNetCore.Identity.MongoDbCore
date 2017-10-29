@@ -43,90 +43,70 @@ Here is an example:
 ```
 The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
 
-The configuration is done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
+To add the stores, you can use the `IdentityBuilder` extension like so:
+
+```csharp
+services.AddIdentity<ApplicationUser, ApplicationRole>()
+		.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
+		(
+			"mongodb://localhost:27017",
+			"MongoDbTests"
+		)
+		.AddDefaultTokenProviders();
+```
+
+It is also possible to share a common `IMongoDbContext` across your services:
+
+```csharp
+var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
+services.AddIdentity<ApplicationUser, ApplicationRole>()
+		.AddMongoDbStores<IMongoDbContext>(mongoDbContext)
+		.AddDefaultTokenProviders();
+// Use the mongoDbContext for other things.
+```
+
+You can also use the more explicit type declaration:
+
+```csharp
+var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
+services.AddIdentity<ApplicationUser, ApplicationRole>()
+		.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
+		.AddDefaultTokenProviders();
+// Use the mongoDbContext for other things.
+```
+
+Alternatively a full configuration can be done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
 
 The `MongoDbSettings` object is used to set MongoDb Settings using the `ConnectionString` and the `DatabaseName` properties.
 
 The MongoDb connection is managed using the [mongodb-generic-repository](https://github.com/alexandre-spieser/mongodb-generic-repository), where a repository inheriting `IBaseMongoRepository` is registered as a singleton. Look at the [ServiceCollectionExtension.cs](https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore/blob/master/src/Extensions/ServiceCollectionExtension.cs) file for more details.
 
 ```csharp
-        /// <summary>
-        /// This method gets called by the runtime. Use this method to add services to the container.
-        /// </summary>
-        /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(_hostingEnvironment.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{_hostingEnvironment.EnvironmentName}.json", optional: true);
+var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
+{
+	MongoDbSettings = new MongoDbSettings
+	{
+		ConnectionString = "mongodb://localhost:27017",
+		DatabaseName = "MongoDbTests"
+	},
+	IdentityOptionsAction = options =>
+	{
+		options.Password.RequireDigit = false;
+		options.Password.RequiredLength = 8;
+		options.Password.RequireNonAlphanumeric = false;
+		options.Password.RequireUppercase = false;
+		options.Password.RequireLowercase = false;
 
+		// Lockout settings
+		options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+		options.Lockout.MaxFailedAccessAttempts = 10;
 
-            Configuration = builder.Build();
-
-            services.AddOptions();
-			
-            // add a global config object
-            services.AddSingleton(Configuration);
-	    // get the MongoDb settings from the Configuration object.
-            var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-            var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
-            {
-                MongoDbSettings = settings,
-                IdentityOptionsAction = options =>
-                {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequiredLength = 8;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequireLowercase = false;
-
-                    // Lockout settings
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                    options.Lockout.MaxFailedAccessAttempts = 10;
-
-                    // ApplicationUser settings
-                    options.User.RequireUniqueEmail = true;
-                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
-                }
-            };
-            services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
-        }
-```
-
-Alternatively you can use the `IdentityBuilder` extensions like so:
-
-```csharp
-                var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-                services.AddIdentity<ApplicationUser, ApplicationRole>()
-                        .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
-			(
-                            settings.ConnectionString,
-                            settings.DatabaseName
-			)
-                        .AddDefaultTokenProviders();
-```
-
-It is also possible to share a common `IMongoDbContext` across your services:
-
-```csharp
-	        var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-		var mongoDbContext = new MongoDbContext(settings.ConnectionString, settings.DatabaseName);
-                services.AddIdentity<ApplicationUser, ApplicationRole>()
-                        .AddMongoDbStores<IMongoDbContext>(mongoDbContext)
-                        .AddDefaultTokenProviders();
-		// Use the mongoDbContext for other things.
-```
-
-You can also use the more explicit type declaration:
-
-```csharp
-	        var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-		var mongoDbContext = new MongoDbContext(settings.ConnectionString, settings.DatabaseName);
-                services.AddIdentity<ApplicationUser, ApplicationRole>()
-                        .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
-                        .AddDefaultTokenProviders();
-		// Use the mongoDbContext for other things.
+		// ApplicationUser settings
+		options.User.RequireUniqueEmail = true;
+		options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
+	}
+};
+services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
 ```
 
 # Running the tests
