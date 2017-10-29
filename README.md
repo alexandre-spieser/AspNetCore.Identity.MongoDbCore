@@ -41,7 +41,7 @@ Here is an example:
 		}
 	}	
 ```
-The `Id` field is automatically set at instanciation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
+The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
 
 The configuration is done by populating a `MongoDbIdentityConfiguration` object, which can have an `IdentityOptionsAction` property set to an action you want to perform against the `IdentityOptions` (`Action<IdentityOptions>`).
 
@@ -93,6 +93,42 @@ The MongoDb connection is managed using the [mongodb-generic-repository](https:/
             services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
         }
 ```
+
+Alternatively you can use the `IdentityBuilder` extensions like so:
+
+```csharp
+                var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+                services.AddIdentity<ApplicationUser, ApplicationRole>()
+                        .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>
+			(
+                            settings.ConnectionString,
+                            settings.DatabaseName
+			)
+                        .AddDefaultTokenProviders();
+```
+
+It is also possible to share a common `IMongoDbContext` across your services:
+
+```csharp
+	        var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+		var mongoDbContext = new MongoDbContext(settings.ConnectionString, settings.DatabaseName);
+                services.AddIdentity<ApplicationUser, ApplicationRole>()
+                        .AddMongoDbStores<IMongoDbContext>(mongoDbContext)
+                        .AddDefaultTokenProviders();
+		// Use the mongoDbContext for other things.
+```
+
+You can also use the more explicit type declaration:
+
+```csharp
+	        var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+		var mongoDbContext = new MongoDbContext(settings.ConnectionString, settings.DatabaseName);
+                services.AddIdentity<ApplicationUser, ApplicationRole>()
+                        .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
+                        .AddDefaultTokenProviders();
+		// Use the mongoDbContext for other things.
+```
+
 # Running the tests
 
 To run the tests, you need a local MongoDb server in default configuration (listening to `localhost:27017`).
