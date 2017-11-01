@@ -41,7 +41,7 @@ public class ApplicationRole : MongoIdentityRole<Guid>
 	}
 }	
 ```
-The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser` is recommended.
+The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser`, which both use the `Guid` type for primary keys, is recommended.
 
 To add the stores, you can use the `IdentityBuilder` extension like so:
 
