@@ -55,22 +55,22 @@ services.AddIdentity<ApplicationUser, ApplicationRole>()
 	.AddDefaultTokenProviders();
 ```
 
-It is also possible to share a common `IMongoDbContext` across your services:
-
-```csharp
-var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
-services.AddIdentity<ApplicationUser, ApplicationRole>()
-	.AddMongoDbStores<IMongoDbContext>(mongoDbContext)
-	.AddDefaultTokenProviders();
-// Use the mongoDbContext for other things.
-```
-
 You can also use the more explicit type declaration:
 
 ```csharp
 var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
 services.AddIdentity<ApplicationUser, ApplicationRole>()
 	.AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbContext)
+	.AddDefaultTokenProviders();
+// Use the mongoDbContext for other things.
+```
+
+It is also possible to share a common `IMongoDbContext` across your services (requires https://www.nuget.org/packages/MongoDbGenericRepository/):
+
+```csharp
+var mongoDbContext = new MongoDbContext("mongodb://localhost:27017", "MongoDbTests");
+services.AddIdentity<ApplicationUser, ApplicationRole>()
+	.AddMongoDbStores<IMongoDbContext>(mongoDbContext)
 	.AddDefaultTokenProviders();
 // Use the mongoDbContext for other things.
 ```
