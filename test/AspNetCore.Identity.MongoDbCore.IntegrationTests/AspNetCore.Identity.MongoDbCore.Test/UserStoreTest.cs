@@ -16,9 +16,9 @@ namespace AspNetCore.Identity.MongoDbCore.Test
 {
     public class UserStoreTest : IdentitySpecificationTestBase<MongoDbIdentityUser, MongoDbIdentityRole>, IClassFixture<MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole, string>>
     {
-        private readonly MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole,string> _fixture;
+        private readonly MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole, string> _fixture;
 
-        public UserStoreTest(MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole,string> fixture)
+        public UserStoreTest(MongoDatabaseFixture<MongoDbIdentityUser, MongoDbIdentityRole, string> fixture)
         {
             _fixture = fixture;
         }
@@ -46,6 +46,39 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         protected override void AddRoleStore(IServiceCollection services, object context = null)
         {
             services.AddSingleton<IRoleStore<MongoDbIdentityRole>>(new MongoRoleStore<MongoDbIdentityRole, IMongoDbContext>(Container.MongoRepository.Context));
+        }
+
+        [Fact]
+        public async Task SqlUserStoreMethodsThrowWhenDisposedTest()
+        {
+            var store = new MongoUserStore(Container.MongoRepository.Context);
+            store.Dispose();
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddClaimsAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddLoginAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddToRoleAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetClaimsAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetLoginsAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetRolesAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.IsInRoleAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveLoginAsync(null, null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(
+                async () => await store.RemoveFromRoleAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.ReplaceClaimAsync(null, null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByLoginAsync(null, null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByIdAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByNameAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.CreateAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.UpdateAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.DeleteAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(
+                async () => await store.SetEmailConfirmedAsync(null, true));
+            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetEmailConfirmedAsync(null));
+            await Assert.ThrowsAsync<ObjectDisposedException>(
+                async () => await store.SetPhoneNumberConfirmedAsync(null, true));
+            await Assert.ThrowsAsync<ObjectDisposedException>(
+                async () => await store.GetPhoneNumberConfirmedAsync(null));
         }
 
         [Fact]
