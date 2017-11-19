@@ -171,7 +171,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IdentityResult> CreateAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -190,7 +190,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IdentityResult> UpdateAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -217,7 +217,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IdentityResult> DeleteAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -249,7 +249,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task<TUser> FindByIdAsync(string userId, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             var id = ConvertIdFromString(userId);
             return MongoRepository.GetByIdAsync<TUser, TKey>(id);
         }
@@ -265,7 +265,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task<TUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             return MongoRepository.GetOneAsync<TUser, TKey>(u => u.NormalizedUserName == normalizedUserName);
         }
 
@@ -367,7 +367,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task AddToRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -403,7 +403,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task RemoveFromRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -429,7 +429,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task<IList<string>> GetRolesAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -452,7 +452,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task<bool> IsInRoleAsync(TUser user, string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -479,7 +479,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
 #pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -496,7 +496,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
         public override Task AddClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -534,7 +534,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
         public async override Task ReplaceClaimAsync(TUser user, Claim claim, Claim newClaim, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -563,7 +563,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
         public async override Task RemoveClaimsAsync(TUser user, IEnumerable<Claim> claims, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -589,7 +589,7 @@ namespace AspNetCore.Identity.MongoDbCore
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
@@ -623,7 +623,7 @@ namespace AspNetCore.Identity.MongoDbCore
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -648,7 +648,7 @@ namespace AspNetCore.Identity.MongoDbCore
 #pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -669,7 +669,7 @@ namespace AspNetCore.Identity.MongoDbCore
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             var userLogin = await FindUserLoginAsync(loginProvider, providerKey, cancellationToken);
             if (userLogin != null)
             {
@@ -689,7 +689,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task<TUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             return MongoRepository.GetOneAsync<TUser, TKey>(u => u.NormalizedEmail == normalizedEmail);
         }
 
@@ -704,7 +704,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IList<TUser>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (claim == null)
             {
                 throw new ArgumentNullException(nameof(claim));
@@ -728,7 +728,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public async override Task<IList<TUser>> GetUsersInRoleAsync(string normalizedRoleName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (string.IsNullOrEmpty(normalizedRoleName))
             {
                 throw new ArgumentNullException(nameof(normalizedRoleName));
@@ -808,7 +808,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetUserNameAsync(TUser user, string userName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -832,7 +832,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetNormalizedUserNameAsync(TUser user, string normalizedName, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -856,7 +856,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetPasswordHashAsync(TUser user, string passwordHash, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -880,7 +880,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetEmailConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -903,7 +903,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetEmailAsync(TUser user, string email, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -927,7 +927,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetNormalizedEmailAsync(TUser user, string normalizedEmail, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -952,7 +952,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetLockoutEndDateAsync(TUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -975,7 +975,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task<int> IncrementAccessFailedCountAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -995,7 +995,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task ResetAccessFailedCountAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1019,7 +1019,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetLockoutEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1043,7 +1043,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetPhoneNumberAsync(TUser user, string phoneNumber, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1066,7 +1066,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetPhoneNumberConfirmedAsync(TUser user, bool confirmed, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1091,7 +1091,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetSecurityStampAsync(TUser user, string stamp, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1120,7 +1120,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override Task SetTwoFactorEnabledAsync(TUser user, bool enabled, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
@@ -1145,7 +1145,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task SetTokenAsync(TUser user, string loginProvider, string name, string value, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
@@ -1181,7 +1181,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task RemoveTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
@@ -1208,7 +1208,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task<string> GetTokenAsync(TUser user, string loginProvider, string name, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
@@ -1250,7 +1250,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task<int> CountCodesAsync(TUser user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
@@ -1288,7 +1288,7 @@ namespace AspNetCore.Identity.MongoDbCore
         public override async Task<bool> RedeemCodeAsync(TUser user, string code, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            //ThrowIfDisposed();
+            ThrowIfDisposed();
 
             if (user == null)
             {
