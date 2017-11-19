@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.</description>
-    <releaseNotes>Added .AddMongoDbStores IdentityBuilder extensions.</releaseNotes>
+    <releaseNotes>Changed the MongoUserStore and MongoRoleStore DI registration to instance per scope (previously was singleton) to avoid ObjectDisposedException in MVC controller.</releaseNotes>
     <copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>aspnetcore mongo mongodb identity membership</tags>
 	<dependencies>
