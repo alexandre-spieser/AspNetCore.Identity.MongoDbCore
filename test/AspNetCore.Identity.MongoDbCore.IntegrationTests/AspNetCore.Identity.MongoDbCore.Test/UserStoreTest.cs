@@ -49,39 +49,6 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         }
 
         [Fact]
-        public async Task SqlUserStoreMethodsThrowWhenDisposedTest()
-        {
-            var store = new MongoUserStore(Container.MongoRepository.Context);
-            store.Dispose();
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddLoginAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.AddToRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetClaimsAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetLoginsAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetRolesAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.IsInRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveLoginAsync(null, null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.RemoveFromRoleAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.RemoveClaimsAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.ReplaceClaimAsync(null, null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByLoginAsync(null, null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByIdAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.FindByNameAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.CreateAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.UpdateAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.DeleteAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.SetEmailConfirmedAsync(null, true));
-            await Assert.ThrowsAsync<ObjectDisposedException>(async () => await store.GetEmailConfirmedAsync(null));
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.SetPhoneNumberConfirmedAsync(null, true));
-            await Assert.ThrowsAsync<ObjectDisposedException>(
-                async () => await store.GetPhoneNumberConfirmedAsync(null));
-        }
-
-        [Fact]
         public async Task UserStorePublicNullCheckTest()
         {
             Assert.Throws<ArgumentNullException>("context", () => new MongoUserStore(null));

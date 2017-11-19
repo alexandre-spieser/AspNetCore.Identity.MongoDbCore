@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Identity.MongoDb
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{EE14D20F-C6E9-4A4C-A13E-C1A90BCA8763}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoIdentitySample.Mvc", "sample\MongoIdentitySample.Mvc\MongoIdentitySample.Mvc.csproj", "{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FA1D3288-90E8-4831-B533-A2B3D4F034B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA1D3288-90E8-4831-B533-A2B3D4F034B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA1D3288-90E8-4831-B533-A2B3D4F034B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C2EB6500-79A2-410E-8BF7-ACACE86C7A0E} = {059DB57E-6EC2-4F6D-BE0F-343B00976DA9}
 		{FA1D3288-90E8-4831-B533-A2B3D4F034B1} = {7819C5A0-617F-488D-9791-2C4859B9BF19}
+		{B0F2EB41-D3DC-4A5B-A479-A1D2595CE620} = {EE14D20F-C6E9-4A4C-A13E-C1A90BCA8763}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B6A5D462-4085-442D-9E31-DD2CAD280D3C}

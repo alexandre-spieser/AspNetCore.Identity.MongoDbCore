@@ -705,7 +705,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.False(checkResult.Succeeded);
-            Assert.True(logStore.ToString().Contains($"User {user.Id} failed to provide the correct password."));
+            Assert.Contains($"User {user.Id} failed to provide the correct password.", logStore.ToString());
             manager.Verify();
             context.Verify();
         }

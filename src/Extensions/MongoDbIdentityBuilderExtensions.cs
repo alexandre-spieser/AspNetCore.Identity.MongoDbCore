@@ -91,12 +91,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.TryAddSingleton<IMongoDbContext>(mongoDbContext);
             builder.Services.TryAddSingleton<IMongoRepository>(new MongoRepository(mongoDbContext));
-            builder.Services.TryAddScoped<IUserStore<TUser>>(provider =>
+            builder.Services.TryAddSingleton<IUserStore<TUser>>(provider =>
             {
                 return new MongoUserStore<TUser, TRole, IMongoDbContext, TKey>(provider.GetService<IMongoDbContext>());
             });
 
-            builder.Services.TryAddScoped<IRoleStore<TRole>>(provider =>
+            builder.Services.TryAddSingleton<IRoleStore<TRole>>(provider =>
             {
                 return new MongoRoleStore<TRole, IMongoDbContext, TKey>(provider.GetService<IMongoDbContext>());
             });
