@@ -1311,12 +1311,5 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
         #endregion
-
-        /// <summary>
-        /// Prevent the 
-        /// </summary>
-        public new void Dispose()
-        {
-        }
     }
 }

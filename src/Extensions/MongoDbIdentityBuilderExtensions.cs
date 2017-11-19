@@ -91,12 +91,12 @@ namespace Microsoft.Extensions.DependencyInjection
 
             builder.Services.TryAddSingleton<IMongoDbContext>(mongoDbContext);
             builder.Services.TryAddSingleton<IMongoRepository>(new MongoRepository(mongoDbContext));
-            builder.Services.TryAddSingleton<IUserStore<TUser>>(provider =>
+            builder.Services.TryAddScoped<IUserStore<TUser>>(provider =>
             {
                 return new MongoUserStore<TUser, TRole, IMongoDbContext, TKey>(provider.GetService<IMongoDbContext>());
             });
 
-            builder.Services.TryAddSingleton<IRoleStore<TRole>>(provider =>
+            builder.Services.TryAddScoped<IRoleStore<TRole>>(provider =>
             {
                 return new MongoRoleStore<TRole, IMongoDbContext, TKey>(provider.GetService<IMongoDbContext>());
             });
@@ -128,15 +128,15 @@ namespace Microsoft.Extensions.DependencyInjection
                 userStoreType = typeof(MongoUserStore<,,,>).MakeGenericType(userType, roleType, contextType, keyType);
                 roleStoreType = typeof(MongoRoleStore<,,>).MakeGenericType(roleType, contextType, keyType);
 
-                services.TryAddSingleton(typeof(IUserStore<>).MakeGenericType(userType), userStoreType);
-                services.TryAddSingleton(typeof(IRoleStore<>).MakeGenericType(roleType), roleStoreType);
+                services.TryAddScoped(typeof(IUserStore<>).MakeGenericType(userType), userStoreType);
+                services.TryAddScoped(typeof(IRoleStore<>).MakeGenericType(roleType), roleStoreType);
             }
             else
             {   // No Roles
                 Type userStoreType = null;
                 // If its a custom DbContext, we can only add the default POCOs
                 userStoreType = typeof(MongoUserStore<,,,>).MakeGenericType(userType, roleType, contextType, keyType);
-                services.TryAddSingleton(typeof(IUserStore<>).MakeGenericType(userType), userStoreType);
+                services.TryAddScoped(typeof(IUserStore<>).MakeGenericType(userType), userStoreType);
             }
 
         }
