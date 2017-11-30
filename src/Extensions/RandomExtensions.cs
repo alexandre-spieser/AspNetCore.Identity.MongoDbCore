@@ -2,7 +2,7 @@
 
 namespace AspNetCore.Identity.MongoDbCore.Extensions
 {
-    // Thanks BlueRaja - Danny Pflughoeft https://stackoverflow.com/a/6651656/5103354
+    // Thanks BlueRaja - Danny Pflughoeft https://stackoverflow.com/a/13095144/5103354
     /// <summary>
     /// Extensions for the random number generator <see cref="Random"/>
     /// </summary>
