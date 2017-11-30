@@ -1,4 +1,5 @@
-﻿using AspNetCore.Identity.MongoDbCore.Interfaces;
+﻿using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using MongoDbGenericRepository.Models;
 using System;
@@ -67,8 +68,14 @@ namespace AspNetCore.Identity.MongoDbCore.Models
                 case "Guid":
                     Id = (TKey)(object)guidValue;
                     break;
+                case "Int16":
+                    Id = (TKey)(object)GlobalVariables.Random.Next(1, short.MaxValue);
+                    break;
                 case "Int32":
                     Id = (TKey)(object)GlobalVariables.Random.Next(1, int.MaxValue);
+                    break;
+                case "Int64":
+                    Id = (TKey)(object)(GlobalVariables.Random.NextLong(1, long.MaxValue));
                     break;
                 case "String":
                     Id = (TKey)(object)guidValue.ToString();
