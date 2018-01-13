@@ -205,7 +205,8 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             {
                 return false;
             }
-            Logins.Add(userLoginInfo);
+            
+            Logins.Add(new UserLoginInfo(userLoginInfo.LoginProvider, userLoginInfo.ProviderKey, userLoginInfo.ProviderDisplayName));
             return true;
         }
 
