@@ -118,13 +118,6 @@ Create a database named MongoDbTests for the tests to run.
 ## Author
 **Alexandre Spieser**
 
-## Donations
-Feeling like my work is worth a coffee? 
-Donations are welcome and will go towards further development of this project as well as other MongoDb related projects. Use the wallet address below to donate.
-BTC Donations: 1FDMWqSK8SHXDGKKp7gyZc4rknynWJ7qbj
-
-*Thank you for your support and generosity!*
-
 ## License
 AspNetCore.Identity.MongoDbCore is under MIT license - http://www.opensource.org/licenses/mit-license.php
 
