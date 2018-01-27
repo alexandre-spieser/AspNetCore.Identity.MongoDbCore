@@ -27,7 +27,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             => false;
 
         [Fact]
-        public void CanCreateUserUsingEF()
+        public void CanCreateUserUsingMongoDB()
         {
             var user = CreateTestUser();
             user.Id = Guid.NewGuid().ToString();

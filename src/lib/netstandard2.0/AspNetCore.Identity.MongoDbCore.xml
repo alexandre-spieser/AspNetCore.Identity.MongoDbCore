@@ -64,6 +64,33 @@
             <param name="claims">The <see cref="T:System.Security.Claims.Claim"/>s to remove.</param>
             <returns>True is the claims were successfully removed.</returns>
         </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions">
+            <summary>
+            Extensions for the random number generator <see cref="T:System.Random"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random,System.Int64,System.Int64)">
+            <summary>
+            Returns a random long from min (inclusive) to max (exclusive)
+            </summary>
+            <param name="random">The given random instance</param>
+            <param name="min">The inclusive minimum bound</param>
+            <param name="max">The exclusive maximum bound.  Must be greater than min</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random,System.Int64)">
+            <summary>
+            Returns a random long from 0 (inclusive) to max (exclusive)
+            </summary>
+            <param name="random">The given random instance</param>
+            <param name="max">The exclusive maximum bound.  Must be greater than 0</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random)">
+            <summary>
+            Returns a random long over all possible values of long (except long.MaxValue, similar to
+            random.Next())
+            </summary>
+            <param name="random">The given random instance</param>
+        </member>
         <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension">
             <summary>
             Contains extension methods to <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for adding mongoDb Identity.

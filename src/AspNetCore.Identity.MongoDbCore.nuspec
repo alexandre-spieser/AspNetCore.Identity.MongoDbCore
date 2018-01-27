@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AspNetCore.Identity.MongoDbCore</id>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <title>AspNetCore.Identity.MongoDbCore</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -10,14 +10,14 @@
     <projectUrl>https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.</description>
-    <releaseNotes>Changed the MongoUserStore and MongoRoleStore DI registration to instance per scope (previously was singleton) to avoid ObjectDisposedException in MVC controller.</releaseNotes>
+    <releaseNotes>MongoDB 3.6 Support, Identity 2.0.1 upgrade.</releaseNotes>
     <copyright>Copyright 2017 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>aspnetcore mongo mongodb identity membership</tags>
 	<dependencies>
-		<dependency id="Microsoft.AspNetCore.Identity" version="2.0.0" />
-		<dependency id="Microsoft.Extensions.Identity.Stores" version="2.0.0" />
-		<dependency id="MongoDB.Driver" version="2.4.4" />
-		<dependency id="MongoDbGenericRepository" version="1.3.0" />
+		<dependency id="Microsoft.AspNetCore.Identity" version="2.0.1" />
+		<dependency id="Microsoft.Extensions.Identity.Stores" version="2.0.1" />
+		<dependency id="MongoDB.Driver" version="2.5.0" />
+		<dependency id="MongoDbGenericRepository" version="1.3.4" />
 	</dependencies>
   </metadata>
   <files>
