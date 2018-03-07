@@ -130,6 +130,19 @@
             <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
             <param name="mongoDbContext">An object representing a MongoDb connection.</param>
         </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.StringExtensions">
+            <summary>
+            A set of extensions for string.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.StringExtensions.ToTKey``1(System.String)">
+            <summary>
+            Converts the provided <paramref name="id"/> to a strongly typed key object.        
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
         <member name="T:AspNetCore.Identity.MongoDbCore.GlobalVariables">
             <summary>
             A class holding global variables.
@@ -308,6 +321,11 @@
             </summary>
             <param name="roleName">The name of the role.</param>
         </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.InitializeFields">
+            <summary>
+            Initialize the field of the MongoIdentityRole
+            </summary>
+        </member>
         <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.#ctor(System.String,`0)">
             <summary>
             The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/>, taking a role name and a primary key value.
@@ -424,6 +442,11 @@
             The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/>, taking a username.
             </summary>
             <param name="userName">The name of the user.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.InitializeFields">
+            <summary>
+            Initialize the field of the MongoIdentityUser
+            </summary>
         </member>
         <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.SetVersion(System.Int32)">
             <summary>
@@ -597,6 +620,16 @@
             Gets the database context for this store.
             </summary>
         </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.Roles">
+            <summary>
+            A navigation property for the roles the store contains.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.RolesCollection">
+            <summary>
+            A navigation property for the roles the store contains.
+            </summary>
+        </member>
         <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.ErrorDescriber">
             <summary>
             Gets or sets the <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/> for any error that occurred with the current operation.
@@ -741,11 +774,6 @@
             <param name="claim">The claim to remove from the role.</param>
             <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
             <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
-        </member>
-        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.Roles">
-            <summary>
-            A navigation property for the roles the store contains.
-            </summary>
         </member>
         <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.CreateRoleClaim(`0,System.Security.Claims.Claim)">
             <summary>
@@ -1359,6 +1387,13 @@
             <returns>
             The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="userId"/> if it exists.
             </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.ConvertIdFromString(System.String)">
+            <summary>
+            Converts the provided <paramref name="id"/> to a strongly typed key object.
+            </summary>
+            <param name="id">The id to convert.</param>
+            <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>
         </member>
         <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindByNameAsync(System.String,System.Threading.CancellationToken)">
             <summary>

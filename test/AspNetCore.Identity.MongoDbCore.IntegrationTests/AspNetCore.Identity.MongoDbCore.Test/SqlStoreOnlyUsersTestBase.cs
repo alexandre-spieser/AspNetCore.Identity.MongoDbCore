@@ -87,7 +87,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
 
         private IQueryable<TUser> GetQueryable()
         {
-            return Container.MongoRepository.Context.GetCollection<TUser>().AsQueryable();
+            return Container.MongoRepository.Context.GetCollection<TUser, TKey>().AsQueryable();
         }
 
         [Fact]

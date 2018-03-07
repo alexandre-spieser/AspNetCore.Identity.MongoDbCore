@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using AspNetCore.Identity.MongoDbCore.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using AspNetCore.Identity.MongoDbCore.Extensions;
+using MongoDbGenericRepository.Utils;
 
 namespace AspNetCore.Identity.MongoDbCore.Models
 {
@@ -134,7 +135,19 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             UserName = userName ?? throw new ArgumentNullException(nameof(userName));
             SetVersion(1);
             InitializeFields();
+        }
+
+        /// <summary>
+        /// Initialize the field of the MongoIdentityUser
+        /// </summary>
+        protected virtual void InitializeFields()
+        {
+            CreatedOn = DateTime.UtcNow;
+            Claims = new List<MongoClaim>();
+            Logins = new List<UserLoginInfo>();
             Roles = new List<TKey>();
+            Tokens = new List<Token>();
+            Id = IdGenerator.GetId<TKey>();
         }
 
         /// <summary>
@@ -165,7 +178,6 @@ namespace AspNetCore.Identity.MongoDbCore.Models
             }
             return false;
         }
-
 
         /// <summary>
         /// Add a role to the user.
@@ -266,7 +278,6 @@ namespace AspNetCore.Identity.MongoDbCore.Models
 
         #region Token Management
 
-
         /// <summary>
         /// Sets the token to a new value.
         /// </summary>
@@ -359,37 +370,6 @@ namespace AspNetCore.Identity.MongoDbCore.Models
         }
 
         #endregion Token Management
-
-        private void InitializeFields()
-        {
-            CreatedOn = DateTime.UtcNow;
-            Claims = new List<MongoClaim>();
-            Logins = new List<UserLoginInfo>();
-            Roles = new List<TKey>();
-            Tokens = new List<Token>();
-            Guid guidValue = Guid.NewGuid();
-
-            var idTypeName = typeof(TKey).Name;
-            switch (idTypeName)
-            {
-                case "Guid":
-                    Id = (TKey)(object)guidValue;
-                    break;
-                case "Int16":
-                    Id = (TKey)(object)GlobalVariables.Random.Next(1, short.MaxValue);
-                    break;
-                case "Int32":
-                    Id = (TKey)(object)GlobalVariables.Random.Next(1, int.MaxValue);
-                    break;
-                case "Int64":
-                    Id = (TKey)(object)(GlobalVariables.Random.NextLong(1, long.MaxValue));
-                    break;
-                case "String":
-                    Id = (TKey)(object)guidValue.ToString();
-                    break;
-            }
-
-        }
 
     }
 }

@@ -31,7 +31,7 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             var userIds = UsersToDelete.ToList().Select(e => e.Id);
             if (userIds.Any())
             {
-                Context.GetCollection<TUser>().DeleteMany(e => userIds.Contains(e.Id));
+                Context.GetCollection<TUser, TKey>().DeleteMany(e => userIds.Contains(e.Id));
             }
         }
     }
@@ -57,12 +57,12 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             var userIds = UsersToDelete.ToList().Select(e => e.Id);
             if (userIds.Any())
             {
-                Context.GetCollection<TUser>().DeleteMany(e => userIds.Contains(e.Id));
+                Context.GetCollection<TUser, TKey>().DeleteMany(e => userIds.Contains(e.Id));
             }
             var roleIds = RolesToDelete.ToList().Select(e => e.Id);
             if (roleIds.Any())
             {
-                Context.GetCollection<TRole>().DeleteMany(e => roleIds.Contains(e.Id));
+                Context.GetCollection<TRole, TKey>().DeleteMany(e => roleIds.Contains(e.Id));
             }
         }
     }

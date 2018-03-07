@@ -14,6 +14,8 @@ using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Models;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
+using MongoDB.Bson;
 
 namespace AspNetCore.Identity.MongoDbCore
 {
@@ -130,21 +132,29 @@ namespace AspNetCore.Identity.MongoDbCore
         /// </summary>
         private static TContext Context { get; set; }
 
+        private static object MongoRepositoryInitializationLock = new object();
         private static IMongoRepository _mongoRepository;
         private static IMongoRepository MongoRepository
         {
             get
             {
+                // double checked locking to prevent race to initialize the repository in multithreaded environment.
                 if (_mongoRepository == null)
                 {
-                    _mongoRepository = new MongoRepository(Context);
+                    lock (MongoRepositoryInitializationLock)
+                    {
+                        if (_mongoRepository == null)
+                        {
+                            _mongoRepository = new MongoRepository(Context);
+                        }
+                    }
                 }
                 return _mongoRepository;
             }
         }
 
-        private IMongoCollection<TUser> UsersSet { get { return Context.GetCollection<TUser>(); } }
-        private IMongoCollection<TRole> Roles { get { return Context.GetCollection<TRole>(); } }
+        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser, TKey>(); } }
+        private IMongoCollection<TRole> RolesCollection { get { return Context.GetCollection<TRole, TKey>(); } }
 
         /// <summary>
         /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
@@ -176,7 +186,7 @@ namespace AspNetCore.Identity.MongoDbCore
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            await UsersSet.InsertOneAsync(user);
+            await UsersCollection.InsertOneAsync(user);
             await SaveChanges(cancellationToken);
             return IdentityResult.Success;
         }
@@ -197,11 +207,11 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var oldStamp = user.ConcurrencyStamp;
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(user.Id) 
-                                                               && x.ConcurrencyStamp.Equals(oldStamp), 
+            var collection = MongoRepository.Context.GetCollection<TUser, TKey>();
+            var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(user.Id)
+                                                               && x.ConcurrencyStamp.Equals(oldStamp),
                                                              user);
-            if(updateRes.ModifiedCount == 0)
+            if (updateRes.ModifiedCount == 0)
             {
                 return IdentityResult.Failed(ErrorDescriber.ConcurrencyFailure());
             }
@@ -228,8 +238,7 @@ namespace AspNetCore.Identity.MongoDbCore
             user.Tokens.Clear();
             var oldStamp = user.ConcurrencyStamp;
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var deleteRes = await collection.DeleteOneAsync(x => x.Id.Equals(user.Id)
+            var deleteRes = await UsersCollection.DeleteOneAsync(x => x.Id.Equals(user.Id)
                                                               && x.ConcurrencyStamp.Equals(oldStamp));
             if (deleteRes.DeletedCount == 0)
             {
@@ -255,6 +264,16 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
         /// <summary>
+        /// Converts the provided <paramref name="id"/> to a strongly typed key object.
+        /// </summary>
+        /// <param name="id">The id to convert.</param>
+        /// <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>
+        public override TKey ConvertIdFromString(string id)
+        {
+            return id.ToTKey<TKey>();
+        }
+
+        /// <summary>
         /// Finds and returns a user, if any, who has the specified normalized user name.
         /// </summary>
         /// <param name="normalizedUserName">The normalized user name to search for.</param>
@@ -274,7 +293,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// </summary>
         public override IQueryable<TUser> Users
         {
-            get { return UsersSet.AsQueryable(); }
+            get { return UsersCollection.AsQueryable(); }
         }
 
         /// <summary>
@@ -470,12 +489,12 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
 #pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
-                              /// <summary>
-                              /// Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
-                              /// </summary>
-                              /// <param name="user">The user whose claims should be retrieved.</param>
-                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-                              /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a user.</returns>
+        /// <summary>
+        /// Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
+        /// </summary>
+        /// <param name="user">The user whose claims should be retrieved.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>A <see cref="Task{TResult}"/> that contains the claims granted to a user.</returns>
         public async override Task<IList<Claim>> GetClaimsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
 #pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
@@ -610,14 +629,14 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
 #pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
-                              /// <summary>
-                              /// Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
-                              /// </summary>
-                              /// <param name="user">The user to remove the login from.</param>
-                              /// <param name="loginProvider">The login to remove from the user.</param>
-                              /// <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
-                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-                              /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
+        /// <summary>
+        /// Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
+        /// </summary>
+        /// <param name="user">The user to remove the login from.</param>
+        /// <param name="loginProvider">The login to remove from the user.</param>
+        /// <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>The <see cref="Task"/> that represents the asynchronous operation.</returns>
         public override async Task RemoveLoginAsync(TUser user, string loginProvider, string providerKey,
 #pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
             CancellationToken cancellationToken = default(CancellationToken))
@@ -636,14 +655,14 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
 #pragma warning disable CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
-                              /// <summary>
-                              /// Retrieves the associated logins for the specified <param ref="user"/>.
-                              /// </summary>
-                              /// <param name="user">The user whose associated logins to retrieve.</param>
-                              /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
-                              /// <returns>
-                              /// The <see cref="Task"/> for the asynchronous operation, containing a list of <see cref="UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
-                              /// </returns>
+        /// <summary>
+        /// Retrieves the associated logins for the specified <param ref="user"/>.
+        /// </summary>
+        /// <param name="user">The user whose associated logins to retrieve.</param>
+        /// <param name="cancellationToken">The <see cref="CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+        /// <returns>
+        /// The <see cref="Task"/> for the asynchronous operation, containing a list of <see cref="UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
+        /// </returns>
         public async override Task<IList<UserLoginInfo>> GetLoginsAsync(TUser user, CancellationToken cancellationToken = default(CancellationToken))
 #pragma warning restore CS1998 // Cette méthode async n'a pas d'opérateur 'await' et elle s'exécutera de façon synchrone
         {
@@ -711,8 +730,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var filter = Builders<TUser>.Filter.ElemMatch(x => x.Claims, userClaims => userClaims.Value.Equals(claim.Value)
                                                                                     && userClaims.Type.Equals(claim.Type));
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var cursor = collection.Find(filter);
+            var cursor = UsersCollection.Find(filter);
             var res = await cursor.ToListAsync();
             return res;
         }

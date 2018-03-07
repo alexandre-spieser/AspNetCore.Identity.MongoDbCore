@@ -118,7 +118,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
         }
 
-        private IMongoCollection<TUser> UsersSet { get { return Context.GetCollection<TUser>(); } }
+        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser, TKey>(); } }
 
         /// <summary>
         /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
@@ -150,7 +150,7 @@ namespace AspNetCore.Identity.MongoDbCore
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            await UsersSet.InsertOneAsync(user);
+            await UsersCollection.InsertOneAsync(user);
             await SaveChanges(cancellationToken);
             return IdentityResult.Success;
         }
@@ -171,8 +171,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var oldStamp = user.ConcurrencyStamp;
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(user.Id) 
+            var updateRes = await UsersCollection.ReplaceOneAsync(x => x.Id.Equals(user.Id) 
                                                                && x.ConcurrencyStamp.Equals(oldStamp), 
                                                              user);
             if(updateRes.ModifiedCount == 0)
@@ -202,8 +201,7 @@ namespace AspNetCore.Identity.MongoDbCore
             user.Tokens.Clear();
             var oldStamp = user.ConcurrencyStamp;
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var deleteRes = await collection.DeleteOneAsync(x => x.Id.Equals(user.Id)
+            var deleteRes = await UsersCollection.DeleteOneAsync(x => x.Id.Equals(user.Id)
                                                               && x.ConcurrencyStamp.Equals(oldStamp));
             if (deleteRes.DeletedCount == 0)
             {
@@ -248,7 +246,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// </summary>
         public override IQueryable<TUser> Users
         {
-            get { return UsersSet.AsQueryable(); }
+            get { return UsersCollection.AsQueryable(); }
         }
 
         /// <summary>
@@ -539,8 +537,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var filter = Builders<TUser>.Filter.ElemMatch(x => x.Claims, userClaims => userClaims.Value.Equals(claim.Value)
                                                                                     && userClaims.Type.Equals(claim.Type));
-            var collection = MongoRepository.Context.GetCollection<TUser>();
-            var cursor = collection.Find(filter);
+            var cursor = UsersCollection.Find(filter);
             var res = await cursor.ToListAsync();
             return res;
         }

@@ -124,6 +124,16 @@ namespace AspNetCore.Identity.MongoDbCore
         }
 
         /// <summary>
+        /// A navigation property for the roles the store contains.
+        /// </summary>
+        public virtual IQueryable<TRole> Roles => RolesCollection.AsQueryable();
+
+        /// <summary>
+        /// A navigation property for the roles the store contains.
+        /// </summary>
+        public virtual IMongoCollection<TRole> RolesCollection => Context.GetCollection<TRole, TKey>();
+
+        /// <summary>
         /// Gets or sets the <see cref="IdentityErrorDescriber"/> for any error that occurred with the current operation.
         /// </summary>
         public IdentityErrorDescriber ErrorDescriber { get; set; }
@@ -170,8 +180,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var oldStamp = role.ConcurrencyStamp;
             role.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TRole>();
-            var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(role.Id)
+            var updateRes = await RolesCollection.ReplaceOneAsync(x => x.Id.Equals(role.Id)
                                                                && x.ConcurrencyStamp.Equals(oldStamp),
                                                              role);
             if (updateRes.ModifiedCount == 0)
@@ -197,8 +206,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var oldStamp = role.ConcurrencyStamp;
             role.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TRole>();
-            var deleteRes = await collection.DeleteOneAsync(x => x.Id.Equals(role.Id)
+            var deleteRes = await RolesCollection.DeleteOneAsync(x => x.Id.Equals(role.Id)
                                                                && x.ConcurrencyStamp.Equals(oldStamp));
             if (deleteRes.DeletedCount == 0)
             {
@@ -272,11 +280,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>
         public virtual TKey ConvertIdFromString(string id)
         {
-            if (id == null)
-            {
-                return default(TKey);
-            }
-            return (TKey)TypeDescriptor.GetConverter(typeof(TKey)).ConvertFromInvariantString(id);
+            return id.ToTKey<TKey>();
         }
 
         /// <summary>
@@ -448,10 +452,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
         }
 
-        /// <summary>
-        /// A navigation property for the roles the store contains.
-        /// </summary>
-        public virtual IQueryable<TRole> Roles => Context.GetCollection<TRole>().AsQueryable();
+
 
         /// <summary>
         /// Creates a entity representing a role claim.

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "38e5f0ca5f25fc12f74d4c5d8051381123909848"
+    "signature": "38b2f87cafd1a2fa8c7bd3268841c3cd7abe472b"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,7 +11,7 @@
           "Microsoft.AspNetCore.Identity": "2.0.1",
           "Microsoft.Extensions.Identity.Stores": "2.0.1",
           "MongoDB.Driver": "2.5.0",
-          "MongoDbGenericRepository": "1.3.4"
+          "MongoDbGenericRepository": "1.3.6"
         },
         "runtime": {
           "AspNetCore.Identity.MongoDbCore.dll": {}
@@ -359,7 +359,7 @@
           "lib/netstandard1.5/MongoDB.Driver.Core.dll": {}
         }
       },
-      "MongoDbGenericRepository/1.3.4": {
+      "MongoDbGenericRepository/1.3.6": {
         "dependencies": {
           "MongoDB.Driver": "2.5.0"
         },
@@ -1462,12 +1462,12 @@
       "path": "mongodb.driver.core/2.5.0",
       "hashPath": "mongodb.driver.core.2.5.0.nupkg.sha512"
     },
-    "MongoDbGenericRepository/1.3.4": {
+    "MongoDbGenericRepository/1.3.6": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-nVtq9UGq6e8I61D1Fc1HIvh4qVA92IkfpcmrNXgG2141qBOpY7U0FbKlz+NOqiJoopY/ejhTBE3QbicsxsoOeg==",
-      "path": "mongodbgenericrepository/1.3.4",
-      "hashPath": "mongodbgenericrepository.1.3.4.nupkg.sha512"
+      "sha512": "sha512-bm4Q5RDLqt6rRZJTDiWvQpHOJ3ACxfELqg0kiZO8dyb7xMEqPQC7urpuLKMpDUmnE/pMBuXe6Pmy9TyTksDbdg==",
+      "path": "mongodbgenericrepository/1.3.6",
+      "hashPath": "mongodbgenericrepository.1.3.6.nupkg.sha512"
     },
     "runtime.native.System/4.3.0": {
       "type": "package",
