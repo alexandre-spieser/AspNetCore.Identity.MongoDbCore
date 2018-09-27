@@ -11,8 +11,7 @@ Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identit
 
 	Install-Package AspNetCore.Identity.MongoDbCore
 
-# Usage examples
-
+# User and Role Entities
 Your user and role entities must inherit from `MongoIdentityUser<TKey>` and `MongoIdentityRole<TKey>` in a way similar to the `IdentityUser<TKey>` and the `IdentityRole<TKey>` in `Microsoft.AspNetCore.Identity`, where `TKey` is the type of the primary key of your document.
 
 Here is an example:
@@ -41,8 +40,23 @@ public class ApplicationRole : MongoIdentityRole<Guid>
 	}
 }	
 ```
-The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser`, which both use the `Guid` type for primary keys, is recommended.
+#### Id Fields
+The `Id` field is automatically set at instantiation, this also applies to users inheriting from `MongoIdentityUser<int>`, where a random integer is assigned to the `Id`. It is however not advised to rely on such random mechanism to set the primary key of your document. Using documents inheriting from `MongoIdentityRole` and `MongoIdentityUser`, which both use the `Guid` type for primary keys, is recommended. MongoDB ObjectIds can optionally be used in lieu of GUIDs by passing a key type of `MongoDB.Bson.ObjectId`, e.g. `public class ApplicationUser : MongoIdentityUser<ObjectId>`.
 
+#### Collection Names
+MongoDB collection names are set to the plural camel case version of the entity class name, e.g. `ApplicationUser` becomes `applicationUsers`. To override this behavior apply the `CollectionName` attribute to  MongoDbGenericRepository:
+```csharp
+using MongoDbGenericRepository.Attributes;
+
+namespace App.Entities
+{
+    // Name this collection Users
+    [CollectionName("Users")]
+    public class ApplicationUser : MongoIdentityUser<Guid>
+    {
+	...
+```
+# Configuration
 To add the stores, you can use the `IdentityBuilder` extension like so:
 
 ```csharp
