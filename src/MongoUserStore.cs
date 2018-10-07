@@ -153,8 +153,8 @@ namespace AspNetCore.Identity.MongoDbCore
             }
         }
 
-        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser, TKey>(); } }
-        private IMongoCollection<TRole> RolesCollection { get { return Context.GetCollection<TRole, TKey>(); } }
+        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser>(); } }
+        private IMongoCollection<TRole> RolesCollection { get { return Context.GetCollection<TRole>(); } }
 
         /// <summary>
         /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
@@ -207,7 +207,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
             var oldStamp = user.ConcurrencyStamp;
             user.ConcurrencyStamp = Guid.NewGuid().ToString();
-            var collection = MongoRepository.Context.GetCollection<TUser, TKey>();
+            var collection = MongoRepository.Context.GetCollection<TUser>();
             var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(user.Id)
                                                                && x.ConcurrencyStamp.Equals(oldStamp),
                                                              user);

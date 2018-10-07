@@ -131,7 +131,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// A navigation property for the roles the store contains.
         /// </summary>
-        public virtual IMongoCollection<TRole> RolesCollection => Context.GetCollection<TRole, TKey>();
+        public virtual IMongoCollection<TRole> RolesCollection => Context.GetCollection<TRole>();
 
         /// <summary>
         /// Gets or sets the <see cref="IdentityErrorDescriber"/> for any error that occurred with the current operation.

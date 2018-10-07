@@ -118,7 +118,7 @@ namespace AspNetCore.Identity.MongoDbCore
             }
         }
 
-        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser, TKey>(); } }
+        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser>(); } }
 
         /// <summary>
         /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
