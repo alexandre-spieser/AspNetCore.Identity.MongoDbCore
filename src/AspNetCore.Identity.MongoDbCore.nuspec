@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AspNetCore.Identity.MongoDbCore</id>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <title>AspNetCore.Identity.MongoDbCore</title>
     <authors>Alexandre Spieser</authors>
     <owners>Alexandre Spieser</owners>
@@ -14,10 +14,10 @@
     <copyright>Copyright 2018 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>aspnetcore mongo mongodb identity membership</tags>
 	<dependencies>
-		<dependency id="Microsoft.AspNetCore.Identity" version="2.1.6" />
-		<dependency id="Microsoft.Extensions.Identity.Stores" version="2.1.6" />
+		<dependency id="Microsoft.AspNetCore.Identity" version="2.2.0" />
+		<dependency id="Microsoft.Extensions.Identity.Stores" version="2.2.0" />
 		<dependency id="MongoDB.Driver" version="2.7.0" />
-		<dependency id="MongoDbGenericRepository" version="1.3.8" />
+		<dependency id="MongoDbGenericRepository" version="1.4.0" />
 	</dependencies>
   </metadata>
   <files>
