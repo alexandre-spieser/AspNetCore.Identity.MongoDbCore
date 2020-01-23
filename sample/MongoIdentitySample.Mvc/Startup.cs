@@ -1,31 +1,26 @@
-﻿using System;
+﻿using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using MongoIdentitySample.Mvc.Models;
 using MongoIdentitySample.Mvc.Services;
-using AspNetCore.Identity.MongoDbCore.Models;
-using Microsoft.AspNetCore.Identity;
-using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace MongoIdentitySample.Mvc
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        const string DevEnvironmentName = "Development";
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see https://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets<Startup>();
-            }
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -43,9 +38,18 @@ namespace MongoIdentitySample.Mvc
             services.AddSingleton<MongoDbSettings>(settings);
             services.AddIdentity<ApplicationUser, MongoIdentityRole>()
                     .AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(settings.ConnectionString, settings.DatabaseName)
+                    .AddSignInManager()
                     .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            //services.AddAuthentication(o =>
+            //{
+            //    o.DefaultScheme = IdentityConstants.ApplicationScheme;
+            //    o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            //})
+            //.AddIdentityCookies(o => { });
+
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -53,11 +57,8 @@ namespace MongoIdentitySample.Mvc
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) //, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            //loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -68,23 +69,17 @@ namespace MongoIdentitySample.Mvc
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseRouting();
             app.UseStaticFiles();
-            
+
+            app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapRazorPages();
             });
         }
     }
