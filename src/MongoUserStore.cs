@@ -211,10 +211,13 @@ namespace AspNetCore.Identity.MongoDbCore
             var updateRes = await collection.ReplaceOneAsync(x => x.Id.Equals(user.Id)
                                                                && x.ConcurrencyStamp.Equals(oldStamp),
                                                              user);
+
+
             if (updateRes.ModifiedCount == 0)
             {
                 return IdentityResult.Failed(ErrorDescriber.ConcurrencyFailure());
             }
+
             return IdentityResult.Success;
         }
 

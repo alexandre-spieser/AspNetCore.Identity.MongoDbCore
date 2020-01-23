@@ -289,7 +289,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             var manager = CreateManager();
             var username = "Create" + Guid.NewGuid().ToString();
             var user = CreateTestUser(username, useNamePrefixAsUserName: true);
-            var stamp = await manager.GetSecurityStampAsync(user);
+            Assert.Null(user.SecurityStamp);
             IdentityResultAssert.IsSuccess(await manager.CreateAsync(user));
             Assert.NotNull(await manager.GetSecurityStampAsync(user));
         }
@@ -947,10 +947,12 @@ namespace Microsoft.AspNetCore.Identity.Test
             }
             var manager = CreateManager();
             var user = CreateTestUser();
-            Assert.Null(await manager.GetSecurityStampAsync(user));
+            var originalStamp = user.SecurityStamp;
+            //Update to library, can no longer test for null; throws an exceptoin
+            Assert.Null(user.SecurityStamp);
             IdentityResultAssert.IsSuccess(await manager.CreateAsync(user));
             var stamp = await manager.GetSecurityStampAsync(user);
-            Assert.NotNull(stamp);
+            Assert.NotEqual(originalStamp, stamp);
             IdentityResultAssert.IsSuccess(await manager.UpdateSecurityStampAsync(user));
             Assert.NotEqual(stamp, await manager.GetSecurityStampAsync(user));
         }
