@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AspNetCore.Identity.MongoDbCore.IntegrationTests;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -68,13 +69,13 @@ namespace Microsoft.AspNetCore.Identity.Test
         [Fact]
         public void ConstructorNullChecks()
         {
-            Assert.Throws<ArgumentNullException>("userManager", () => new SignInManager<TestUser>(null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>("userManager", () => new SignInManager<TestUser>(null, null, null, null, null, null, null));
             var userManager = MockHelpers.MockUserManager<TestUser>().Object;
-            Assert.Throws<ArgumentNullException>("contextAccessor", () => new SignInManager<TestUser>(userManager, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>("contextAccessor", () => new SignInManager<TestUser>(userManager, null, null, null, null, null, null));
             var contextAccessor = new Mock<IHttpContextAccessor>();
             var context = new Mock<HttpContext>();
             contextAccessor.Setup(a => a.HttpContext).Returns(context.Object);
-            Assert.Throws<ArgumentNullException>("claimsFactory", () => new SignInManager<TestUser>(userManager, contextAccessor.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>("claimsFactory", () => new SignInManager<TestUser>(userManager, contextAccessor.Object, null, null, null, null, null));
         }
 
         //[Fact]
@@ -122,9 +123,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             var options = new Mock<IOptions<IdentityOptions>>();
             options.Setup(a => a.Value).Returns(identityOptions);
             var claimsFactory = new UserClaimsPrincipalFactory<TestUser, TestRole>(manager.Object, roleManager.Object, options.Object);
-            var logStore = new StringBuilder();
-            var logger = MockHelpers.MockILogger<SignInManager<TestUser>>(logStore);
-            var helper = new SignInManager<TestUser>(manager.Object, contextAccessor.Object, claimsFactory, options.Object, logger.Object, new Mock<IAuthenticationSchemeProvider>().Object);
+            var loggerFactory = new MockLoggerFactory();
+            var logger = loggerFactory.CreateLogger<SignInManager<TestUser>>();
+            var helper = new SignInManager<TestUser>(manager.Object, contextAccessor.Object, claimsFactory, options.Object, logger, new Mock<IAuthenticationSchemeProvider>().Object, new Mock<IUserConfirmation<TestUser>>().Object);
 
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "bogus", false, false);
@@ -132,7 +133,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.True(result.IsLockedOut);
-            Assert.Contains($"User {user.Id} is currently locked out.", logStore.ToString());
+            Assert.Contains($"User {user.Id} is currently locked out.", loggerFactory.LogStore.ToString());
             manager.Verify();
         }
 
@@ -153,9 +154,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             var options = new Mock<IOptions<IdentityOptions>>();
             options.Setup(a => a.Value).Returns(identityOptions);
             var claimsFactory = new UserClaimsPrincipalFactory<TestUser, TestRole>(manager.Object, roleManager.Object, options.Object);
-            var logStore = new StringBuilder();
-            var logger = MockHelpers.MockILogger<SignInManager<TestUser>>(logStore);
-            var helper = new SignInManager<TestUser>(manager.Object, contextAccessor.Object, claimsFactory, options.Object, logger.Object, new Mock<IAuthenticationSchemeProvider>().Object);
+            var loggerFactory = new MockLoggerFactory();
+            var logger = loggerFactory.CreateLogger<SignInManager<TestUser>>();
+            var helper = new SignInManager<TestUser>(manager.Object, contextAccessor.Object, claimsFactory, options.Object, logger, new Mock<IAuthenticationSchemeProvider>().Object, new Mock<IUserConfirmation<TestUser>>().Object);
 
             // Act
             var result = await helper.CheckPasswordSignInAsync(user, "bogus", false);
@@ -163,7 +164,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.True(result.IsLockedOut);
-            Assert.Contains($"User {user.Id} is currently locked out.", logStore.ToString());
+            Assert.Contains($"User {user.Id} is currently locked out.", loggerFactory.LogStore.ToString());
             manager.Verify();
         }
 
@@ -177,7 +178,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             return manager;
         }
 
-        private static SignInManager<TestUser> SetupSignInManager(UserManager<TestUser> manager, HttpContext context, StringBuilder logStore = null, IdentityOptions identityOptions = null)
+        private static SignInManager<TestUser> SetupSignInManager(UserManager<TestUser> manager, HttpContext context, MockLoggerFactory factory, IdentityOptions identityOptions = null)
         {
             var contextAccessor = new Mock<IHttpContextAccessor>();
             contextAccessor.Setup(a => a.HttpContext).Returns(context);
@@ -186,8 +187,20 @@ namespace Microsoft.AspNetCore.Identity.Test
             var options = new Mock<IOptions<IdentityOptions>>();
             options.Setup(a => a.Value).Returns(identityOptions);
             var claimsFactory = new UserClaimsPrincipalFactory<TestUser, TestRole>(manager, roleManager.Object, options.Object);
-            var sm = new SignInManager<TestUser>(manager, contextAccessor.Object, claimsFactory, options.Object, null, new Mock<IAuthenticationSchemeProvider>().Object);
-            sm.Logger = MockHelpers.MockILogger<SignInManager<TestUser>>(logStore ?? new StringBuilder()).Object;
+            var sm = new SignInManager<TestUser>(manager, contextAccessor.Object, claimsFactory, options.Object,factory.CreateLogger<SignInManager<TestUser>>(), new Mock<IAuthenticationSchemeProvider>().Object, new Mock<IUserConfirmation<TestUser>>().Object);
+            return sm;
+        }
+
+        private static Mock<SignInManager<TestUser>> MockSignInManager(UserManager<TestUser> manager, HttpContext context, MockLoggerFactory factory, IdentityOptions identityOptions = null)
+        {
+            var contextAccessor = new Mock<IHttpContextAccessor>();
+            contextAccessor.Setup(a => a.HttpContext).Returns(context);
+            var roleManager = MockHelpers.MockRoleManager<TestRole>();
+            identityOptions = identityOptions ?? new IdentityOptions();
+            var options = new Mock<IOptions<IdentityOptions>>();
+            options.Setup(a => a.Value).Returns(identityOptions);
+            var claimsFactory = new UserClaimsPrincipalFactory<TestUser, TestRole>(manager, roleManager.Object, options.Object);
+            var sm = new Mock<SignInManager<TestUser>>(manager, contextAccessor.Object, claimsFactory, options.Object, factory.CreateLogger<SignInManager<TestUser>>(), new Mock<IAuthenticationSchemeProvider>().Object, new Mock<IUserConfirmation<TestUser>>().Object);
             return sm;
         }
 
@@ -206,7 +219,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
             SetupSignIn(context, auth, user.Id, isPersistent);
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
 
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "password", isPersistent, false);
@@ -230,8 +245,8 @@ namespace Microsoft.AspNetCore.Identity.Test
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
             SetupSignIn(context, auth, user.Id, false);
-            var helper = SetupSignInManager(manager.Object, context);
-
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "password", false, false);
 
@@ -256,8 +271,8 @@ namespace Microsoft.AspNetCore.Identity.Test
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
             SetupSignIn(context, auth);
-            var helper = SetupSignInManager(manager.Object, context);
-
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "password", false, false);
 
@@ -288,7 +303,10 @@ namespace Microsoft.AspNetCore.Identity.Test
             manager.Setup(m => m.CheckPasswordAsync(user, "password")).ReturnsAsync(true).Verifiable();
             manager.Setup(m => m.GetValidTwoFactorProvidersAsync(user)).ReturnsAsync(new string[1] { "Fake" }).Verifiable();
             var context = new DefaultHttpContext();
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
+
             var auth = MockAuth(context);
             auth.Setup(a => a.SignInAsync(context, IdentityConstants.TwoFactorUserIdScheme,
                 It.Is<ClaimsPrincipal>(id => id.FindFirstValue(ClaimTypes.Name) == user.Id),
@@ -326,7 +344,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             }
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
 
             if (bypass)
             {
@@ -473,7 +493,10 @@ namespace Microsoft.AspNetCore.Identity.Test
 
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
+
             SetupSignIn(context, auth, user.Id, isPersistent, loginProvider);
 
             // Act
@@ -493,6 +516,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Setup
             var user = new TestUser { UserName = "Foo" };
             var context = new DefaultHttpContext();
+            var services = new ServiceCollection();
             var auth = MockAuth(context);
             var loginProvider = "loginprovider";
             var id = new ClaimsIdentity();
@@ -503,25 +527,26 @@ namespace Microsoft.AspNetCore.Identity.Test
             // REVIEW: auth changes we lost the ability to mock is persistent
             //var properties = new AuthenticationProperties { IsPersistent = isPersistent };
             var authResult = AuthenticateResult.NoResult();
-            auth.Setup(a => a.AuthenticateAsync(context, IdentityConstants.ApplicationScheme))
-                .Returns(Task.FromResult(authResult)).Verifiable();
+             
+            auth.Setup(a => a.AuthenticateAsync(context, IdentityConstants.ApplicationScheme)).Returns(Task.FromResult(authResult)).Verifiable();
+
             var manager = SetupUserManager(user);
-            var signInManager = new Mock<SignInManager<TestUser>>(manager.Object,
-                new HttpContextAccessor { HttpContext = context },
-                new Mock<IUserClaimsPrincipalFactory<TestUser>>().Object,
-                null, null, new Mock<IAuthenticationSchemeProvider>().Object)
-            { CallBase = true };
-            //signInManager.Setup(s => s.SignInAsync(user, It.Is<AuthenticationProperties>(p => p.IsPersistent == isPersistent),
-            //externalLogin? loginProvider : null)).Returns(Task.FromResult(0)).Verifiable();
-            signInManager.Setup(s => s.SignInAsync(user, It.IsAny<AuthenticationProperties>(), null)).Returns(Task.FromResult(0)).Verifiable();
-            signInManager.Object.Context = context;
 
-            // Act
-            await signInManager.Object.RefreshSignInAsync(user);
+            using (MockLoggerFactory loggerFactory = new MockLoggerFactory())
+            {
+                var signInManager = MockSignInManager(manager.Object, context, loggerFactory, null);
 
-            // Assert
-            auth.Verify();
-            signInManager.Verify();
+                signInManager.CallBase = true; // need this magic!
+
+                signInManager.Setup(s => s.SignInWithClaimsAsync(user, It.IsAny<AuthenticationProperties>(), It.IsAny<List<Claim>>())).Returns(Task.FromResult(0)).Verifiable();
+
+                // Act
+                await signInManager.Object.RefreshSignInAsync(user);
+
+                // Assert
+                auth.Verify();
+                signInManager.Verify();
+            }
         }
 
         //[Theory]
@@ -606,7 +631,10 @@ namespace Microsoft.AspNetCore.Identity.Test
             var manager = SetupUserManager(user);
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
+
             auth.Setup(a => a.SignInAsync(
                 context,
                 IdentityConstants.TwoFactorRememberMeScheme,
@@ -644,9 +672,12 @@ namespace Microsoft.AspNetCore.Identity.Test
             SetupSignIn(context, auth);
             var id = new ClaimsIdentity(IdentityConstants.TwoFactorRememberMeScheme);
             id.AddClaim(new Claim(ClaimTypes.Name, user.Id));
-            auth.Setup(a => a.AuthenticateAsync(context, IdentityConstants.TwoFactorRememberMeScheme))
+
+            auth.Setup(a => a.AuthenticateAsync(It.IsAny<HttpContext>(), IdentityConstants.TwoFactorRememberMeScheme))
                 .ReturnsAsync(AuthenticateResult.Success(new AuthenticationTicket(new ClaimsPrincipal(id), null, IdentityConstants.TwoFactorRememberMeScheme))).Verifiable();
-            var helper = SetupSignInManager(manager.Object, context);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory);
 
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "password", isPersistent, false);
@@ -664,6 +695,15 @@ namespace Microsoft.AspNetCore.Identity.Test
             return auth;
         }
 
+        private Mock<IAuthenticationService> MockAuth(ServiceCollection services)
+        {
+            var auth = new Mock<IAuthenticationService>();
+
+            services.AddSingleton(auth.Object);
+
+            return auth;
+        }
+
         [Fact]
         public async Task SignOutCallsContextResponseSignOut()
         {
@@ -671,10 +711,11 @@ namespace Microsoft.AspNetCore.Identity.Test
             var manager = MockHelpers.TestUserManager<TestUser>();
             var context = new DefaultHttpContext();
             var auth = MockAuth(context);
+            var loggerFactory = new MockLoggerFactory();
             auth.Setup(a => a.SignOutAsync(context, IdentityConstants.ApplicationScheme, It.IsAny<AuthenticationProperties>())).Returns(Task.FromResult(0)).Verifiable();
             auth.Setup(a => a.SignOutAsync(context, IdentityConstants.TwoFactorUserIdScheme, It.IsAny<AuthenticationProperties>())).Returns(Task.FromResult(0)).Verifiable();
             auth.Setup(a => a.SignOutAsync(context, IdentityConstants.ExternalScheme, It.IsAny<AuthenticationProperties>())).Returns(Task.FromResult(0)).Verifiable();
-            var helper = SetupSignInManager(manager, context, null, manager.Options);
+            var helper = SetupSignInManager(manager, context, loggerFactory, manager.Options);
 
             // Act
             await helper.SignOutAsync();
@@ -693,8 +734,10 @@ namespace Microsoft.AspNetCore.Identity.Test
             manager.Setup(m => m.IsLockedOutAsync(user)).ReturnsAsync(false).Verifiable();
             manager.Setup(m => m.CheckPasswordAsync(user, "bogus")).ReturnsAsync(false).Verifiable();
             var context = new Mock<HttpContext>();
-            var logStore = new StringBuilder();
-            var helper = SetupSignInManager(manager.Object, context.Object, logStore);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context.Object, loggerFactory);
+
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "bogus", false, false);
             var checkResult = await helper.CheckPasswordSignInAsync(user, "bogus", false);
@@ -702,7 +745,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.False(checkResult.Succeeded);
-            Assert.Contains($"User {user.Id} failed to provide the correct password.", logStore.ToString());
+            Assert.Contains($"User {user.Id} failed to provide the correct password.", loggerFactory.LogStore.ToString());
             manager.Verify();
             context.Verify();
         }
@@ -714,7 +757,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             var manager = MockHelpers.MockUserManager<TestUser>();
             manager.Setup(m => m.FindByNameAsync("bogus")).ReturnsAsync(default(TestUser)).Verifiable();
             var context = new Mock<HttpContext>();
-            var helper = SetupSignInManager(manager.Object, context.Object);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context.Object, loggerFactory);
 
             // Act
             var result = await helper.PasswordSignInAsync("bogus", "bogus", false, false);
@@ -741,7 +786,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             manager.Setup(m => m.IsLockedOutAsync(user)).Returns(() => Task.FromResult(lockedout));
             manager.Setup(m => m.CheckPasswordAsync(user, "bogus")).ReturnsAsync(false).Verifiable();
             var context = new Mock<HttpContext>();
-            var helper = SetupSignInManager(manager.Object, context.Object);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context.Object, loggerFactory);
 
             // Act
             var result = await helper.PasswordSignInAsync(user.UserName, "bogus", false, true);
@@ -768,7 +815,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             manager.Setup(m => m.IsLockedOutAsync(user)).Returns(() => Task.FromResult(lockedout));
             manager.Setup(m => m.CheckPasswordAsync(user, "bogus")).ReturnsAsync(false).Verifiable();
             var context = new Mock<HttpContext>();
-            var helper = SetupSignInManager(manager.Object, context.Object);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context.Object, loggerFactory);
 
             // Act
             var result = await helper.CheckPasswordSignInAsync(user, "bogus", true);
@@ -802,8 +851,9 @@ namespace Microsoft.AspNetCore.Identity.Test
             var identityOptions = new IdentityOptions();
             identityOptions.SignIn.RequireConfirmedEmail = true;
             var logStore = new StringBuilder();
-            var helper = SetupSignInManager(manager.Object, context, logStore, identityOptions);
 
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory, identityOptions);
             // Act
             var result = await helper.PasswordSignInAsync(user, "password", false, false);
 
@@ -811,7 +861,7 @@ namespace Microsoft.AspNetCore.Identity.Test
 
             Assert.Equal(confirmed, result.Succeeded);
             Assert.NotEqual(confirmed, result.IsNotAllowed);
-            Assert.Equal(confirmed, !logStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed email."));
+            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed email."));
 
             manager.Verify();
             auth.Verify();
@@ -846,8 +896,9 @@ namespace Microsoft.AspNetCore.Identity.Test
 
             var identityOptions = new IdentityOptions();
             identityOptions.SignIn.RequireConfirmedPhoneNumber = true;
-            var logStore = new StringBuilder();
-            var helper = SetupSignInManager(manager.Object, context, logStore, identityOptions);
+
+            MockLoggerFactory loggerFactory = new MockLoggerFactory();
+            var helper = SetupSignInManager(manager.Object, context, loggerFactory, identityOptions);
 
             // Act
             var result = await helper.PasswordSignInAsync(user, "password", false, false);
@@ -855,7 +906,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.Equal(confirmed, result.Succeeded);
             Assert.NotEqual(confirmed, result.IsNotAllowed);
-            Assert.Equal(confirmed, !logStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed phone number."));
+            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed phone number."));
             manager.Verify();
             auth.Verify();
         }
