@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.AspNetCore.Identity.Test;
-using Microsoft.Extensions.Logging;
 
 namespace AspNetCore.Identity.MongoDbCore.IntegrationTests
 {
