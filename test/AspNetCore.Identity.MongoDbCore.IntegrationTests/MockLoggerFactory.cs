@@ -24,7 +24,7 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests
 
         public ILogger CreateLogger(string categoryName)
         {
-            var logger = MockHelpers.MockILogger(LogStore).Object;
+            var logger = new MockLogger(categoryName, LogStore);
 
             Loggers.Add(logger);
 
@@ -43,6 +43,15 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests
 
         public void Dispose()
         {
+        }
+    }
+
+    public class MockLogger : MockLogger<object>
+    {
+        public String Name { get; protected set; }
+        public MockLogger(string name, StringBuilder store) : base(store)
+        {
+            Name = name;
         }
     }
 
