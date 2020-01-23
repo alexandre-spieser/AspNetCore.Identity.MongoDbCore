@@ -608,6 +608,58 @@ namespace Microsoft.AspNetCore.Identity.Test
         /// </summary>
         /// <returns>Task</returns>
         [Fact]
+        public async Task AddToRoleAsync_IsInRoleAsync()
+        {
+            if (ShouldSkipDbTests())
+            {
+                return;
+            }
+            var userMgr = CreateManager();
+            var roleMgr = CreateRoleManager();
+            var roleName = "AddToRoleAsync_IsInRoleAsyncTest" + Guid.NewGuid().ToString();
+            var role = CreateTestRole(roleName, useRoleNamePrefixAsRoleName: true);
+
+            var user = CreateTestUser();
+            IdentityResultAssert.IsSuccess(await userMgr.CreateAsync(user));
+            IdentityResultAssert.IsSuccess(await roleMgr.CreateAsync(role));
+            IdentityResultAssert.IsSuccess(await userMgr.AddToRoleAsync(user, roleName));
+            // pull the user from the DB again
+            var newUser = await userMgr.FindByNameAsync(user.UserName);
+            Assert.True(await userMgr.IsInRoleAsync(newUser, roleName));
+        }
+
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns>Task</returns>
+        [Fact]
+        public async Task AddClaimsAsync()
+        {
+            if (ShouldSkipDbTests())
+            {
+                return;
+            }
+            var userMgr = CreateManager();
+            var roleMgr = CreateRoleManager();
+            var roleName = "addUserDupeTest" + Guid.NewGuid().ToString();
+            var role = CreateTestRole(roleName, useRoleNamePrefixAsRoleName: true);
+
+            var user = CreateTestUser();
+            IdentityResultAssert.IsSuccess(await userMgr.CreateAsync(user));
+            IdentityResultAssert.IsSuccess(await roleMgr.CreateAsync(role));
+
+            var result = await userMgr.AddClaimAsync(user, new Claim(ClaimTypes.Role, roleName));
+
+            Assert.True(await userMgr.IsInRoleAsync(user, roleName));
+            IdentityResultAssert.IsFailure(await userMgr.AddToRoleAsync(user, roleName), _errorDescriber.UserAlreadyInRole(roleName));
+            IdentityResultAssert.VerifyLogMessage(userMgr.Logger, $"User {await userMgr.GetUserIdAsync(user)} is already in role {roleName}.");
+        }
+
+        /// <summary>
+        /// Test.
+        /// </summary>
+        /// <returns>Task</returns>
+        [Fact]
         public async Task AddUserToRolesIgnoresDuplicates()
         {
             if (ShouldSkipDbTests())
