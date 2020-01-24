@@ -1,5 +1,6 @@
 ﻿using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure
@@ -12,22 +13,47 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure
 
     public static class Container
     {
-        public static MongoDbIdentityConfiguration MongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
+        public static IConfiguration Configuration { get; set; }
+
+        static Container()
         {
-            MongoDbSettings = new MongoDbSettings
+            var builder = new ConfigurationBuilder()
+                                    .SetBasePath(System.Environment.CurrentDirectory)
+                                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                    //per user config that is not committed to repo, use this to override settings (e.g. connection string) based on your local environment.
+                                    .AddJsonFile($"appsettings.local.json", optional: true); 
+
+            //builder.AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+
+            var databaseSettings = Configuration.Load<MongoDbSettings>("MongoDbSettings");
+
+            MongoDbIdentityConfiguration = new MongoDbIdentityConfiguration()
             {
-                ConnectionString = "mongodb://localhost:27017",
-                DatabaseName = "MongoDbTests"
-            },
-            IdentityOptionsAction = options =>
+                MongoDbSettings = databaseSettings,
+                IdentityOptionsAction = (options) =>
+                {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.User.AllowedUserNameCharacters = null;
+                }
+            };
+
+            lock (Locks.MongoInitLock)
             {
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.User.AllowedUserNameCharacters = null;
+                _mongoDbRepository = new MongoRepository(
+                                        databaseSettings.ConnectionString,
+                                        databaseSettings.DatabaseName);
+                _mongoDbRepository2 = new MongoRepository(
+                        databaseSettings.ConnectionString,
+                        databaseSettings.DatabaseName);
             }
-        };
+        }
+
+        public static MongoDbIdentityConfiguration MongoDbIdentityConfiguration { get; set; }
 
         public static IServiceProvider Instance { get; set; }
 
@@ -35,19 +61,6 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure
         private static readonly IMongoRepository _mongoDbRepository;
 
         private static readonly IMongoRepository _mongoDbRepository2;
-
-        static Container()
-        {
-            lock (Locks.MongoInitLock)
-            {
-                _mongoDbRepository = new MongoRepository(
-                                        MongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
-                                        MongoDbIdentityConfiguration.MongoDbSettings.DatabaseName);
-                _mongoDbRepository2 = new MongoRepository(
-                        MongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
-                        MongoDbIdentityConfiguration.MongoDbSettings.DatabaseName);
-            }
-        }
 
         public static IMongoRepository MongoRepository
         {
@@ -63,6 +76,22 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure
             {
                 return _mongoDbRepository2;
             }
+        }
+    }
+
+    public static class ConfigurationExtensions
+    {
+        public static T Load<T>(this IConfiguration configuration, string key) where T : new()
+        {
+            var instance = new T();
+            configuration.GetSection(key).Bind(instance);
+            return instance;
+        }
+
+        public static T Load<T>(this IConfiguration configuration, string key, T instance) where T : new()
+        {
+            configuration.GetSection(key).Bind(instance);
+            return instance;
         }
     }
 }

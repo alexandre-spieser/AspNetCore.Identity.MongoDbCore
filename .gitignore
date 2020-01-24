@@ -298,3 +298,4 @@ __pycache__/
 *.odx.cs
 *.xsd.cs
 sample/MongoIdentitySample.Mvc/appsettings.local.json
+test/AspNetCore.Identity.MongoDbCore.IntegrationTests/appsettings.local.json
