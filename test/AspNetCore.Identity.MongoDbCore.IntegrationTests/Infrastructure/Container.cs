@@ -23,7 +23,7 @@ namespace AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure
                                     //per user config that is not committed to repo, use this to override settings (e.g. connection string) based on your local environment.
                                     .AddJsonFile($"appsettings.local.json", optional: true); 
 
-            //builder.AddEnvironmentVariables();
+            builder.AddEnvironmentVariables();
 
             Configuration = builder.Build();
 
