@@ -36,12 +36,12 @@ steps:
     projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Test Library'
-  inputs:
-    command: 'test'
-    projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+# - task: DotNetCoreCLI@2
+#   displayName: 'Test Library'
+#   inputs:
+#     command: 'test'
+#     projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
+#     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Package Library'
