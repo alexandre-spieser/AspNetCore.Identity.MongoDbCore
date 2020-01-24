@@ -44,14 +44,11 @@ steps:
 #     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Package Library'
   inputs:
-    command: 'pack'
-    packagesToPack: './src/AspNetCore.Identity.MongoDbCore.csproj'
-    versioningScheme: 'off'
-    arguments: '-p:NuspecFile=AspnetCore.Identity.MongoDbCore.nuspec'
-    packDirectory: $(build.artifactStagingDirectory)/Nuget
-    nobuild: true
+    command: 'custom'
+    projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
+    custom: 'pack'
+    arguments: '--no-build -p:NuspecFile=AspNetCore.Identity.MongoDbCore.nuspec -o  $(build.artifactStagingDirectory)/Nuget'
     verbosityPack: 'Detailed'
 
 - task: NuGetCommand@2
