@@ -27,19 +27,20 @@ steps:
     projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: './src/AspNetCore.Identity.MongoDbCore.csproj'
+    packagesToPack: './src/AspnetCore.Identity.MongoDbCore.nuspec'
     versioningScheme: 'off'
-    arguments: '--configuration $(buildConfiguration) -p:NuspecFile=AspnetCore.Identity.MongoDbCore.nuspec'
     modifyOutputPath: true
     packDirectory: $(build.artifactStagingDirectory)/Nuget
+    nobuild: true
 
 - task: NuGetCommand@2
   inputs:
