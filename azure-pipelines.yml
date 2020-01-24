@@ -17,6 +17,7 @@ variables:
 steps:
 
 - task: UseDotNet@2
+  displayName: 'Install .net core 3.1'
   inputs:
     packageType: 'sdk'
     version: '3.1.101'
@@ -24,22 +25,26 @@ steps:
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
+  displayName: 'Restore Library Dependencies'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build Library'
   inputs:
     command: 'build'
     projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Test Library'
   inputs:
     command: 'test'
     projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Package Library'
   inputs:
     command: 'pack'
     packagesToPack: './src/AspnetCore.Identity.MongoDbCore.csproj'
@@ -49,15 +54,8 @@ steps:
     nobuild: true
     verbosityPack: 'Minimal'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    nobuild: true
-    versioningScheme: 'off'
-    verbosityPack: 'Minimal'
-
 - task: NuGetCommand@2
+  displayName: 'Publish Library'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
