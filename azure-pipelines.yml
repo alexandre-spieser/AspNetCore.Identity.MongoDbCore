@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   solution: '**/*.sln'
@@ -29,7 +29,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: 'build'
+    command: 'test'
     projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
@@ -41,6 +41,15 @@ steps:
     arguments: '-p:NuspecFile=./src/AspnetCore.Identity.MongoDbCore.nuspec'
     packDirectory: $(build.artifactStagingDirectory)/Nuget
     nobuild: true
+    verbosityPack: 'Minimal'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    nobuild: true
+    versioningScheme: 'off'
+    verbosityPack: 'Minimal'
 
 - task: NuGetCommand@2
   inputs:
