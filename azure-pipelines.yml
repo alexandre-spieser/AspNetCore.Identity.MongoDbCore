@@ -49,10 +49,10 @@ steps:
     command: 'pack'
     packagesToPack: './src/AspnetCore.Identity.MongoDbCore.csproj'
     versioningScheme: 'off'
-    arguments: '-p:NuspecFile=./src/AspnetCore.Identity.MongoDbCore.nuspec'
+    arguments: '-p:NuspecFile=AspnetCore.Identity.MongoDbCore.nuspec'
     packDirectory: $(build.artifactStagingDirectory)/Nuget
     nobuild: true
-    verbosityPack: 'Minimal'
+    verbosityPack: 'Normal'
 
 - task: NuGetCommand@2
   displayName: 'Publish Library'
