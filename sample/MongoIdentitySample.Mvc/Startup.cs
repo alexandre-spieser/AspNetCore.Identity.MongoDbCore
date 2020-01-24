@@ -15,8 +15,10 @@ namespace MongoIdentitySample.Mvc
 {
     public class Startup
     {
+        private IWebHostEnvironment _env;
         public Startup(IWebHostEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -38,11 +40,21 @@ namespace MongoIdentitySample.Mvc
             var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
 
             services.AddSingleton<MongoDbSettings>(settings);
-            
+
             services.AddIdentity<ApplicationUser, MongoIdentityRole>()
                     .AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(settings.ConnectionString, settings.DatabaseName)
                     .AddSignInManager()
                     .AddDefaultTokenProviders();
+
+
+            var builder = services.AddRazorPages();
+            
+            #if DEBUG
+                if(_env.IsDevelopment())
+                {
+                    builder.AddRazorRuntimeCompilation();
+                }
+            #endif
 
             services.AddMvc();
 
