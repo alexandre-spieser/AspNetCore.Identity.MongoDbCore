@@ -9,17 +9,20 @@ using MongoIdentitySample.Mvc.Services;
 using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Identity;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using Microsoft.Extensions.Hosting;
 
 namespace MongoIdentitySample.Mvc
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                //per user config that is not committed to repo, use this to override settings (e.g. connection string) based on your local environment.
+                .AddJsonFile($"appsettings.local.json", optional: true); 
 
             if (env.IsDevelopment())
             {
@@ -47,13 +50,15 @@ namespace MongoIdentitySample.Mvc
 
             services.AddMvc();
 
+            services.AddApplicationInsightsTelemetry();
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) //, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) //, ILoggerFactory loggerFactory)
         {
             //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             //loggerFactory.AddDebug();
@@ -74,13 +79,6 @@ namespace MongoIdentitySample.Mvc
             app.UseAuthentication();
             app.UseAuthorization();
             // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
-
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
 
             app.UseEndpoints(endpoints =>
             {
