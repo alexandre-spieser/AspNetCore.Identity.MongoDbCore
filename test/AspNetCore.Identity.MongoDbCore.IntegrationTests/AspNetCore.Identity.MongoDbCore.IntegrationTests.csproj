@@ -33,4 +33,9 @@
     <ProjectReference Include="..\..\src\AspNetCore.Identity.MongoDbCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="appsettings*.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>  
+  </ItemGroup>
 </Project>

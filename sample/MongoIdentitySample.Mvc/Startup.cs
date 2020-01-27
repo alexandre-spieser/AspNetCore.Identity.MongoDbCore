@@ -8,19 +8,23 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoIdentitySample.Mvc.Models;
 using MongoIdentitySample.Mvc.Services;
-using System;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace MongoIdentitySample.Mvc
 {
     public class Startup
     {
-        const string DevEnvironmentName = "Development";
+        private IWebHostEnvironment _env;
         public Startup(IWebHostEnvironment env)
         {
+            _env = env;
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                //per user config that is not committed to repo, use this to override settings (e.g. connection string) based on your local environment.
+                .AddJsonFile($"appsettings.local.json", optional: true); 
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -36,20 +40,25 @@ namespace MongoIdentitySample.Mvc
             var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
 
             services.AddSingleton<MongoDbSettings>(settings);
+
             services.AddIdentity<ApplicationUser, MongoIdentityRole>()
                     .AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(settings.ConnectionString, settings.DatabaseName)
                     .AddSignInManager()
                     .AddDefaultTokenProviders();
 
+
+            var builder = services.AddRazorPages();
+            
+            #if DEBUG
+                if(_env.IsDevelopment())
+                {
+                    builder.AddRazorRuntimeCompilation();
+                }
+            #endif
+
             services.AddMvc();
 
-            //services.AddAuthentication(o =>
-            //{
-            //    o.DefaultScheme = IdentityConstants.ApplicationScheme;
-            //    o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            //})
-            //.AddIdentityCookies(o => { });
-
+            services.AddApplicationInsightsTelemetry();
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

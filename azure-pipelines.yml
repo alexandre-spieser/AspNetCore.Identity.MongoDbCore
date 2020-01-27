@@ -1,0 +1,58 @@
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: UseDotNet@2
+  displayName: 'Install .net core 3.1'
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.101'
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  displayName: 'Restore Library Dependencies'
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Library'
+  inputs:
+    command: 'build'
+    projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+# - task: DotNetCoreCLI@2
+#   displayName: 'Test Library'
+#   inputs:
+#     command: 'test'
+#     projects: './test/AspNetCore.Identity.MongoDbCore.IntegrationTests/AspNetCore.Identity.MongoDbCore.IntegrationTests.csproj'
+#     arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Package Library (nuget)'
+  inputs:
+    command: 'custom'
+    projects: './src/AspNetCore.Identity.MongoDbCore.csproj'
+    custom: 'pack'
+    arguments: '--no-build -p:NuspecFile=AspNetCore.Identity.MongoDbCore.nuspec -o  $(build.artifactStagingDirectory)/Nuget'
+    verbosityPack: 'Detailed'
+
+- task: NuGetCommand@2
+  displayName: 'Publish Library'
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'internal'
+    publishVstsFeed: '72ef5435-c019-4338-8d35-7c3caec78f2a'
+    verbosityPush: 'Normal'
