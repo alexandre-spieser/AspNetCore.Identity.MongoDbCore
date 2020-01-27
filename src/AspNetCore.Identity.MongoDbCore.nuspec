@@ -9,22 +9,22 @@
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.</description>
+    <description>A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.2.</description>
     <releaseNotes>Release notes are at https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore/releases</releaseNotes>
-    <copyright>Copyright 2018 (c) Alexandre Spieser. All rights reserved.</copyright>
+    <copyright>Copyright 2020 (c) Alexandre Spieser. All rights reserved.</copyright>
     <tags>aspnetcore mongo mongodb identity membership</tags>
 	<dependencies>
         <group targetFramework="netstandard2.1">
-            <dependency id="Microsoft.AspNetCore.Identity" version="[2.2,3)" />
-            <dependency id="Microsoft.Extensions.Identity.Stores" version="[3.1,4)" />
-            <dependency id="MongoDB.Driver" version="[2.10,3)" />
-            <dependency id="MongoDbGenericRepository" version="[1.4,2)" />
+            <dependency id="Microsoft.AspNetCore.Identity" version="2.2.0" />
+            <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.1" />
+            <dependency id="MongoDB.Driver" version="2.9.3" />
+            <dependency id="MongoDbGenericRepository" version="1.4.1" />
         </group>
         <group targetFramework="netcoreapp3.1">
-            <dependency id="Microsoft.AspNetCore.Identity" version="[2.2,3)" />
-            <dependency id="Microsoft.Extensions.Identity.Stores" version="[3.1,4)" />
-            <dependency id="MongoDB.Driver" version="[2.10,3)" />
-            <dependency id="MongoDbGenericRepository" version="[1.4,2)" />
+          <dependency id="Microsoft.AspNetCore.Identity" version="2.2" />
+          <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.1" />
+          <dependency id="MongoDB.Driver" version="2.9.3" />
+          <dependency id="MongoDbGenericRepository" version="1.4.1" />
         </group>
 	</dependencies>
   </metadata>
