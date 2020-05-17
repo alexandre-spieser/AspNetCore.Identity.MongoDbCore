@@ -94,7 +94,7 @@ namespace AspNetCore.Identity.MongoDbCore.Models
         {
             InitializeFields();
             Id = key;
-            Name = Name;
+            Name = name;
         }
 
         /// <summary>
