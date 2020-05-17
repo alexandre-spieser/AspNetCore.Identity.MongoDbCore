@@ -308,7 +308,8 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         {
             // Arrange
             const string originalEmail = "original@email.com";
-            const string newEmail = "new@email.com";
+            const string newEmail1 = "new1@email.com";
+            const string newEmail2 = "new2@email.com";
             var user = CreateTestUser();
             user.Email = originalEmail;
             var manager = CreateManager();
@@ -317,18 +318,27 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             Assert.NotNull(user);
             Assert.Equal(originalEmail, userToUpdate.Email);
 
-            // Act
-            // change the email to the new value
-            userToUpdate.Email = newEmail;
-            userToUpdate.UserName = newEmail;
-            var updateResult = await manager.UpdateAsync(userToUpdate);
-            Assert.True(updateResult.Succeeded);
+            // Act & Assert
+            // change the email to the new value newEmail1
+            userToUpdate.Email = newEmail1;
+            userToUpdate.UserName = newEmail1;
+            var updateResult1 = await manager.UpdateAsync(userToUpdate);
+            Assert.True(updateResult1.Succeeded);
+            var updatedUser1 = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(updatedUser1);
+            Assert.Equal(newEmail1, updatedUser1.Email);
+            Assert.Equal(newEmail1, updatedUser1.UserName);
 
-            // Assert
-            var updatedUser = await manager.FindByIdAsync(user.Id);
-            Assert.NotNull(updatedUser);
-            Assert.Equal(newEmail, updatedUser.Email);
-            Assert.Equal(newEmail, updatedUser.UserName);
+            // change the email to the new value newEmail2
+            userToUpdate.Email = newEmail2;
+            userToUpdate.UserName = newEmail2;
+            var updateResult2 = await manager.UpdateAsync(userToUpdate);
+            Assert.True(updateResult2.Succeeded);
+
+            var updatedUser2 = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(updatedUser2);
+            Assert.Equal(newEmail2, updatedUser2.Email);
+            Assert.Equal(newEmail2, updatedUser2.UserName);
         }
 
         protected override MongoDbIdentityUser CreateTestUser(string namePrefix = "", string email = "", string phoneNumber = "",
