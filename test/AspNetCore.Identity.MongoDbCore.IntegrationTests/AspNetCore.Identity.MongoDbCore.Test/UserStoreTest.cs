@@ -303,6 +303,44 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             IdentityResultAssert.IsFailure(await manager2.DeleteAsync(role2), new IdentityErrorDescriber().ConcurrencyFailure());
         }
 
+        [Fact]
+        public async Task CorrectlyUpdatesUser()
+        {
+            // Arrange
+            const string originalEmail = "original@email.com";
+            const string newEmail1 = "new1@email.com";
+            const string newEmail2 = "new2@email.com";
+            var user = CreateTestUser();
+            user.Email = originalEmail;
+            var manager = CreateManager();
+            IdentityResultAssert.IsSuccess(await manager.CreateAsync(user));
+            var userToUpdate = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(user);
+            Assert.Equal(originalEmail, userToUpdate.Email);
+
+            // Act & Assert
+            // change the email to the new value newEmail1
+            userToUpdate.Email = newEmail1;
+            userToUpdate.UserName = newEmail1;
+            var updateResult1 = await manager.UpdateAsync(userToUpdate);
+            Assert.True(updateResult1.Succeeded);
+            var updatedUser1 = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(updatedUser1);
+            Assert.Equal(newEmail1, updatedUser1.Email);
+            Assert.Equal(newEmail1, updatedUser1.UserName);
+
+            // change the email to the new value newEmail2
+            userToUpdate.Email = newEmail2;
+            userToUpdate.UserName = newEmail2;
+            var updateResult2 = await manager.UpdateAsync(userToUpdate);
+            Assert.True(updateResult2.Succeeded);
+
+            var updatedUser2 = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(updatedUser2);
+            Assert.Equal(newEmail2, updatedUser2.Email);
+            Assert.Equal(newEmail2, updatedUser2.UserName);
+        }
+
         protected override MongoDbIdentityUser CreateTestUser(string namePrefix = "", string email = "", string phoneNumber = "",
             bool lockoutEnabled = false, DateTimeOffset? lockoutEnd = default(DateTimeOffset?), bool useNamePrefixAsUserName = false)
         {
