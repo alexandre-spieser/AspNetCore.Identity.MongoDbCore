@@ -303,6 +303,34 @@ namespace AspNetCore.Identity.MongoDbCore.Test
             IdentityResultAssert.IsFailure(await manager2.DeleteAsync(role2), new IdentityErrorDescriber().ConcurrencyFailure());
         }
 
+        [Fact]
+        public async Task CorrectlyUpdatesUser()
+        {
+            // Arrange
+            const string originalEmail = "original@email.com";
+            const string newEmail = "new@email.com";
+            var user = CreateTestUser();
+            user.Email = originalEmail;
+            var manager = CreateManager();
+            IdentityResultAssert.IsSuccess(await manager.CreateAsync(user));
+            var userToUpdate = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(user);
+            Assert.Equal(originalEmail, userToUpdate.Email);
+
+            // Act
+            // change the email to the new value
+            userToUpdate.Email = newEmail;
+            userToUpdate.UserName = newEmail;
+            var updateResult = await manager.UpdateAsync(userToUpdate);
+            Assert.True(updateResult.Succeeded);
+
+            // Assert
+            var updatedUser = await manager.FindByIdAsync(user.Id);
+            Assert.NotNull(updatedUser);
+            Assert.Equal(newEmail, updatedUser.Email);
+            Assert.Equal(newEmail, updatedUser.UserName);
+        }
+
         protected override MongoDbIdentityUser CreateTestUser(string namePrefix = "", string email = "", string phoneNumber = "",
             bool lockoutEnabled = false, DateTimeOffset? lockoutEnd = default(DateTimeOffset?), bool useNamePrefixAsUserName = false)
         {
