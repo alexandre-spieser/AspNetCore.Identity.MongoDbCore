@@ -11,6 +11,11 @@ Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identit
 
 	Install-Package AspNetCore.Identity.MongoDbCore
 
+# Support This Project
+
+If you have found this project helpful, either as a library that you use or as a learning tool, please consider buying the team a coffee: <a href="https://www.buymeacoffee.com/zeitquest" target="_blank"><img height="40px" src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" style="max-height: 51px;width: 150px !important;" ></a>
+
+
 # User and Role Entities
 Your user and role entities must inherit from `MongoIdentityUser<TKey>` and `MongoIdentityRole<TKey>` in a way similar to the `IdentityUser<TKey>` and the `IdentityRole<TKey>` in `Microsoft.AspNetCore.Identity`, where `TKey` is the type of the primary key of your document.
 
