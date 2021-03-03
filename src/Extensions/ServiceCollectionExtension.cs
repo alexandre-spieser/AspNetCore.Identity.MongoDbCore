@@ -1,9 +1,10 @@
-﻿using AspNetCore.Identity.MongoDbCore.Infrastructure;
+﻿using System;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Identity.Core;
 using MongoDbGenericRepository;
-using System;
 
 namespace AspNetCore.Identity.MongoDbCore.Extensions
 {
@@ -19,14 +20,15 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
         /// <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
         /// <param name="services">The collection of service descriptors.</param>
         /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
-        public static void ConfigureMongoDbIdentityUserOnly<TUser, TKey>(
+        public static IdentityBuilder ConfigureMongoDbIdentityUserOnly<TUser, TKey>(
             this IServiceCollection services,
             MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                 where TUser : MongoIdentityUser<TKey>, new()
                 where TKey : IEquatable<TKey>
         {
             ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
-            CommonMongoDbSetup<TUser, MongoIdentityRole<TKey>, TKey>(services, mongoDbIdentityConfiguration);
+
+            return CommonMongoDbSetup<TUser, MongoIdentityRole<TKey>, TKey>(services, mongoDbIdentityConfiguration);
         }
 
 
@@ -36,11 +38,12 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
         /// <typeparam name="TUser">The type representing a user.</typeparam>
         /// <param name="services">The collection of service descriptors.</param>
         /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
-        public static void ConfigureMongoDbIdentity<TUser>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
+        public static IdentityBuilder ConfigureMongoDbIdentity<TUser>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                     where TUser : MongoIdentityUser, new()
         {
             ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
-            CommonMongoDbSetup<TUser, MongoIdentityRole, Guid>(services, mongoDbIdentityConfiguration);
+
+            return CommonMongoDbSetup<TUser, MongoIdentityRole, Guid>(services, mongoDbIdentityConfiguration);
         }
 
         /// <summary>
@@ -74,51 +77,60 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
         /// <param name="services">The collection of service descriptors.</param>
         /// <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
         /// <param name="mongoDbContext">An object representing a MongoDb connection.</param>
-        public static void ConfigureMongoDbIdentity<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration,
+        public static IdentityBuilder ConfigureMongoDbIdentity<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration,
             IMongoDbContext mongoDbContext = null)
                     where TUser : MongoIdentityUser<TKey>, new()
                     where TRole : MongoIdentityRole<TKey>, new()
                     where TKey : IEquatable<TKey>
         {
+            IdentityBuilder builder;
+
             ValidateMongoDbSettings(mongoDbIdentityConfiguration.MongoDbSettings);
 
-            if(mongoDbContext == null)
+            if (mongoDbContext == null)
             {
-                services.AddIdentity<TUser, TRole>()
+                builder = services.AddIdentityCore<TUser>()
+                        .AddRoles<TRole>()
                         .AddMongoDbStores<TUser, TRole, TKey>(
                             mongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
-                            mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName)
-                        .AddDefaultTokenProviders();
+                            mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName);
             }
             else
             {
-                services.AddIdentity<TUser, TRole>()
-                        .AddMongoDbStores<IMongoDbContext>(mongoDbContext)
-                        .AddDefaultTokenProviders();
+                builder = services.AddIdentityCore<TUser>()
+                        .AddRoles<TRole>()
+                        .AddMongoDbStores<IMongoDbContext>(mongoDbContext);
             }
 
             if (mongoDbIdentityConfiguration.IdentityOptionsAction != null)
             {
                 services.Configure(mongoDbIdentityConfiguration.IdentityOptionsAction);
             }
+
+            return builder;
         }
 
 
-        private static void CommonMongoDbSetup<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
+        private static IdentityBuilder CommonMongoDbSetup<TUser, TRole, TKey>(this IServiceCollection services, MongoDbIdentityConfiguration mongoDbIdentityConfiguration)
                     where TUser : MongoIdentityUser<TKey>, new()
                     where TRole : MongoIdentityRole<TKey>, new()
                     where TKey : IEquatable<TKey>
         {
-            services.AddIdentity<TUser, TRole>()
+
+            IdentityBuilder builder;
+
+            builder = services.AddIdentityCore<TUser>()
+                    .AddRoles<TRole>()
                     .AddMongoDbStores<TUser, TRole, TKey>(
-                        mongoDbIdentityConfiguration.MongoDbSettings.ConnectionString, 
-                        mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName)
-                    .AddDefaultTokenProviders();
+                        mongoDbIdentityConfiguration.MongoDbSettings.ConnectionString,
+                        mongoDbIdentityConfiguration.MongoDbSettings.DatabaseName);
 
             if (mongoDbIdentityConfiguration.IdentityOptionsAction != null)
             {
                 services.Configure(mongoDbIdentityConfiguration.IdentityOptionsAction);
             }
+
+            return builder;
         }
     }
 }
