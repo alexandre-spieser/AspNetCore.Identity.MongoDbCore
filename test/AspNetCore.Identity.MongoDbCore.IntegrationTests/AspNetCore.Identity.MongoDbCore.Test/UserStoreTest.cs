@@ -4,13 +4,13 @@
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Test;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
-using AspNetCore.Identity.MongoDbCore.Models;
-using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
 using MongoDbGenericRepository;
-using Microsoft.AspNetCore.Identity;
+using Xunit;
 
 namespace AspNetCore.Identity.MongoDbCore.Test
 {
@@ -308,8 +308,8 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         {
             // Arrange
             const string originalEmail = "original@email.com";
-            const string newEmail1 = "new1@email.com";
-            const string newEmail2 = "new2@email.com";
+            string newEmail1 = $"new{DateTime.Now.Ticks}@email.com";
+            string newEmail2 = $"new{DateTime.Now.Ticks+1}@email.com";
             var user = CreateTestUser();
             user.Email = originalEmail;
             var manager = CreateManager();

@@ -297,5 +297,9 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-sample/MongoIdentitySample.Mvc/appsettings.local.json
-test/AspNetCore.Identity.MongoDbCore.IntegrationTests/appsettings.local.json
+
+# Local app settings for development
+**/**/appsettings.local.json
+
+# Output from the code coverage analysis
+**/**/coverage.json
