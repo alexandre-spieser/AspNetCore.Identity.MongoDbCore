@@ -67,11 +67,13 @@ namespace Microsoft.AspNetCore.Identity.Test
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             if (concurrentSetup)
             {
-                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepositoryConcurrent.Context).AddDefaultTokenProviders();
+                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepositoryConcurrent.Context)
+                        .AddDefaultTokenProviders();
             }
             else
             {
-                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context).AddDefaultTokenProviders();
+                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context)
+                        .AddDefaultTokenProviders();
             }
 
             services.AddLogging();

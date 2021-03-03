@@ -1,15 +1,15 @@
-﻿using AspNetCore.Identity.MongoDbCore.Infrastructure;
+﻿using System;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using MongoIdentitySample.Mvc.Models;
 using MongoIdentitySample.Mvc.Services;
-using Microsoft.Extensions.Logging;
-using System;
 
 namespace MongoIdentitySample.Mvc
 {
@@ -24,7 +24,7 @@ namespace MongoIdentitySample.Mvc
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 //per user config that is not committed to repo, use this to override settings (e.g. connection string) based on your local environment.
-                .AddJsonFile($"appsettings.local.json", optional: true); 
+                .AddJsonFile($"appsettings.local.json", optional: true);
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
@@ -48,16 +48,15 @@ namespace MongoIdentitySample.Mvc
 
 
             var builder = services.AddRazorPages();
-            
-            #if DEBUG
-                if(_env.IsDevelopment())
-                {
-                    builder.AddRazorRuntimeCompilation();
-                }
-            #endif
+
+#if DEBUG
+            if (_env.IsDevelopment())
+            {
+                builder.AddRazorRuntimeCompilation();
+            }
+#endif
 
             services.AddMvc();
-
             services.AddApplicationInsightsTelemetry();
 
             // Add application services.
@@ -71,7 +70,6 @@ namespace MongoIdentitySample.Mvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {
