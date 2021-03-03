@@ -1,0 +1,1907 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AspNetCore.Identity.MongoDbCore</name>
+    </assembly>
+    <members>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions">
+            <summary>
+            The extensions for an object that holds claims.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.ToMongoClaim(System.Security.Claims.Claim)">
+            <summary>
+            Creates a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoClaim"/> object from a <see cref="T:System.Security.Claims.Claim"/>
+            </summary>
+            <param name="claim">The <see cref="T:System.Security.Claims.Claim"/>.</param>
+            <returns>A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoClaim"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.ToClaim(AspNetCore.Identity.MongoDbCore.Models.MongoClaim)">
+            <summary>
+            Creates a <see cref="T:System.Security.Claims.Claim"/> object from a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoClaim"/>
+            </summary>
+            <param name="mongoClaim">A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoClaim"/>.</param>
+            <returns> A <see cref="T:System.Security.Claims.Claim"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.AddClaim(AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder,System.Security.Claims.Claim)">
+            <summary>
+            Adds a claim to a claim holder, implementing <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/>.
+            </summary>
+            <param name="claimHolder">The object holding claims.</param>
+            <param name="claim">The claim you want to add.</param>
+            <returns>Returns true if the claim was added.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.ReplaceClaim(AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder,System.Security.Claims.Claim,System.Security.Claims.Claim)">
+            <summary>
+            Replaces a claim on a claim holder, implementing <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/>.
+            </summary>
+            <param name="claimHolder">The object holding claims.</param>
+            <param name="claim">The claim you want to replace.</param>
+            <param name="newClaim">The new claim you want to set.</param>
+            <returns>Returns true if the claim was replaced.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.HasClaim(AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder,System.Security.Claims.Claim)">
+            <summary>
+            Checks if an object implementing <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/> has a claim.
+            </summary>
+            <param name="claimHolder">The object holding claims.</param>
+            <param name="claim">The claim you want to replace.</param>
+            <returns>Returns true if the claim is present, false otherwise.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.RemoveClaim(AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder,System.Security.Claims.Claim)">
+            <summary>
+            Removes a <see cref="T:System.Security.Claims.Claim"/> from the <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/>.
+            </summary>
+            <param name="claimHolder">The holder of the claim.</param>
+            <param name="claim">The <see cref="T:System.Security.Claims.Claim"/> to remove.</param>
+            <returns>True is the claim was successfully removed.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ClaimHolderExtensions.RemoveClaims(AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim})">
+            <summary>
+            Removes an IEnumerable of <see cref="T:System.Security.Claims.Claim"/>s from the <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/>.
+            </summary>
+            <param name="claimHolder">The holder of the claims.</param>
+            <param name="claims">The <see cref="T:System.Security.Claims.Claim"/>s to remove.</param>
+            <returns>True is the claims were successfully removed.</returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions">
+            <summary>
+            Extensions for the random number generator <see cref="T:System.Random"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random,System.Int64,System.Int64)">
+            <summary>
+            Returns a random long from min (inclusive) to max (exclusive)
+            </summary>
+            <param name="random">The given random instance</param>
+            <param name="min">The inclusive minimum bound</param>
+            <param name="max">The exclusive maximum bound.  Must be greater than min</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random,System.Int64)">
+            <summary>
+            Returns a random long from 0 (inclusive) to max (exclusive)
+            </summary>
+            <param name="random">The given random instance</param>
+            <param name="max">The exclusive maximum bound.  Must be greater than 0</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.RandomExtensions.NextLong(System.Random)">
+            <summary>
+            Returns a random long over all possible values of long (except long.MaxValue, similar to
+            random.Next())
+            </summary>
+            <param name="random">The given random instance</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension">
+            <summary>
+            Contains extension methods to <see cref="T:Microsoft.Extensions.DependencyInjection.IServiceCollection"/> for adding mongoDb Identity.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ConfigureMongoDbIdentityUserOnly``2(Microsoft.Extensions.DependencyInjection.IServiceCollection,AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration)">
+            <summary>
+            Configures the MongoDb Identity store adapters for the types of TUser only from <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/>.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+            <param name="services">The collection of service descriptors.</param>
+            <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ConfigureMongoDbIdentity``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration)">
+            <summary>
+            Configures the MongoDb Identity store adapters for the types of TUser only inheriting from <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser"/>.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <param name="services">The collection of service descriptors.</param>
+            <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ValidateMongoDbSettings(AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings)">
+            <summary>
+            Validates the MongoDbSettings
+            </summary>
+            <param name="mongoDbSettings"></param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.ServiceCollectionExtension.ConfigureMongoDbIdentity``3(Microsoft.Extensions.DependencyInjection.IServiceCollection,AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Configures the MongoDb Identity store adapters for the types of TUser and TRole.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+            <param name="services">The collection of service descriptors.</param>
+            <param name="mongoDbIdentityConfiguration">A configuration object of the AspNetCore.Identity.MongoDbCore package.</param>
+            <param name="mongoDbContext">An object representing a MongoDb connection.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Extensions.StringExtensions">
+            <summary>
+            A set of extensions for string.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Extensions.StringExtensions.ToTKey``1(System.String)">
+            <summary>
+            Converts the provided <paramref name="id"/> to a strongly typed key object.        
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.GlobalVariables">
+            <summary>
+            A class holding global variables.
+            </summary>
+        </member>
+        <member name="F:AspNetCore.Identity.MongoDbCore.GlobalVariables.Random">
+            <summary>
+            A random number generator.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration">
+            <summary>
+            A class used to perform a full configuration of the AspNetCore.Identity.MongoDbCore package.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration.MongoDbSettings">
+            <summary>
+            The settings for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbIdentityConfiguration.IdentityOptionsAction">
+            <summary>
+            An action against an <see cref="T:Microsoft.AspNetCore.Identity.IdentityOptions"/> to change the default identity settings.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings">
+            <summary>
+            A class representing the settings for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings.ConnectionString">
+            <summary>
+            The connection string for the MongoDb server.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoDbSettings.DatabaseName">
+            <summary>
+            The name of the MongoDb database where the identity data will be stored.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.IMongoRepository">
+            <summary>
+            The repository used in the MongoDb identity stores.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.IMongoRepository.DropCollection``1">
+            <summary>
+            Drops a collections.
+            </summary>
+            <typeparam name="TDocument">The type of the document used to define the collection name.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.IMongoRepository.DropCollection``1(System.String)">
+            <summary>
+            Drops a partitioned collection.
+            </summary>
+            <typeparam name="TDocument">The type of the document used to define the collection name.</typeparam>
+            <param name="partitionKey">The partition key of the collection.</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.IMongoRepository.Context">
+            <summary>
+            The MongoDb context.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository">
+            <summary>
+            The repository used in the MongoDb identity stores.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository.#ctor(System.String,System.String)">
+            <summary>
+            The constructor for <see cref="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository"/> requiring a connection string and a database name.
+            </summary>
+            <param name="connectionString">The connection string.</param>
+            <param name="databaseName">The database name.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository.#ctor(MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            The constructor for <see cref="T:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository"/> requiring a <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.
+            </summary>
+            <param name="mongoDbContext">A <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository.DropCollection``1">
+            <summary>
+            Drops a collections.
+            </summary>
+            <typeparam name="TDocument">The type of the document used to define the collection name.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository.DropCollection``1(System.String)">
+            <summary>
+            Drops a partitioned collection.
+            </summary>
+            <typeparam name="TDocument">The type of the document used to define the collection name.</typeparam>
+            <param name="partitionKey">The partition key of the collection.</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Infrastructure.MongoRepository.Context">
+            <summary>
+            The MongoDb context.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder">
+            <summary>
+            The interface for an object that holds claims.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder.Claims">
+            <summary>
+            The claims the <see cref="T:AspNetCore.Identity.MongoDbCore.Interfaces.IClaimHolder"/> has.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoClaim">
+            <summary>
+            A class representing the claims a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> can have.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoClaim.Type">
+            <summary>
+            The type of the claim.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoClaim.Value">
+            <summary>
+            The value of the claim.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoClaim.Issuer">
+            <summary>
+            The issuer of the claim.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityRole">
+            <summary>
+            A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/> where TKey is a <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityRole.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityRole"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityRole.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityRole"/>, taking a role name.
+            </summary>
+            <param name="roleName">The name of the role.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole">
+            <summary>
+            A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/> where TKey is a <see cref="T:System.Guid"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole"/>, taking a role name.
+            </summary>
+            <param name="roleName">The name of the role.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1">
+            <summary>
+            A document representing an <see cref="T:Microsoft.AspNetCore.Identity.IdentityRole`1"/> document.
+            </summary>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/>, taking a role name.
+            </summary>
+            <param name="roleName">The name of the role.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.InitializeFields">
+            <summary>
+            Initialize the field of the MongoIdentityRole
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.#ctor(System.String,`0)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1"/>, taking a role name and a primary key value.
+            </summary>
+            <param name="name">The name of the role.</param>
+            <param name="key">The value of the primary key</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.Version">
+            <summary>
+            The version of the role schema
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityRole`1.Claims">
+            <summary>
+            The claims associated to the role
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser">
+            <summary>
+            A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> where TKey is a <see cref="T:System.String"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser"/>, taking a username.
+            </summary>
+            <param name="userName">The name of the user.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser.#ctor(System.String,System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser"/>, taking a username and an email address.
+            </summary>
+            <param name="userName">The name of the user.</param>
+            <param name="email">The email address of the user.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser">
+            <summary>
+            A <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> where TKey is a <see cref="T:System.Guid"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser"/>
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser"/>, taking a username.
+            </summary>
+            <param name="userName">The name of the user.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser.#ctor(System.String,System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoDbIdentityUser"/>, taking a username and an email address.
+            </summary>
+            <param name="userName">The name of the user.</param>
+            <param name="email">The email address of the user.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1">
+            <summary>
+            A document representing an <see cref="T:Microsoft.AspNetCore.Identity.IdentityUser`1"/> document.
+            </summary>
+            <typeparam name="TKey">The type of the primary key.</typeparam>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.Version">
+            <summary>
+            The version of the schema do the <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> document.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.CreatedOn">
+            <summary>
+            The date and time at which this user was created, in UTC.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.Claims">
+            <summary>
+            The claims this user has.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.Roles">
+            <summary>
+            The role Ids of the roles that this user has.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.Logins">
+            <summary>
+            The list of <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/>s that this user has.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.Tokens">
+            <summary>
+            The list of <see cref="T:AspNetCore.Identity.MongoDbCore.Models.Token"/>s that this user has.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.#ctor">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/>, taking a username and an email address.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.#ctor(System.String,System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/>, taking a username and an email address.
+            </summary>
+            <param name="userName">The name of the user.</param>
+            <param name="email">The email address of the user.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.#ctor(System.String)">
+            <summary>
+            The constructor for a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/>, taking a username.
+            </summary>
+            <param name="userName">The name of the user.</param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.InitializeFields">
+            <summary>
+            Initialize the field of the MongoIdentityUser
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.SetVersion(System.Int32)">
+            <summary>
+            Sets the version of the schema for the <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> document.
+            </summary>
+            <param name="version"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.RemoveRole(`0)">
+            <summary>
+            Removes a role.
+            </summary>
+            <param name="roleId">The Id of the role you want to remove.</param>
+            <returns>True if the removal was successful.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.AddRole(`0)">
+            <summary>
+            Add a role to the user.
+            </summary>
+            <param name="roleId">The Id of the role you want to add.</param>
+            <returns>True if the addition was successful.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.AddLogin(Microsoft.AspNetCore.Identity.UserLoginInfo)">
+            <summary>
+            Adds a user login to the user.
+            </summary>
+            <param name="userLoginInfo">The <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/> you want to add.</param>
+            <returns>True if the addition was successful.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.HasLogin(Microsoft.AspNetCore.Identity.UserLoginInfo)">
+            <summary>
+            Checks if the user has the given <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/>.
+            </summary>
+            <param name="userLoginInfo">The <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/> we are looking for.</param>
+            <returns>True if the user has the given <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.RemoveLogin(Microsoft.AspNetCore.Identity.UserLoginInfo)">
+            <summary>
+            Removes a <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/> from the user.
+            </summary>
+            <param name="userLoginInfo"></param>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.GetUserLogin(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="loginProvider"></param>
+            <param name="providerKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.SetToken(Microsoft.AspNetCore.Identity.IdentityUserToken{`0},System.String)">
+            <summary>
+            Sets the token to a new value.
+            </summary>
+            <param name="tokenToset">The token you want to set you want to set.</param>
+            <param name="value">The value you want to set the token to.</param>
+            <returns>Returns true if the token was successfully set.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.GetToken(System.String,System.String)">
+            <summary>
+            Gets a token given the login provider and the name.
+            </summary>
+            <param name="loginProvider">The value for the login provider.</param>
+            <param name="name">The name of the token.</param>
+            <returns>An <see cref="T:Microsoft.AspNetCore.Identity.IdentityUser`1"/> if found, or null.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.HasToken(Microsoft.AspNetCore.Identity.IdentityUserToken{`0})">
+            <summary>
+            Checks if a user has the given token.
+            </summary>
+            <param name="token">The token you are looking for.</param>
+            <returns>True if the user has the given token</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.AddUserToken``1(``0)">
+            <summary>
+            Adds a token to the user.
+            </summary>
+            <typeparam name="TUserToken">The type of the token.</typeparam>
+            <param name="token">The token you want to add.</param>
+            <returns>True if the addition was successful.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1.RemoveUserToken``1(``0)">
+            <summary>
+            Removes a token from the user.
+            </summary>
+            <typeparam name="TUserToken">The type of the token.</typeparam>
+            <param name="token">The token you want to remove.</param>
+            <returns>True if the removal was successful.</returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Models.Token">
+            <summary>
+            A class representing the tokens a <see cref="T:AspNetCore.Identity.MongoDbCore.Models.MongoIdentityUser`1"/> can have.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.Token.LoginProvider">
+            <summary>
+            Gets or sets the LoginProvider this token is from.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.Token.Name">
+            <summary>
+            Gets or sets the name of the token. 
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Models.Token.Value">
+            <summary>
+            Gets or sets the token value.
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`1">
+            <summary>
+            Creates a new instance of a persistence store for roles.
+            </summary>
+            <typeparam name="TRole">The type of the class representing a role</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`1.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`1"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`2">
+            <summary>
+            Creates a new instance of a persistence store for roles.
+            </summary>
+            <typeparam name="TRole">The type of the class representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`2.#ctor(`1,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`2"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`3">
+            <summary>
+            Creates a new instance of a persistence store for roles.
+            </summary>
+            <typeparam name="TRole">The type of the class representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`3.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`3"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5">
+            <summary>
+            Creates a new instance of a persistence store for roles.
+            </summary>
+            <typeparam name="TRole">The type of the class representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+            <typeparam name="TUserRole">The type of the class representing a user role.</typeparam>
+            <typeparam name="TRoleClaim">The type of the class representing a role claim.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.Context">
+            <summary>
+            Gets the database context for this store.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.Roles">
+            <summary>
+            A navigation property for the roles the store contains.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.RolesCollection">
+            <summary>
+            A navigation property for the roles the store contains.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.ErrorDescriber">
+            <summary>
+            Gets or sets the <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/> for any error that occurred with the current operation.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.AutoSaveChanges">
+            <summary>
+            Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
+            </summary>
+            <value>
+            True if changes should be automatically persisted, otherwise false.
+            </value>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.CreateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Creates a new role in a store as an asynchronous operation.
+            </summary>
+            <param name="role">The role to create in the store.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the asynchronous query.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Updates a role in a store as an asynchronous operation.
+            </summary>
+            <param name="role">The role to update in the store.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the asynchronous query.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.DeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a role from the store as an asynchronous operation.
+            </summary>
+            <param name="role">The role to delete from the store.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that represents the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the asynchronous query.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.GetRoleIdAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Gets the ID for a role from the store as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose ID should be returned.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the ID of the role.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.GetRoleNameAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Gets the name of a role from the store as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose name should be returned.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the name of the role.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.SetRoleNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the name of a role in the store as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose name should be set.</param>
+            <param name="roleName">The name of the role.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.ConvertIdFromString(System.String)">
+            <summary>
+            Converts the provided <paramref name="id"/> to a strongly typed key object.
+            </summary>
+            <param name="id">The id to convert.</param>
+            <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.ConvertIdToString(`2)">
+            <summary>
+            Converts the provided <paramref name="id"/> to its string representation.
+            </summary>
+            <param name="id">The id to convert.</param>
+            <returns>An <see cref="T:System.String"/> representation of the provided <paramref name="id"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.FindByIdAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds the role who has the specified ID as an asynchronous operation.
+            </summary>
+            <param name="id">The role ID to look for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that result of the look up.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.FindByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds the role who has the specified normalized name as an asynchronous operation.
+            </summary>
+            <param name="normalizedName">The normalized role name to look for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that result of the look up.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.GetNormalizedRoleNameAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get a role's normalized name as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose normalized name should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the name of the role.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.SetNormalizedRoleNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Set a role's normalized name as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose normalized name should be set.</param>
+            <param name="normalizedName">The normalized name to set</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.ThrowIfDisposed">
+            <summary>
+            Throws if this class has been disposed.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.Dispose">
+            <summary>
+            Dispose the stores
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.GetClaimsAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get the claims associated with the specified <paramref name="role"/> as an asynchronous operation.
+            </summary>
+            <param name="role">The role whose claims should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the claims granted to a role.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.AddClaimAsync(`0,System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Adds the <paramref name="claim"/> given to the specified <paramref name="role"/>.
+            </summary>
+            <param name="role">The role to add the claim to.</param>
+            <param name="claim">The claim to add to the role.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.RemoveClaimAsync(`0,System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Removes the <paramref name="claim"/> given from the specified <paramref name="role"/>.
+            </summary>
+            <param name="role">The role to remove the claim from.</param>
+            <param name="claim">The claim to remove from the role.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoRoleStore`5.CreateRoleClaim(`0,System.Security.Claims.Claim)">
+            <summary>
+            Creates a entity representing a role claim.
+            </summary>
+            <param name="role">The associated role.</param>
+            <param name="claim">The associated claim.</param>
+            <returns>The role claim entity.</returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`1">
+            <summary>
+            Creates a new instance of a persistence store for the specified user type.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`1.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`1"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`2">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`2.#ctor(`1,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`2"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`3">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`3.#ctor(`1,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`3"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.IMongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+            <typeparam name="TUserClaim">The type representing a claim.</typeparam>
+            <typeparam name="TUserLogin">The type representing a user external login.</typeparam>
+            <typeparam name="TUserToken">The type representing a user token.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.#ctor(`1,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Creates a new instance of the store.
+            </summary>
+            <param name="context">The context used to access the store.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/> used to describe store errors.</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.Context">
+            <summary>
+            Gets the database context for this store.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.AutoSaveChanges">
+            <summary>
+            Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
+            </summary>
+            <value>
+            True if changes should be automatically persisted, otherwise false.
+            </value>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SaveChanges(System.Threading.CancellationToken)">
+            <summary>Saves the current store.</summary>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.CreateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Creates the specified <paramref name="user"/> in the user store.
+            </summary>
+            <param name="user">The user to create.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the creation operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Updates the specified <paramref name="user"/> in the user store.
+            </summary>
+            <param name="user">The user to update.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the update operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.DeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the specified <paramref name="user"/> from the user store.
+            </summary>
+            <param name="user">The user to delete.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the update operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindByIdAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds and returns a user, if any, who has the specified <paramref name="userId"/>.
+            </summary>
+            <param name="userId">The user ID to search for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="userId"/> if it exists.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds and returns a user, if any, who has the specified normalized user name.
+            </summary>
+            <param name="normalizedUserName">The normalized user name to search for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="normalizedUserName"/> if it exists.
+            </returns>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.Users">
+            <summary>
+            A navigation property for the users the store contains.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindUserAsync(`2,System.Threading.CancellationToken)">
+            <summary>
+            Return a user with the matching userId if it exists.
+            </summary>
+            <param name="userId">The user's id.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindUserLoginAsync(`2,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Return a user login with the matching userId, provider, providerKey if it exists.
+            </summary>
+            <param name="userId">The user's id.</param>
+            <param name="loginProvider">The login provider name.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user login if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindUserLoginAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Return a user login with  provider, providerKey if it exists.
+            </summary>
+            <param name="loginProvider">The login provider name.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user login if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.GetClaimsAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
+            </summary>
+            <param name="user">The user whose claims should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the claims granted to a user.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.AddClaimsAsync(`0,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Threading.CancellationToken)">
+            <summary>
+            Adds the <paramref name="claims"/> given to the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to add the claim to.</param>
+            <param name="claims">The claim to add to the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.ReplaceClaimAsync(`0,System.Security.Claims.Claim,System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Replaces the <paramref name="claim"/> on the specified <paramref name="user"/>, with the <paramref name="newClaim"/>.
+            </summary>
+            <param name="user">The user to replace the claim on.</param>
+            <param name="claim">The claim replace.</param>
+            <param name="newClaim">The new claim replacing the <paramref name="claim"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.RemoveClaimsAsync(`0,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Threading.CancellationToken)">
+            <summary>
+            Removes the <paramref name="claims"/> given from the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to remove the claims from.</param>
+            <param name="claims">The claim to remove.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.AddLoginAsync(`0,Microsoft.AspNetCore.Identity.UserLoginInfo,System.Threading.CancellationToken)">
+            <summary>
+            Adds the <paramref name="login"/> given to the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to add the login to.</param>
+            <param name="login">The login to add to the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.RemoveLoginAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to remove the login from.</param>
+            <param name="loginProvider">The login to remove from the user.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.GetLoginsAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the associated logins for the specified <param ref="user"/>.
+            </summary>
+            <param name="user">The user whose associated logins to retrieve.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> for the asynchronous operation, containing a list of <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindByLoginAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the user associated with the specified login provider and login provider key.
+            </summary>
+            <param name="loginProvider">The login provider who provided the <paramref name="providerKey"/>.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> for the asynchronous operation, containing the user, if any which matched the specified login provider and key.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindByEmailAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the user, if any, associated with the specified, normalized email address.
+            </summary>
+            <param name="normalizedEmail">The normalized email address to return the user for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The task object containing the results of the asynchronous lookup operation, the user if any associated with the specified normalized email address.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.GetUsersForClaimAsync(System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all users with the specified claim.
+            </summary>
+            <param name="claim">The claim whose users should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> contains a list of users, if any, that contain the specified claim. 
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.FindTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Find a user token if it exists.
+            </summary>
+            <param name="user">The token owner.</param>
+            <param name="loginProvider">The login provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user token if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.AddUserTokenAsync(`5)">
+            <summary>
+            Add a new user token.
+            </summary>
+            <param name="token">The token to be added.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.RemoveUserTokenAsync(`5)">
+            <summary>
+            Remove a new user token.
+            </summary>
+            <param name="token">The token to be removed.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetUserNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the given <paramref name="userName" /> for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose name should be set.</param>
+            <param name="userName">The user name to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetNormalizedUserNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the given normalized name for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose name should be set.</param>
+            <param name="normalizedName">The normalized name to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetPasswordHashAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the password hash for a user.
+            </summary>
+            <param name="user">The user to set the password hash for.</param>
+            <param name="passwordHash">The password hash to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetEmailConfirmedAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets the flag indicating whether the specified <paramref name="user"/>'s email address has been confirmed or not.
+            </summary>
+            <param name="user">The user whose email confirmation status should be set.</param>
+            <param name="confirmed">A flag indicating if the email address has been confirmed, true if the address is confirmed otherwise false.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetEmailAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the <paramref name="email"/> address for a <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose email should be set.</param>
+            <param name="email">The email to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetNormalizedEmailAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the normalized email for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose email address to set.</param>
+            <param name="normalizedEmail">The normalized email to set for the specified <paramref name="user"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetLockoutEndDateAsync(`0,System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Locks out a user until the specified end date has passed. Setting a end date in the past immediately unlocks a user.
+            </summary>
+            <param name="user">The user whose lockout date should be set.</param>
+            <param name="lockoutEnd">The <see cref="T:System.DateTimeOffset"/> after which the <paramref name="user"/>'s lockout should end.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.IncrementAccessFailedCountAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Records that a failed access has occurred, incrementing the failed access count.
+            </summary>
+            <param name="user">The user whose cancellation count should be incremented.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the incremented failed access count.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.ResetAccessFailedCountAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Resets a user's failed access count.
+            </summary>
+            <param name="user">The user whose failed access count should be reset.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+            <remarks>This is typically called after the account is successfully accessed.</remarks>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetLockoutEnabledAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Set the flag indicating if the specified <paramref name="user"/> can be locked out..
+            </summary>
+            <param name="user">The user whose ability to be locked out should be set.</param>
+            <param name="enabled">A flag indicating if lock out can be enabled for the specified <paramref name="user"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetPhoneNumberAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the telephone number for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose telephone number should be set.</param>
+            <param name="phoneNumber">The telephone number to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetPhoneNumberConfirmedAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets a flag indicating if the specified <paramref name="user"/>'s phone number has been confirmed..
+            </summary>
+            <param name="user">The user whose telephone number confirmation status should be set.</param>
+            <param name="confirmed">A flag indicating whether the user's telephone number has been confirmed.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetSecurityStampAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the provided security <paramref name="stamp"/> for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose security stamp should be set.</param>
+            <param name="stamp">The security stamp to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetTwoFactorEnabledAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets a flag indicating whether the specified <paramref name="user"/> has two factor authentication enabled or not,
+            as an asynchronous operation.
+            </summary>
+            <param name="user">The user whose two factor authentication enabled status should be set.</param>
+            <param name="enabled">A flag indicating whether the specified <paramref name="user"/> has two factor authentication enabled.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetTokenAsync(`0,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the token value for a particular user.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="value">The value of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.RemoveTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a token for a user.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.GetTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns the token value.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.SetAuthenticatorKeyAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the authenticator key for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose authenticator key should be set.</param>
+            <param name="key">The authenticator key to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.GetAuthenticatorKeyAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get the authenticator key for the specified <paramref name="user" />.
+            </summary>
+            <param name="user">The user whose security stamp should be set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the security stamp for the specified <paramref name="user"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.CountCodesAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Returns how many recovery code are still valid for a user.
+            </summary>
+            <param name="user">The user who owns the recovery code.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The number of valid recovery codes for the user..</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.ReplaceCodesAsync(`0,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Updates the recovery codes for the user while invalidating any previous recovery codes.
+            </summary>
+            <param name="user">The user to store new recovery codes for.</param>
+            <param name="recoveryCodes">The new recovery codes for the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The new recovery codes for the user.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserOnlyStore`6.RedeemCodeAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns whether a recovery code is valid for a user. Note: recovery codes are only valid
+            once, and will be invalid after use.
+            </summary>
+            <param name="user">The user who owns the recovery code.</param>
+            <param name="code">The recovery code to use.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>True if the recovery code was found for the user.</returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserStore">
+            <summary>
+            Represents a new instance of a persistence store for users, using the default implementation
+            of <see cref="T:Microsoft.AspNetCore.Identity.IdentityUser`1"/> with a string as a primary key.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserStore"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.MongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`1">
+            <summary>
+            Creates a new instance of a persistence store for the specified user type.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`1.#ctor(MongoDbGenericRepository.IMongoDbContext,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`1"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.MongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`3">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`3.#ctor(`2,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`3"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.MongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`4">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`4.#ctor(`2,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Constructs a new instance of <see cref="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`4"/>.
+            </summary>
+            <param name="context">The <see cref="T:MongoDbGenericRepository.MongoDbContext"/>.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/>.</param>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.MongoUserStore`9">
+            <summary>
+            Represents a new instance of a persistence store for the specified user and role types.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TContext">The type of the data context class used to access the store.</typeparam>
+            <typeparam name="TKey">The type of the primary key for a role.</typeparam>
+            <typeparam name="TUserClaim">The type representing a claim.</typeparam>
+            <typeparam name="TUserRole">The type representing a user role.</typeparam>
+            <typeparam name="TUserLogin">The type representing a user external login.</typeparam>
+            <typeparam name="TUserToken">The type representing a user token.</typeparam>
+            <typeparam name="TRoleClaim">The type representing a role claim.</typeparam>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.#ctor(`2,Microsoft.AspNetCore.Identity.IdentityErrorDescriber)">
+            <summary>
+            Creates a new instance of the store.
+            </summary>
+            <param name="context">The context used to access the store.</param>
+            <param name="describer">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityErrorDescriber"/> used to describe store errors.</param>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.Context">
+            <summary>
+            Gets the database context for this store.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.AutoSaveChanges">
+            <summary>
+            Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.
+            </summary>
+            <value>
+            True if changes should be automatically persisted, otherwise false.
+            </value>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SaveChanges(System.Threading.CancellationToken)">
+            <summary>Saves the current store.</summary>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.CreateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Creates the specified <paramref name="user"/> in the user store.
+            </summary>
+            <param name="user">The user to create.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the creation operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.UpdateAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Updates the specified <paramref name="user"/> in the user store.
+            </summary>
+            <param name="user">The user to update.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the update operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.DeleteAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Deletes the specified <paramref name="user"/> from the user store.
+            </summary>
+            <param name="user">The user to delete.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the <see cref="T:Microsoft.AspNetCore.Identity.IdentityResult"/> of the update operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindByIdAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds and returns a user, if any, who has the specified <paramref name="userId"/>.
+            </summary>
+            <param name="userId">The user ID to search for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="userId"/> if it exists.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.ConvertIdFromString(System.String)">
+            <summary>
+            Converts the provided <paramref name="id"/> to a strongly typed key object.
+            </summary>
+            <param name="id">The id to convert.</param>
+            <returns>An instance of <typeparamref name="TKey"/> representing the provided <paramref name="id"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindByNameAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Finds and returns a user, if any, who has the specified normalized user name.
+            </summary>
+            <param name="normalizedUserName">The normalized user name to search for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the user matching the specified <paramref name="normalizedUserName"/> if it exists.
+            </returns>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.Users">
+            <summary>
+            A navigation property for the users the store contains.
+            </summary>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindRoleAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Return a role with the normalized name if it exists.
+            </summary>
+            <param name="normalizedRoleName">The normalized role name.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The role if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindUserRoleAsync(`3,`3,System.Threading.CancellationToken)">
+            <summary>
+            Return a user role for the userId and roleId if it exists.
+            </summary>
+            <param name="userId">The user's id.</param>
+            <param name="roleId">The role's id.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user role if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindUserAsync(`3,System.Threading.CancellationToken)">
+            <summary>
+            Return a user with the matching userId if it exists.
+            </summary>
+            <param name="userId">The user's id.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindUserLoginAsync(`3,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Return a user login with the matching userId, provider, providerKey if it exists.
+            </summary>
+            <param name="userId">The user's id.</param>
+            <param name="loginProvider">The login provider name.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user login if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindUserLoginAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Return a user login with  provider, providerKey if it exists.
+            </summary>
+            <param name="loginProvider">The login provider name.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user login if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.AddToRoleAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Adds the given <paramref name="normalizedRoleName"/> to the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to add the role to.</param>
+            <param name="normalizedRoleName">The role to add.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RemoveFromRoleAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes the given <paramref name="normalizedRoleName"/> from the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to remove the role from.</param>
+            <param name="normalizedRoleName">The role to remove.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetRolesAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the roles the specified <paramref name="user"/> is a member of.
+            </summary>
+            <param name="user">The user whose roles should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the roles the user is a member of.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.IsInRoleAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns a flag indicating if the specified user is a member of the give <paramref name="normalizedRoleName"/>.
+            </summary>
+            <param name="user">The user whose role membership should be checked.</param>
+            <param name="normalizedRoleName">The role to check membership of</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> containing a flag indicating if the specified user is a member of the given group. If the 
+            user is a member of the group the returned value with be true, otherwise it will be false.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetClaimsAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get the claims associated with the specified <paramref name="user"/> as an asynchronous operation.
+            </summary>
+            <param name="user">The user whose claims should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>A <see cref="T:System.Threading.Tasks.Task`1"/> that contains the claims granted to a user.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.AddClaimsAsync(`0,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Threading.CancellationToken)">
+            <summary>
+            Adds the <paramref name="claims"/> given to the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to add the claim to.</param>
+            <param name="claims">The claim to add to the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.ReplaceClaimAsync(`0,System.Security.Claims.Claim,System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Replaces the <paramref name="claim"/> on the specified <paramref name="user"/>, with the <paramref name="newClaim"/>.
+            </summary>
+            <param name="user">The user to replace the claim on.</param>
+            <param name="claim">The claim replace.</param>
+            <param name="newClaim">The new claim replacing the <paramref name="claim"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RemoveClaimsAsync(`0,System.Collections.Generic.IEnumerable{System.Security.Claims.Claim},System.Threading.CancellationToken)">
+            <summary>
+            Removes the <paramref name="claims"/> given from the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to remove the claims from.</param>
+            <param name="claims">The claim to remove.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.AddLoginAsync(`0,Microsoft.AspNetCore.Identity.UserLoginInfo,System.Threading.CancellationToken)">
+            <summary>
+            Adds the <paramref name="login"/> given to the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to add the login to.</param>
+            <param name="login">The login to add to the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RemoveLoginAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Removes the <paramref name="loginProvider"/> given from the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user to remove the login from.</param>
+            <param name="loginProvider">The login to remove from the user.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetLoginsAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the associated logins for the specified <param ref="user"/>.
+            </summary>
+            <param name="user">The user whose associated logins to retrieve.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> for the asynchronous operation, containing a list of <see cref="T:Microsoft.AspNetCore.Identity.UserLoginInfo"/> for the specified <paramref name="user"/>, if any.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindByLoginAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves the user associated with the specified login provider and login provider key.
+            </summary>
+            <param name="loginProvider">The login provider who provided the <paramref name="providerKey"/>.</param>
+            <param name="providerKey">The key provided by the <paramref name="loginProvider"/> to identify a user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> for the asynchronous operation, containing the user, if any which matched the specified login provider and key.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindByEmailAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Gets the user, if any, associated with the specified, normalized email address.
+            </summary>
+            <param name="normalizedEmail">The normalized email address to return the user for.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The task object containing the results of the asynchronous lookup operation, the user if any associated with the specified normalized email address.
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetUsersForClaimAsync(System.Security.Claims.Claim,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all users with the specified claim.
+            </summary>
+            <param name="claim">The claim whose users should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> contains a list of users, if any, that contain the specified claim. 
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetUsersInRoleAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Retrieves all users in the specified role.
+            </summary>
+            <param name="normalizedRoleName">The role whose users should be retrieved.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>
+            The <see cref="T:System.Threading.Tasks.Task"/> contains a list of users, if any, that are in the specified role. 
+            </returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.FindTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Find a user token if it exists.
+            </summary>
+            <param name="user">The token owner.</param>
+            <param name="loginProvider">The login provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The user token if it exists.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.AddUserTokenAsync(`7)">
+            <summary>
+            Add a new user token.
+            </summary>
+            <param name="token">The token to be added.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RemoveUserTokenAsync(`7)">
+            <summary>
+            Remove a new user token.
+            </summary>
+            <param name="token">The token to be removed.</param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetUserNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the given <paramref name="userName" /> for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose name should be set.</param>
+            <param name="userName">The user name to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetNormalizedUserNameAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the given normalized name for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose name should be set.</param>
+            <param name="normalizedName">The normalized name to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetPasswordHashAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the password hash for a user.
+            </summary>
+            <param name="user">The user to set the password hash for.</param>
+            <param name="passwordHash">The password hash to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetEmailConfirmedAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets the flag indicating whether the specified <paramref name="user"/>'s email address has been confirmed or not.
+            </summary>
+            <param name="user">The user whose email confirmation status should be set.</param>
+            <param name="confirmed">A flag indicating if the email address has been confirmed, true if the address is confirmed otherwise false.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetEmailAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the <paramref name="email"/> address for a <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose email should be set.</param>
+            <param name="email">The email to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetNormalizedEmailAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the normalized email for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose email address to set.</param>
+            <param name="normalizedEmail">The normalized email to set for the specified <paramref name="user"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The task object representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetLockoutEndDateAsync(`0,System.Nullable{System.DateTimeOffset},System.Threading.CancellationToken)">
+            <summary>
+            Locks out a user until the specified end date has passed. Setting a end date in the past immediately unlocks a user.
+            </summary>
+            <param name="user">The user whose lockout date should be set.</param>
+            <param name="lockoutEnd">The <see cref="T:System.DateTimeOffset"/> after which the <paramref name="user"/>'s lockout should end.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.IncrementAccessFailedCountAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Records that a failed access has occurred, incrementing the failed access count.
+            </summary>
+            <param name="user">The user whose cancellation count should be incremented.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the incremented failed access count.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.ResetAccessFailedCountAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Resets a user's failed access count.
+            </summary>
+            <param name="user">The user whose failed access count should be reset.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+            <remarks>This is typically called after the account is successfully accessed.</remarks>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetLockoutEnabledAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Set the flag indicating if the specified <paramref name="user"/> can be locked out..
+            </summary>
+            <param name="user">The user whose ability to be locked out should be set.</param>
+            <param name="enabled">A flag indicating if lock out can be enabled for the specified <paramref name="user"/>.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetPhoneNumberAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the telephone number for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose telephone number should be set.</param>
+            <param name="phoneNumber">The telephone number to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetPhoneNumberConfirmedAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets a flag indicating if the specified <paramref name="user"/>'s phone number has been confirmed..
+            </summary>
+            <param name="user">The user whose telephone number confirmation status should be set.</param>
+            <param name="confirmed">A flag indicating whether the user's telephone number has been confirmed.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetSecurityStampAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the provided security <paramref name="stamp"/> for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose security stamp should be set.</param>
+            <param name="stamp">The security stamp to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetTwoFactorEnabledAsync(`0,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Sets a flag indicating whether the specified <paramref name="user"/> has two factor authentication enabled or not,
+            as an asynchronous operation.
+            </summary>
+            <param name="user">The user whose two factor authentication enabled status should be set.</param>
+            <param name="enabled">A flag indicating whether the specified <paramref name="user"/> has two factor authentication enabled.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetTokenAsync(`0,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the token value for a particular user.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="value">The value of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RemoveTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Deletes a token for a user.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetTokenAsync(`0,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns the token value.
+            </summary>
+            <param name="user">The user.</param>
+            <param name="loginProvider">The authentication provider for the token.</param>
+            <param name="name">The name of the token.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.SetAuthenticatorKeyAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Sets the authenticator key for the specified <paramref name="user"/>.
+            </summary>
+            <param name="user">The user whose authenticator key should be set.</param>
+            <param name="key">The authenticator key to set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.GetAuthenticatorKeyAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Get the authenticator key for the specified <paramref name="user" />.
+            </summary>
+            <param name="user">The user whose security stamp should be set.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The <see cref="T:System.Threading.Tasks.Task"/> that represents the asynchronous operation, containing the security stamp for the specified <paramref name="user"/>.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.CountCodesAsync(`0,System.Threading.CancellationToken)">
+            <summary>
+            Returns how many recovery code are still valid for a user.
+            </summary>
+            <param name="user">The user who owns the recovery code.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The number of valid recovery codes for the user..</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.ReplaceCodesAsync(`0,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+            <summary>
+            Updates the recovery codes for the user while invalidating any previous recovery codes.
+            </summary>
+            <param name="user">The user to store new recovery codes for.</param>
+            <param name="recoveryCodes">The new recovery codes for the user.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>The new recovery codes for the user.</returns>
+        </member>
+        <member name="M:AspNetCore.Identity.MongoDbCore.MongoUserStore`9.RedeemCodeAsync(`0,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Returns whether a recovery code is valid for a user. Note: recovery codes are only valid
+            once, and will be invalid after use.
+            </summary>
+            <param name="user">The user who owns the recovery code.</param>
+            <param name="code">The recovery code to use.</param>
+            <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> used to propagate notifications that the operation should be canceled.</param>
+            <returns>True if the recovery code was found for the user.</returns>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor">
+            <summary>
+            Represents the password hashing options
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.PasswordHasherOptionsAccessor.Value">
+            <summary>
+            Gets options which use the IdentityV3 compat mode, and set the iteration count to 200000 PBKDF2-SHA256 iterations 
+            (roughly 200ms of work)
+            </summary>
+        </member>
+        <member name="T:AspNetCore.Identity.MongoDbCore.Resources">
+            <summary>
+              Une classe de ressource fortement typée destinée, entre autres, à la consultation des chaînes localisées.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.ResourceManager">
+            <summary>
+              Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.Culture">
+            <summary>
+              Remplace la propriété CurrentUICulture du thread actuel pour toutes
+              les recherches de ressources à l'aide de cette classe de ressource fortement typée.
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.NotIdentityRole">
+            <summary>
+              Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a role that derives from MongoIdentityRole&lt;TKey, TUserRole, TRoleClaim&gt;..
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.NotIdentityUser">
+            <summary>
+              Recherche une chaîne localisée semblable à AddMongoDbCoreStores can only be called with a user that derives from MongoIdentityUser&lt;TKey, TUserClaim, TUserRole, TUserLogin, TUserToken&gt;..
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.RoleNotFound">
+            <summary>
+              Recherche une chaîne localisée semblable à Role {0} does not exist..
+            </summary>
+        </member>
+        <member name="P:AspNetCore.Identity.MongoDbCore.Resources.ValueCannotBeNullOrEmpty">
+            <summary>
+              Recherche une chaîne localisée semblable à Value cannot be null or empty..
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions">
+            <summary>
+            Contains extension methods to <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> for adding MongoDb stores.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``1(Microsoft.AspNetCore.Identity.IdentityBuilder,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TContext">The MongoDb database context to use.</typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="mongoDbContext">A mongoDbContext</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``3(Microsoft.AspNetCore.Identity.IdentityBuilder,System.String,System.String)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="connectionString"></param>
+            <param name="databaseName"></param>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.MongoDbIdentityBuilderExtensions.AddMongoDbStores``3(Microsoft.AspNetCore.Identity.IdentityBuilder,MongoDbGenericRepository.IMongoDbContext)">
+            <summary>
+            Adds an MongoDb implementation of identity information stores.
+            </summary>
+            <typeparam name="TUser">The type representing a user.</typeparam>
+            <typeparam name="TRole">The type representing a role.</typeparam>
+            <typeparam name="TKey">The type of the primary key of the identity document.</typeparam>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Identity.IdentityBuilder"/> instance this method extends.</param>
+            <param name="mongoDbContext"></param>
+        </member>
+    </members>
+</doc>

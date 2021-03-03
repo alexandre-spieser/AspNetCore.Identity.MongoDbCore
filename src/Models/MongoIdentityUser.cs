@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using MongoDbGenericRepository.Models;
-using System.Linq;
-using MongoDB.Driver;
 using AspNetCore.Identity.MongoDbCore.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using AspNetCore.Identity.MongoDbCore.Extensions;
+using MongoDB.Driver;
+using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AspNetCore.Identity.MongoDbCore.Models
 {
@@ -157,7 +156,7 @@ namespace AspNetCore.Identity.MongoDbCore.Models
         /// <returns></returns>
         public virtual MongoIdentityUser<TKey> SetVersion(int version)
         {
-            Version = 1;
+            Version = version;
             return this;
         }
 

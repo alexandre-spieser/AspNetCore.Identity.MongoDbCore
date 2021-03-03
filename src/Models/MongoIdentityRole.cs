@@ -1,5 +1,4 @@
-﻿using AspNetCore.Identity.MongoDbCore.Extensions;
-using AspNetCore.Identity.MongoDbCore.Interfaces;
+﻿using AspNetCore.Identity.MongoDbCore.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using MongoDbGenericRepository.Models;
 using MongoDbGenericRepository.Utils;
@@ -94,7 +93,7 @@ namespace AspNetCore.Identity.MongoDbCore.Models
         {
             InitializeFields();
             Id = key;
-            Name = Name;
+            Name = name;
         }
 
         /// <summary>
