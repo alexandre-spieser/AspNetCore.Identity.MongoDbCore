@@ -6,23 +6,23 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Test;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Xunit;
-using AspNetCore.Identity.MongoDbCore.Models;
-using AspNetCore.Identity.MongoDbCore.Extensions;
 using MongoDB.Driver;
-using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
 using MongoDbGenericRepository;
-using Microsoft.AspNetCore.Identity;
+using Xunit;
 
 namespace AspNetCore.Identity.MongoDbCore.Test
 {
     // TODO: Add test variation with non IdentityDbContext
 
-    public abstract class MongoDbStoreTestBase<TUser, TRole, TKey> : IdentitySpecificationTestBase<TUser, TRole, TKey>, 
+    public abstract class MongoDbStoreTestBase<TUser, TRole, TKey> : IdentitySpecificationTestBase<TUser, TRole, TKey>,
         IClassFixture<MongoDatabaseFixture<TUser, TRole, TKey>>
         where TUser : MongoIdentityUser<TKey>, new()
         where TRole : MongoIdentityRole<TKey>, new()
@@ -39,9 +39,12 @@ namespace AspNetCore.Identity.MongoDbCore.Test
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // configure the default type name
-            services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context);
+            services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context)
+                    .AddDefaultTokenProviders();
 
+            services.AddAuthentication();
             services.AddLogging();
+
             services.AddSingleton<ILogger<UserManager<TUser>>>(new TestLogger<UserManager<TUser>>());
             services.AddSingleton<ILogger<RoleManager<TRole>>>(new TestLogger<RoleManager<TRole>>());
         }

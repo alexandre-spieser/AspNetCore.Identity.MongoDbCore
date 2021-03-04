@@ -7,14 +7,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AspNetCore.Identity.MongoDbCore.Extensions;
+using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Xunit;
-using AspNetCore.Identity.MongoDbCore.Models;
-using AspNetCore.Identity.MongoDbCore.Extensions;
-using AspNetCore.Identity.MongoDbCore.Infrastructure;
-using AspNetCore.Identity.MongoDbCore.IntegrationTests.Infrastructure;
 
 namespace Microsoft.AspNetCore.Identity.Test
 {
@@ -48,7 +48,10 @@ namespace Microsoft.AspNetCore.Identity.Test
         protected override void SetupIdentityServices(IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context);
+            services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context)
+                    .AddDefaultTokenProviders();
+            services.AddAuthentication();
+
             services.AddLogging();
             services.AddSingleton<ILogger<UserManager<TUser>>>(new TestLogger<UserManager<TUser>>());
             services.AddSingleton<ILogger<RoleManager<TRole>>>(new TestLogger<RoleManager<TRole>>());
@@ -64,14 +67,17 @@ namespace Microsoft.AspNetCore.Identity.Test
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             if (concurrentSetup)
             {
-                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepositoryConcurrent.Context);
+                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepositoryConcurrent.Context)
+                        .AddDefaultTokenProviders();
             }
             else
             {
-                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context);
+                services.ConfigureMongoDbIdentity<TUser, TRole, TKey>(Container.MongoDbIdentityConfiguration, Container.MongoRepository.Context)
+                        .AddDefaultTokenProviders();
             }
-            
+
             services.AddLogging();
+            services.AddAuthentication();
             services.AddSingleton<ILogger<UserManager<TUser>>>(new TestLogger<UserManager<TUser>>());
             services.AddSingleton<ILogger<RoleManager<TRole>>>(new TestLogger<RoleManager<TRole>>());
         }
@@ -104,7 +110,7 @@ namespace Microsoft.AspNetCore.Identity.Test
                 services = new ServiceCollection();
             }
 
-            if(context == null)
+            if (context == null)
             {
                 SetupIdentityServices(services);
             }
@@ -112,7 +118,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             {
                 SetupIdentityServices(services, true);
             }
-            
+
             return services.BuildServiceProvider().GetService<RoleManager<TRole>>();
         }
 

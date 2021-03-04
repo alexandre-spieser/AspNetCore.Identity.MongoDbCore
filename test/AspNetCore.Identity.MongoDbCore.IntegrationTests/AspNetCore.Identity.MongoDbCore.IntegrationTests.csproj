@@ -7,23 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.12" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.12" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.12" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.12" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.12" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
     <PackageReference Include="MongoDbGenericRepository" Version="1.4.3" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="coverlet.msbuild" Version="2.9.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="dotnet-reportgenerator-cli" Version="4.6.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -34,5 +32,9 @@
     <Content Include="appsettings*.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AspNetCore.Identity.MongoDbCore.csproj" />
   </ItemGroup>
 </Project>
