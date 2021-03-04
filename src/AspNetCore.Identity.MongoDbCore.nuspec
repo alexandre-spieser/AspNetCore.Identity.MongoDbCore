@@ -15,16 +15,16 @@
     <tags>aspnetcore mongo mongodb identity membership</tags>
 	<dependencies>
         <group targetFramework="netstandard2.1">
-            <dependency id="Microsoft.Extensions.Identity.Core" version="3.1.12" />
-            <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.12" />
-            <dependency id="MongoDB.Driver" version="2.9.3" />
-            <dependency id="MongoDbGenericRepository" version="1.4.1" />
+          <dependency id="Microsoft.Extensions.Identity.Core" version="3.1.8" />
+          <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.8" />
+          <dependency id="MongoDB.Driver" version="2.9.3" />
+          <dependency id="MongoDbGenericRepository" version="1.4.5" />
         </group>
         <group targetFramework="netcoreapp3.1">
-          <dependency id="Microsoft.Extensions.Identity.Core" version="3.1.12" />
-          <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.12" />
-          <dependency id="MongoDB.Driver" version="2.*" />
-          <dependency id="MongoDbGenericRepository" version="1.*" />
+          <dependency id="Microsoft.Extensions.Identity.Core" version="3.1.8" />
+          <dependency id="Microsoft.Extensions.Identity.Stores" version="3.1.8" />
+          <dependency id="MongoDB.Driver" version="2.9.3" />
+          <dependency id="MongoDbGenericRepository" version="1.4.5" />
         </group>
 	</dependencies>
   </metadata>
