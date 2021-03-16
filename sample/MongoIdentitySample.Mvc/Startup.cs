@@ -41,10 +41,28 @@ namespace MongoIdentitySample.Mvc
 
             services.AddSingleton<MongoDbSettings>(settings);
 
-            services.AddIdentity<ApplicationUser, MongoIdentityRole>()
+            services.AddAuthentication(o =>
+            {
+                o.DefaultScheme = IdentityConstants.ApplicationScheme;
+                o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            })
+            .AddIdentityCookies(o => { });
+
+            services.AddIdentityCore<ApplicationUser>()
+                    .AddRoles<MongoIdentityRole>()
                     .AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(settings.ConnectionString, settings.DatabaseName)
                     .AddSignInManager()
                     .AddDefaultTokenProviders();
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Account/Login";
+                options.SlidingExpiration = true;
+            });
 
 
             var builder = services.AddRazorPages();
@@ -70,7 +88,6 @@ namespace MongoIdentitySample.Mvc
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             else
             {

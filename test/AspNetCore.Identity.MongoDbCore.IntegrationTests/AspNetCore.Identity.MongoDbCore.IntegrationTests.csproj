@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.12" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="3.1.12" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="3.1.12" />
@@ -14,7 +15,7 @@
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.12" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.1" />
-    <PackageReference Include="MongoDbGenericRepository" Version="1.4.3" />
+    <PackageReference Include="MongoDbGenericRepository" Version="1.4.5" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="coverlet.msbuild" Version="2.9.0">
@@ -32,9 +33,5 @@
     <Content Include="appsettings*.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>  
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\AspNetCore.Identity.MongoDbCore.csproj" />
   </ItemGroup>
 </Project>

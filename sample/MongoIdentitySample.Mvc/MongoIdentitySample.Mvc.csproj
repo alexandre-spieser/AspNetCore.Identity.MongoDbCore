@@ -26,14 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\AspNetCore.Identity.MongoDbCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <!-- Select one of the following to build this solution -->
-  <ItemGroup>
-    <!-- <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.0" /> -->
-    <ProjectReference Include="..\..\src\AspNetCore.Identity.MongoDbCore.csproj" />
-  </ItemGroup>
 
 </Project>
