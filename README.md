@@ -1,11 +1,11 @@
 # AspNetCore.Identity.MongoDbCore
 
-A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0.
-Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0.
+A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0 and 3.1.
+Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0 and 3.1.
 
 Covered by 737 integration tests and unit tests from the modified [Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test](https://github.com/aspnet/Identity/tree/b865d5878623077eeb715e600d75fa9c24dbb5a1/test/Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test) test suite.
 
-Supports both `netstandard2.0` and `netcoreapp2.0`.
+Supports both `netstandard2.1` and `netcoreapp3.1`.
 
 Available as a Nuget package : https://www.nuget.org/packages/AspNetCore.Identity.MongoDbCore/
 
@@ -126,7 +126,8 @@ var mongoDbIdentityConfiguration = new MongoDbIdentityConfiguration
 		options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@.-_";
 	}
 };
-services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration);
+services.ConfigureMongoDbIdentity<ApplicationUser, ApplicationRole, Guid>(mongoDbIdentityConfiguration)
+        .AddDefaultTokenProviders();
 ```
 
 # Running the tests
@@ -142,7 +143,7 @@ AspNetCore.Identity.MongoDbCore is under MIT license - http://www.opensource.org
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Alexandre Spieser
+Copyright (c) 2016-2021 Alexandre Spieser
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -163,4 +164,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ## Copyright
-Copyright © 2017
+Copyright © 2021
