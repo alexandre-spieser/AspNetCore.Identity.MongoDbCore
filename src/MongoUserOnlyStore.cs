@@ -103,10 +103,10 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Gets the database context for this store.
         /// </summary>
-        private static TContext Context { get; set; }
+        private TContext Context { get; }
 
-        private static IMongoRepository _mongoRepository;
-        private static IMongoRepository MongoRepository
+        private IMongoRepository _mongoRepository;
+        private IMongoRepository MongoRepository
         {
             get
             {
