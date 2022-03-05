@@ -23,7 +23,8 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
             {
                 Type = claim.Type,
                 Value = claim.Value,
-                Issuer = claim.Issuer
+                Issuer = claim.Issuer,
+                Properties = claim.Properties
             };
         }
 
@@ -34,7 +35,12 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
         /// <returns> A <see cref="Claim"/>.</returns>
         public static Claim ToClaim(this MongoClaim mongoClaim)
         {
-            return new Claim(mongoClaim.Type, mongoClaim.Value, null, mongoClaim.Issuer);
+            var claim = new Claim(mongoClaim.Type, mongoClaim.Value, null, mongoClaim.Issuer);
+            foreach (var (key, value) in mongoClaim.Properties)
+            {
+                claim.Properties.Add(key, value);
+            }
+            return claim;
         }
 
         /// <summary>
@@ -75,6 +81,7 @@ namespace AspNetCore.Identity.MongoDbCore.Extensions
                            oldClaim.Type = newClaim.Type;
                            oldClaim.Value = newClaim.Value;
                            oldClaim.Issuer = newClaim.Issuer;
+                           oldClaim.Properties = newClaim.Properties;
                            replaced |= true;
                        });
             return replaced;

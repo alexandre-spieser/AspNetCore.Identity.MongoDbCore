@@ -1,4 +1,6 @@
-﻿namespace AspNetCore.Identity.MongoDbCore.Models
+﻿using System.Collections.Generic;
+
+namespace AspNetCore.Identity.MongoDbCore.Models
 {
     /// <summary>
     /// A class representing the claims a <see cref="MongoIdentityUser{TKey}"/> can have.
@@ -17,5 +19,11 @@
         /// The issuer of the claim.
         /// </summary>
         public string Issuer { get; set; }
+
+        /// <summary>
+        /// Gets a dictionary that contains additional properties associated with this claim
+        /// </summary>
+        public IDictionary<string, string> Properties { get; set; } = new Dictionary<string, string>();
+
     }
 }
