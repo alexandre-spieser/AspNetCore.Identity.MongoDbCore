@@ -130,18 +130,18 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Gets the database context for this store.
         /// </summary>
-        private static TContext Context { get; set; }
+        private TContext Context { get; }
 
-        private static object MongoRepositoryInitializationLock = new object();
-        private static IMongoRepository _mongoRepository;
-        private static IMongoRepository MongoRepository
+        private readonly object _mongoRepositoryInitializationLock = new object();
+        private IMongoRepository _mongoRepository;
+        private IMongoRepository MongoRepository
         {
             get
             {
                 // double checked locking to prevent race to initialize the repository in multithreaded environment.
                 if (_mongoRepository == null)
                 {
-                    lock (MongoRepositoryInitializationLock)
+                    lock (_mongoRepositoryInitializationLock)
                     {
                         if (_mongoRepository == null)
                         {
