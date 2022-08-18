@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/sample/MongoIdentitySample.Mvc/bin/Debug/netcoreapp3.1/MongoIdentitySample.Mvc.dll",
+            "program": "${workspaceFolder}/sample/MongoIdentitySample.Mvc/bin/Debug/net6.0/MongoIdentitySample.Mvc.dll",
             "args": [],
             "cwd": "${workspaceFolder}/sample/MongoIdentitySample.Mvc",
             "stopAtEntry": false,
