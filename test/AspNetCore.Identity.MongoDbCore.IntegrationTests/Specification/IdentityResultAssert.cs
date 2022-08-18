@@ -1,6 +1,8 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -59,15 +61,20 @@ namespace Microsoft.AspNetCore.Identity.Test
         /// <param name="expectedLog">The expected log message.</param>
         public static void VerifyLogMessage(ILogger logger, string expectedLog)
         {
-            var testlogger = logger as ITestLogger;
-            if (testlogger != null)
+            var testLogger = logger as ITestLogger;
+            if (testLogger != null)
             {
-                Assert.Contains(expectedLog, testlogger.LogMessages);
+                Assert.True(testLogger.LogMessages.Any(x => x.Contains(expectedLog)), FormatErrorMessage(testLogger.LogMessages, expectedLog));
             }
             else
             {
                 Assert.False(true, "No logger registered");
             }
+        }
+
+        private static string FormatErrorMessage(IList<string> logMessages, string expectedLog)
+        {
+            return $"Failed to find in logs\n     Expected: '{expectedLog}'\n     Actual  : '{string.Join("\n     Actual  : '", logMessages)}'";
         }
     }
 }

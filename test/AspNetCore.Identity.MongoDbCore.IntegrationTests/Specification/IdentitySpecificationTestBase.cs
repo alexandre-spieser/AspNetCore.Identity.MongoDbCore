@@ -581,7 +581,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             IdentityResultAssert.IsSuccess(await roleMgr.CreateAsync(role));
             var result = await userMgr.RemoveFromRoleAsync(user, roleName);
             IdentityResultAssert.IsFailure(result, _errorDescriber.UserNotInRole(roleName));
-            IdentityResultAssert.VerifyLogMessage(userMgr.Logger, $"User {await userMgr.GetUserIdAsync(user)} is not in role {roleName}.");
+            IdentityResultAssert.VerifyLogMessage(userMgr.Logger, $"User is not in role {roleName}.");
         }
 
         /// <summary>
@@ -606,7 +606,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             IdentityResultAssert.IsSuccess(await userMgr.AddToRoleAsync(user, roleName));
             Assert.True(await userMgr.IsInRoleAsync(user, roleName));
             IdentityResultAssert.IsFailure(await userMgr.AddToRoleAsync(user, roleName), _errorDescriber.UserAlreadyInRole(roleName));
-            IdentityResultAssert.VerifyLogMessage(userMgr.Logger, $"User {await userMgr.GetUserIdAsync(user)} is already in role {roleName}.");
+            IdentityResultAssert.VerifyLogMessage(userMgr.Logger, $"User is already in role {roleName}.");
         }
 
         /// <summary>

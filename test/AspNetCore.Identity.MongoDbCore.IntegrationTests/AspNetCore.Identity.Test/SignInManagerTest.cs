@@ -133,7 +133,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.True(result.IsLockedOut);
-            Assert.Contains($"User {user.Id} is currently locked out.", loggerFactory.LogStore.ToString());
+            Assert.Contains($"User is currently locked out.", loggerFactory.LogStore.ToString());
             manager.Verify();
         }
 
@@ -164,7 +164,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.True(result.IsLockedOut);
-            Assert.Contains($"User {user.Id} is currently locked out.", loggerFactory.LogStore.ToString());
+            Assert.Contains($"User is currently locked out.", loggerFactory.LogStore.ToString());
             manager.Verify();
         }
 
@@ -520,14 +520,21 @@ namespace Microsoft.AspNetCore.Identity.Test
             var auth = MockAuth(context);
             var loginProvider = "loginprovider";
             var id = new ClaimsIdentity();
+
             if (externalLogin)
             {
                 id.AddClaim(new Claim(ClaimTypes.AuthenticationMethod, loginProvider));
             }
-            // REVIEW: auth changes we lost the ability to mock is persistent
-            //var properties = new AuthenticationProperties { IsPersistent = isPersistent };
-            var authResult = AuthenticateResult.NoResult();
-             
+            else
+            {
+                id.AddClaim(new Claim(ClaimTypes.AuthenticationMethod, "password"));
+            }
+
+            // Need a successful result for signInManager.Verify() to succeed.
+            var authResult = AuthenticateResult.Success(new AuthenticationTicket(
+                principal: new ClaimsPrincipal(id), properties: new AuthenticationProperties(), loginProvider
+                ));
+
             auth.Setup(a => a.AuthenticateAsync(context, IdentityConstants.ApplicationScheme)).Returns(Task.FromResult(authResult)).Verifiable();
 
             var manager = SetupUserManager(user);
@@ -538,7 +545,7 @@ namespace Microsoft.AspNetCore.Identity.Test
 
                 signInManager.CallBase = true; // need this magic!
 
-                signInManager.Setup(s => s.SignInWithClaimsAsync(user, It.IsAny<AuthenticationProperties>(), It.IsAny<List<Claim>>())).Returns(Task.FromResult(0)).Verifiable();
+                signInManager.Setup(s => s.SignInWithClaimsAsync(user, It.IsAny<AuthenticationProperties>(), It.IsAny<List<Claim>>())).Returns(Task.CompletedTask).Verifiable();
 
                 // Act
                 await signInManager.Object.RefreshSignInAsync(user);
@@ -745,7 +752,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.False(result.Succeeded);
             Assert.False(checkResult.Succeeded);
-            Assert.Contains($"User {user.Id} failed to provide the correct password.", loggerFactory.LogStore.ToString());
+            Assert.Contains($"User failed to provide the correct password.", loggerFactory.LogStore.ToString());
             manager.Verify();
             context.Verify();
         }
@@ -861,7 +868,7 @@ namespace Microsoft.AspNetCore.Identity.Test
 
             Assert.Equal(confirmed, result.Succeeded);
             Assert.NotEqual(confirmed, result.IsNotAllowed);
-            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed email."));
+            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User cannot sign in without a confirmed email."));
 
             manager.Verify();
             auth.Verify();
@@ -906,7 +913,7 @@ namespace Microsoft.AspNetCore.Identity.Test
             // Assert
             Assert.Equal(confirmed, result.Succeeded);
             Assert.NotEqual(confirmed, result.IsNotAllowed);
-            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User {user.Id} cannot sign in without a confirmed phone number."));
+            Assert.Equal(confirmed, !loggerFactory.LogStore.ToString().Contains($"User cannot sign in without a confirmed phone number."));
             manager.Verify();
             auth.Verify();
         }

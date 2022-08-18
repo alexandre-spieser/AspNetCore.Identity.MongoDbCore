@@ -406,7 +406,7 @@ namespace AspNetCore.Identity.MongoDbCore
 
             //if(user.Roles.Any(e => e.Equals(roleEntity.Id)))
             //{
-            //    throw new InvalidOperationException($"User {user.Id} is already in role {roleEntity.Name}.");
+            //    throw new InvalidOperationException($"User is already in role {roleEntity.Name}.");
             //}
 
             if (user.AddRole(roleEntity.Id))
