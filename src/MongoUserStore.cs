@@ -14,8 +14,6 @@ using AspNetCore.Identity.MongoDbCore.Extensions;
 using AspNetCore.Identity.MongoDbCore.Models;
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel;
-using MongoDB.Bson;
 
 namespace AspNetCore.Identity.MongoDbCore
 {
@@ -28,9 +26,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoUserStore"/>.
         /// </summary>
-        /// <param name="context">The <see cref="MongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoUserStore(IMongoDbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoUserStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -43,9 +41,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoUserStore{TUser}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="MongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoUserStore(IMongoDbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoUserStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -62,9 +60,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoUserStore{TUser, TRole, TContext}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="MongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoUserStore(TContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoUserStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -83,9 +81,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoUserStore{TUser, TRole, TContext, TKey}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="MongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoUserStore(TContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoUserStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -116,45 +114,23 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Creates a new instance of the store.
         /// </summary>
-        /// <param name="context">The context used to access the store.</param>
+        /// <param name="mongoRepository">The repository of mongo as <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/> used to describe store errors.</param>
-        public MongoUserStore(TContext context, IdentityErrorDescriber describer = null) : base(describer ?? new IdentityErrorDescriber())
+        public MongoUserStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(describer ?? new IdentityErrorDescriber())
         {
-            if (context == null)
+            if (mongoRepository == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(mongoRepository));
             }
-            Context = context;
+
+            _mongoRepository = mongoRepository;
         }
 
-        /// <summary>
-        /// Gets the database context for this store.
-        /// </summary>
-        private TContext Context { get; }
-
-        private readonly object _mongoRepositoryInitializationLock = new object();
         private IMongoRepository _mongoRepository;
-        private IMongoRepository MongoRepository
-        {
-            get
-            {
-                // double checked locking to prevent race to initialize the repository in multithreaded environment.
-                if (_mongoRepository == null)
-                {
-                    lock (_mongoRepositoryInitializationLock)
-                    {
-                        if (_mongoRepository == null)
-                        {
-                            _mongoRepository = new MongoRepository(Context);
-                        }
-                    }
-                }
-                return _mongoRepository;
-            }
-        }
+        private IMongoRepository MongoRepository => _mongoRepository;
 
-        private IMongoCollection<TUser> UsersCollection { get { return Context.GetCollection<TUser>(); } }
-        private IMongoCollection<TRole> RolesCollection { get { return Context.GetCollection<TRole>(); } }
+        private IMongoCollection<TUser> UsersCollection { get { return _mongoRepository.GetCollection<TUser>(); } }
+        private IMongoCollection<TRole> RolesCollection { get { return _mongoRepository.GetCollection<TRole>(); } }
 
         /// <summary>
         /// Gets or sets a flag indicating if changes should be persisted after CreateAsync, UpdateAsync and DeleteAsync are called.

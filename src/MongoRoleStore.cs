@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -27,9 +26,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoRoleStore{TRole}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoRoleStore(IMongoDbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoRoleStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -44,9 +43,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoRoleStore{TRole, TContext}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoRoleStore(TContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoRoleStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -65,9 +64,9 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoRoleStore{TRole, TContext, TKey}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoRoleStore(IMongoDbContext context, IdentityErrorDescriber describer = null) : base(context, describer) { }
+        public MongoRoleStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null) : base(mongoRepository, describer) { }
     }
 
     /// <summary>
@@ -90,38 +89,23 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// Constructs a new instance of <see cref="MongoRoleStore{TRole, TContext, TKey, TUserRole, TRoleClaim}"/>.
         /// </summary>
-        /// <param name="context">The <see cref="IMongoDbContext"/>.</param>
+        /// <param name="mongoRepository">The <see cref="IMongoRepository"/>.</param>
         /// <param name="describer">The <see cref="IdentityErrorDescriber"/>.</param>
-        public MongoRoleStore(IMongoDbContext context, IdentityErrorDescriber describer = null)
+        public MongoRoleStore(IMongoRepository mongoRepository, IdentityErrorDescriber describer = null)
         {
-            if (context == null)
+            if (mongoRepository == null)
             {
-                throw new ArgumentNullException(nameof(context));
+                throw new ArgumentNullException(nameof(mongoRepository));
             }
-            Context = context;
+
+            _mongoRepository = mongoRepository;
             ErrorDescriber = describer ?? new IdentityErrorDescriber();
         }
 
         private bool _disposed;
 
-
-        /// <summary>
-        /// Gets the database context for this store.
-        /// </summary>
-        private IMongoDbContext Context { get; }
-
-        private IMongoRepository _mongoRepository;
-        private IMongoRepository MongoRepository
-        {
-            get
-            {
-                if (_mongoRepository == null)
-                {
-                    _mongoRepository = new MongoRepository(Context);
-                }
-                return _mongoRepository;
-            }
-        }
+        private readonly IMongoRepository _mongoRepository;
+        private IMongoRepository MongoRepository => _mongoRepository;
 
         /// <summary>
         /// A navigation property for the roles the store contains.
@@ -131,7 +115,7 @@ namespace AspNetCore.Identity.MongoDbCore
         /// <summary>
         /// A navigation property for the roles the store contains.
         /// </summary>
-        public virtual IMongoCollection<TRole> RolesCollection => Context.GetCollection<TRole>();
+        public virtual IMongoCollection<TRole> RolesCollection => _mongoRepository.GetCollection<TRole>();
 
         /// <summary>
         /// Gets or sets the <see cref="IdentityErrorDescriber"/> for any error that occurred with the current operation.

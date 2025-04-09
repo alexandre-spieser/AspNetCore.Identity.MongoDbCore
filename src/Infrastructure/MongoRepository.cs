@@ -1,4 +1,5 @@
-﻿using MongoDbGenericRepository;
+﻿using MongoDB.Driver;
+using MongoDbGenericRepository;
 
 namespace AspNetCore.Identity.MongoDbCore.Infrastructure
 {
@@ -7,6 +8,13 @@ namespace AspNetCore.Identity.MongoDbCore.Infrastructure
     /// </summary>
     public interface IMongoRepository : IBaseMongoRepository
     {
+        /// <summary>
+        /// Get a collection.
+        /// </summary>
+        /// <typeparam name="TDocument">The type of the document used to define the collection name.</typeparam>
+        /// <returns>Mongo collection of <typeparamref name="TDocument"/>.</returns>
+        IMongoCollection<TDocument> GetCollection<TDocument>();
+
         /// <summary>
         /// Drops a collections.
         /// </summary>
@@ -47,6 +55,10 @@ namespace AspNetCore.Identity.MongoDbCore.Infrastructure
         public MongoRepository(IMongoDbContext mongoDbContext) : base(mongoDbContext)
         {
         }
+
+        /// <inheritdoc/>
+        public IMongoCollection<TDocument> GetCollection<TDocument>() =>
+            MongoDbContext.GetCollection<TDocument>();
 
         /// <summary>
         /// Drops a collections.
