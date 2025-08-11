@@ -3,6 +3,8 @@
 A MongoDb UserStore and RoleStore adapter for Microsoft.AspNetCore.Identity 2.0 and 3.1.
 Allows you to use MongoDb instead of SQL server with Microsoft.AspNetCore.Identity 2.0 and 3.1.
 
+The project's mission is to provide a simple, robust, and dependable MongoDB data store for .NET Identity, offering a clean API that fully abstracts the underlying MongoDB driver.
+
 Covered by 737 integration tests and unit tests from the modified [Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test](https://github.com/aspnet/Identity/tree/b865d5878623077eeb715e600d75fa9c24dbb5a1/test/Microsoft.AspNetCore.Identity.EntityFrameworkCore.Test) test suite.
 
 Supports both `netstandard2.1` and `netcoreapp3.1`.
