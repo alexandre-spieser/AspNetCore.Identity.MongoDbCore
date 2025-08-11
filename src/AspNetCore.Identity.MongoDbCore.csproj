@@ -12,14 +12,14 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>Release notes are at Release notes are at https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore/releases</PackageReleaseNotes>
-    <Copyright>Copyright 2021 (c) Alexandre Spieser. All rights reserved.</Copyright>
+    <Copyright>Copyright 2025 (c) Alexandre Spieser. All rights reserved.</Copyright>
     <PackageTags>aspnetcore mongo mongodb identity membership</PackageTags>
     <RepositoryUrl>https://github.com/alexandre-spieser/AspNetCore.Identity.MongoDbCore</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <!-- Versioning -->
-    <PackageVersion>6.0.0</PackageVersion>
-    <Version>6.0.0</Version>
-    <FileVersion>6.0.0</FileVersion>
+    <PackageVersion>7.0.0</PackageVersion>
+    <Version>7.0.0</Version>
+    <FileVersion>7.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -29,8 +29,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.8" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.8" />
-    <PackageReference Include="MongoDB.Driver" Version="2.28.0" />
-    <PackageReference Include="MongoDbGenericRepository" Version="1.6.2" />
+    <PackageReference Include="MongoDB.Driver" Version="[3.*,)" />
+    <PackageReference Include="MongoDbGenericRepository" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
